@@ -2,48 +2,26 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>Preview</title>
+<title>Shot</title>
 <style>
-  html,body{margin:0;background:#fff}
-  .shot{display:block;overflow:hidden;margin:0 0 20px;background:#fff}
-  .shot iframe{display:block;border:0;width:100%}
-  .desk{width:1440px}
-  .desk iframe{height:980px}
-  .mob{width:390px}
-  .mob iframe{height:844px}
-  .zoom{width:390px;transform:scale(2);transform-origin:top left;margin-bottom:1740px}
-  .zoom iframe{height:844px}
+  html,body{margin:0;background:#fff;overflow:hidden}
+  #stage{position:absolute;top:0;left:0;transform-origin:top left}
+  iframe{display:block;border:0;background:#fff}
 </style>
 </head>
 <body>
-
-<div class="shot desk" role="img" aria-label="desktop hero">
-  <iframe src="./index.html" title="desktop hero" scrolling="no"></iframe>
-</div>
-
-<div class="shot desk" role="img" aria-label="desktop about business">
-  <iframe src="./index.html#about" title="desktop about" scrolling="no"></iframe>
-</div>
-
-<div class="shot desk" role="img" aria-label="desktop products quality">
-  <iframe src="./index.html#products" title="desktop products" scrolling="no"></iframe>
-</div>
-
-<div class="shot desk" role="img" aria-label="desktop location contact">
-  <iframe src="./index.html#location" title="desktop location" scrolling="no"></iframe>
-</div>
-
-<div class="shot mob zoom" role="img" aria-label="mobile top 2x">
-  <iframe src="./index.html" title="mobile top" scrolling="no"></iframe>
-</div>
-
-<div class="shot mob zoom" role="img" aria-label="mobile mid 2x">
-  <iframe src="./index.html#business" title="mobile mid" scrolling="no"></iframe>
-</div>
-
-<div class="shot mob zoom" role="img" aria-label="mobile bottom 2x">
-  <iframe src="./index.html#location" title="mobile bottom" scrolling="no"></iframe>
-</div>
-
+<div id="stage"><iframe id="f" title="shot"></iframe></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const w = +(q.get('w') || 1440);
+  const h = +(q.get('h') || 1324);
+  const s = +(q.get('s') || 1);
+  const hash = q.get('hash') || '';
+  const f = document.getElementById('f');
+  f.style.width = w + 'px';
+  f.style.height = h + 'px';
+  document.getElementById('stage').style.transform = 'scale(' + s + ')';
+  f.src = './index.html' + (hash ? '#' + hash : '');
+</script>
 </body>
 </html>
