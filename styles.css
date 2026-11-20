@@ -1545,7 +1545,7 @@ button{font:inherit}
   padding-bottom:2px;width:fit-content;transition:color .3s,border-color .3s;
 }
 .contact-mail a:hover{color:var(--bronze-lt);border-color:var(--bronze-lt)}
-.mail-note{font-size:11.5px;color:rgba(246,242,234,.5);margin-top:4px}
+.mail-note{font-size:11.5px;color:rgba(246,242,234,.66);margin-top:4px}
 .contact-pdf{
   margin-top:26px;background:transparent;color:var(--paper);
   border:1px solid rgba(246,242,234,.34);
@@ -1553,9 +1553,9 @@ button{font:inherit}
 .contact-pdf:hover{border-color:var(--bronze-lt);color:var(--bronze-lt)}
 
 .form-mailnote{
-  margin-top:10px;font-size:11.5px;line-height:1.6;color:rgba(246,242,234,.45);
+  margin-top:10px;font-size:11.5px;line-height:1.6;color:rgba(246,242,234,.62);
 }
-.form-mailnote a{color:rgba(246,242,234,.72);border-bottom:1px solid rgba(246,242,234,.22)}
+.form-mailnote a{color:rgba(246,242,234,.85);border-bottom:1px solid rgba(246,242,234,.22)}
 .form-mailnote a:hover{color:var(--bronze-lt)}
 
 .field.is-prefilled textarea{
@@ -1652,4 +1652,11 @@ button{font:inherit}
   .faq summary{font-size:13.5px;padding-right:28px}
   .contact-ways{margin-top:26px;padding-top:18px}
   .contact-mail{font-size:13.5px}
+}
+
+/* ── phone: 머리말·CTA를 먼저 (태블릿 시각 우선 배치는 유지) ── */
+@media (max-width:700px){
+  .hero-copy{order:-1}
+  .hero-visual{order:0;max-width:none}
+  .hero{padding-top:96px}
 }
