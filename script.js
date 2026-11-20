@@ -1,4 +1,4 @@
-/* (주)그랑쉐프 — corporate site interactions */
+/* 주식회사 그랑쉐프 — corporate site interactions */
 (function () {
   'use strict';
 
@@ -579,6 +579,9 @@
   };
 
   var buildSummary = function (data) {
+    var now = new Date();
+    var ts = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2) +
+      ' ' + ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
     return [
       '[그랑쉐프 홈페이지 납품 문의]',
       '',
@@ -592,7 +595,10 @@
       '문의 내용',
       (data.message || ''),
       '',
-      '— (주)그랑쉐프 홈페이지 문의 폼에서 작성되었습니다.'
+      '— 개인정보 수집·이용 동의 : 필수 항목 동의함 (작성 시각 ' + ts + ' 기준)',
+      '— 신상품·행사 정보 수신 동의 : ' + (data.agreeMarketing ? '동의함' : '동의하지 않음'),
+      '',
+      '— 주식회사 그랑쉐프 홈페이지 문의 폼에서 작성되었습니다.'
     ].join('\n');
   };
 
@@ -605,8 +611,15 @@
 
       required.forEach(function (el) {
         var field = el.closest('.field');
-        var ok = el.type === 'checkbox' ? el.checked : String(el.value).trim().length > 1;
-        if (el.type === 'email' && el.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim())) {
+        var val = String(el.value).trim();
+        var ok = el.type === 'checkbox' ? el.checked : val.length > 1;
+        if (el.name === 'phone') {
+          ok = val.replace(/[^0-9]/g, '').length >= 9;
+        }
+        if (el.name === 'message') {
+          ok = val.length >= 10;
+        }
+        if (el.type === 'email' && val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
           ok = false;
         }
         if (field) field.classList.toggle('invalid', !ok);
@@ -615,13 +628,22 @@
 
       if (firstBad) {
         if (result) result.hidden = true;
-        say('필수 항목을 확인해 주세요.', true);
+        say(firstBad.name === 'message'
+          ? '문의 내용을 10자 이상 적어 주세요.'
+          : firstBad.name === 'phone'
+            ? '연락처를 정확히 적어 주세요. (숫자 9자리 이상)'
+            : '필수 항목을 확인해 주세요.', true);
         firstBad.focus();
         return;
       }
 
       var data = {};
       new FormData(form).forEach(function (v, k) { data[k] = v; });
+
+      /* 허니팟: 자동 입력 도구가 채우는 필드 — 채워져 있으면 조용히 중단 */
+      if (String(data.website || '').trim()) {
+        return;
+      }
 
       var text = buildSummary(data);
       var subject = '[그랑쉐프 홈페이지 문의] ' +
@@ -659,6 +681,31 @@
       });
     }
   }
+
+  /* 견적 바구니(products.html)에서 넘어온 상품 목록을 문의 내용에 채운다 */
+  try {
+    var rawQuote = window.sessionStorage.getItem('gc_quote_items');
+    if (rawQuote && form) {
+      var items = JSON.parse(rawQuote);
+      if (Array.isArray(items) && items.length) {
+        var msgEl = form.querySelector('[name="message"]');
+        var brandEl = form.querySelector('[name="brand"]');
+        var lines = ['[' + (items.length > 1 ? '상품 묶음 견적 문의' : '상품 견적 문의') + '] ' + items.length + '건', ''];
+        items.forEach(function (it, i) {
+          lines.push('· 상품 ' + (i + 1) + ' : ' + it.n +
+            (it.b ? ' (' + it.b + (it.s ? ' · ' + it.s : '') + ')' : ''));
+        });
+        lines.push('', '· 업체 / 매장 : ', '· 수량 : ', '· 납품 장소 : ', '· 희망 납기 : ');
+        if (msgEl) {
+          msgEl.value = lines.join('\n');
+          msgEl.classList.add('is-prefilled');
+          window.setTimeout(function () { msgEl.classList.remove('is-prefilled'); }, 1800);
+        }
+        if (brandEl && items.length === 1 && items[0].b) brandEl.value = items[0].b;
+        window.sessionStorage.removeItem('gc_quote_items');
+      }
+    }
+  } catch (e) {}
 
   /* smooth anchor offset for older Safari */
   document.addEventListener('click', function (e) {
