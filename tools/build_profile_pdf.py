@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""(주)그랑쉐프 회사소개서 PDF 생성기.
+"""주식회사 그랑쉐프 회사소개서 PDF 생성기.
 
     python3 tools/build_profile_pdf.py
 
@@ -133,7 +133,7 @@ def page_foot(c, n):
     hair(c, M, 54, W - M, LINE, 0.5)
     c.setFont("KR", 7.2)
     c.setFillColor(MUTE)
-    c.drawString(M, 40, "(주)그랑쉐프 · 부산광역시 강서구 평강로345번길 45 (대저1동) 46700 · TEL 051-892-8930 · grandchef.co.kr")
+    c.drawString(M, 40, "주식회사 그랑쉐프 · 부산광역시 강서구 평강로345번길 45 (대저1동) 46700 · TEL 051-892-8930 · grandchef.co.kr")
     c.setFont("SER", 8)
     c.drawRightString(W - M, 40, "GRANDCHEF CO., LTD.   %02d / 03" % n)
 
@@ -171,7 +171,7 @@ def page_cover(c):
     y -= 46
     c.setFont("KR-B", 34)
     c.setFillColor(HexColor("#F7F3EB"))
-    c.drawString(M, y, "(주)그랑쉐프")
+    c.drawString(M, y, "주식회사 그랑쉐프")
 
     y -= 26
     c.setFont("KR", 12.5)
@@ -197,7 +197,7 @@ def page_cover(c):
     # fact strip
     fy = 250
     facts = [("25", "YEAR", "2001년 설립 · 올해로 25년"),
-             ("08", "FIELDS", "취급 주방 카테고리"),
+             ("11", "FIELDS", "취급 주방 카테고리"),
              ("29", "BRANDS", "함께하는 국내 주방 브랜드"),
              ("B2B", "SUPPLY", "부울경 직배송 · 정기 납품")]
     cw = (W - M * 2) / len(facts)
@@ -253,7 +253,7 @@ def page_company(c):
 
     y -= 26
     y = para(c,
-             "(주)그랑쉐프는 2001년 부산에서 문을 연 주방·생활용품 제조·유통 기업입니다. "
+             "주식회사 그랑쉐프는 2001년 부산에서 문을 연 주방·생활용품 제조·유통 기업입니다. "
              "냄비·프라이팬 같은 조리기물부터 식탁 위의 그릇, 조리도구와 밀폐용기까지 주방에 필요한 것을 "
              "기획하고 직접 만들고 유통해 왔습니다. 부산 강서구 대저1동에 본사와 사무실을 두고 "
              "부울경 유통망과 기업·공공 채널에 공급하며, 식당·급식소에 필요한 대용량 기물과 "
@@ -263,7 +263,7 @@ def page_company(c):
     # ── 개요 표 (좌) + 인증/브랜드 (우)
     top = y - 26
     rows = [
-        ("상호", "(주)그랑쉐프  |  GRANDCHEF CO., LTD."),
+        ("상호", "주식회사 그랑쉐프  |  GRANDCHEF CO., LTD."),
         ("대표이사", "정희숙"),
         ("설립", "2001년 8월 (올해로 25년)"),
         ("사업자등록번호", "605-81-47231"),
@@ -334,16 +334,16 @@ def page_company(c):
     tracked(c, "02  ·  BUSINESS AREAS", M, by, "KR-B", 7.6, BRONZE, 2.2)
     c.setFont("KR-B", 17)
     c.setFillColor(INK)
-    c.drawString(M, by - 24, "만들고, 갖추고, 보냅니다.")
+    c.drawString(M, by - 24, "납품하고, 유통하고, 제안합니다.")
     c.setFont("SER", 10)
     c.setFillColor(MUTE)
     c.drawRightString(W - M, by - 24, "4 business areas")
 
     biz = [
-        ("01", "조리기물", "업소용 대형 볶음솥·전판, 코팅팬·웍부터 가정용 냄비·프라이팬, 뚝배기까지 규격별로 갖춥니다."),
-        ("02", "식탁·테이블웨어", "머그와 컵, 공기·접시, 잔과 수저류까지 매일 쓰는 그릇을 세트와 단품으로 공급합니다."),
-        ("03", "조리도구·주방잡화", "채칼·식도·가위 같은 조리도구와 유리 밀폐용기, 물병, 수저통 등 주방의 잔손질을 줄이는 물건을 다룹니다."),
-        ("04", "B2B 유통·납품", "마트·지역 유통센터, 식당·급식소, 기업·관공서 채널에 대용량 기물과 소모품까지 공급합니다."),
+        ("01", "마트 납품", "서원유통(탑마트)·농협하나로마트·우리마트·홀마트 등 지역 유통 채널에 주방·생활용품을 정기 납품합니다."),
+        ("02", "주방용품 유통", "냄비·프라이팬·주전자부터 식기·조리도구·밀폐용기까지 국내 주방 브랜드 29곳의 제품을 도소매로 공급합니다."),
+        ("03", "특판상품", "기업 복지·명절 선물세트, 관공서 특판, 행사·판촉 물량을 예산과 수량에 맞춰 구성합니다."),
+        ("04", "신상품 제안", "거래처의 매장 구성과 판매 흐름을 보고 신상품과 구성을 제안하며, 샘플·카탈로그·시즌 교체를 함께 상담합니다."),
     ]
     gy = by - 48
     cwid = (W - M * 2 - 16) / 2
@@ -376,21 +376,20 @@ def page_products(c):
     c.drawString(M, y - 28, "취급 품목")
     c.setFont("KR", 9)
     c.setFillColor(INK_SOFT)
-    c.drawString(M + 100, y - 28, "업소·급식용 대용량 기물부터 가정용 주방용품까지, 8개 분야")
+    c.drawString(M + 100, y - 28, "업소·급식용 대용량 기물부터 가정용 주방용품까지, 11개 분류")
 
     tiles = [
-        ("pro-01-wok-griddle.jpg", "대형 볶음솥·전판", "업소용"),
-        ("pro-02-coated-pan.jpg", "업소용 코팅팬·웍", "업소용"),
-        ("pro-03-bat-fryer.jpg", "밧드·튀김 바스켓", "업소용"),
-        ("pro-04-ttukbaegi.jpg", "뚝배기", "업소용"),
+        ("pro-01-wok-griddle.jpg", "업소용 주방기물", "업소용"),
         ("cat-01-pot.jpg", "냄비·솥", "가정용"),
-        ("cat-02-pan.jpg", "프라이팬", "가정용"),
+        ("cat-02-pan.jpg", "프라이팬·웍", "가정용"),
         ("cat-03-kettle.jpg", "주전자·보온", "가정용"),
         ("cat-04-mug.jpg", "머그·컵", "가정용"),
         ("cat-05-plate.jpg", "공기·접시", "가정용"),
+        ("cat-10-cutlery.jpg", "수저·젓가락", "가정용"),
         ("cat-06-tool.jpg", "조리도구·칼", "가정용"),
         ("cat-07-storage.jpg", "밀폐·보관", "가정용"),
         ("cat-08-living.jpg", "생활·주방잡화", "가정용"),
+        ("cat-09-appliance.jpg", "주방가전", "가정용"),
     ]
     top = y - 50
     cols, gap = 4, 8
@@ -506,8 +505,8 @@ def page_products(c):
 def main():
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     c = canvas.Canvas(OUT, pagesize=A4)
-    c.setTitle("(주)그랑쉐프 회사소개서 | GRANDCHEF CO., LTD. Company Profile")
-    c.setAuthor("(주)그랑쉐프")
+    c.setTitle("주식회사 그랑쉐프 회사소개서 | GRANDCHEF CO., LTD. Company Profile")
+    c.setAuthor("주식회사 그랑쉐프")
     c.setSubject("회사 개요·사업분야·취급품목·취급 브랜드·납품 안내")
     c.setCreator("grandchef.co.kr")
 
