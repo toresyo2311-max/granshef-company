@@ -269,6 +269,25 @@
       picker.appendChild(btn);
     });
 
+    /* deep link: ?brand=11 or ?brand=동진쉐프 opens that brand */
+    var wanted = null;
+    try {
+      wanted = new URLSearchParams(window.location.search).get('brand');
+    } catch (e) {
+      wanted = null;
+    }
+    if (wanted) {
+      wanted = wanted.trim();
+      var kids = picker.children;
+      for (var wi = 0; wi < kids.length; wi += 1) {
+        var bd = BRANDS[wi];
+        if (bd.no === wanted || bd.name === wanted) {
+          kids[wi].click();
+          break;
+        }
+      }
+    }
+
     /* category filter */
     var chips = Array.prototype.slice.call(document.querySelectorAll('.brand-filter .chip'));
     var bpicks = Array.prototype.slice.call(picker.children);
