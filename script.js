@@ -57,11 +57,36 @@
   }
 
   /* stagger children of grids */
-  document.querySelectorAll('.cards, .grid-8, .values, .certs').forEach(function (group) {
+  document.querySelectorAll('.cards, .grid-8, .values, .certs, .brand-grid, .client-grid').forEach(function (group) {
     Array.prototype.forEach.call(group.children, function (child, i) {
       child.style.transitionDelay = (i * 70) + 'ms';
     });
   });
+
+  /* brand filter */
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.brand-filter .chip'));
+  var bcards = Array.prototype.slice.call(document.querySelectorAll('#brandGrid .bcard'));
+
+  if (chips.length && bcards.length) {
+    var applyFilter = function (key) {
+      bcards.forEach(function (card) {
+        var show = key === 'all' || card.getAttribute('data-cat') === key;
+        card.classList.toggle('hide', !show);
+        if (show) card.classList.add('in');
+      });
+    };
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chips.forEach(function (c) {
+          var on = c === chip;
+          c.classList.toggle('is-on', on);
+          c.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        applyFilter(chip.getAttribute('data-filter'));
+      });
+    });
+  }
 
   /* active nav link */
   var links = Array.prototype.slice.call(document.querySelectorAll('.nav a[href^="#"]'));
