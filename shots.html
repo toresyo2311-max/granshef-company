@@ -4,24 +4,24 @@
 <meta charset="utf-8">
 <title>Shot</title>
 <style>
-  html,body{margin:0;background:#fff;overflow:hidden}
-  #stage{position:absolute;top:0;left:0;transform-origin:top left}
-  iframe{display:block;border:0;background:#fff}
+  html,body{margin:0;background:#ffffff;overflow:hidden;font:11px/1 -apple-system,sans-serif;color:#8b8377}
+  #d,#m{position:absolute;top:0;border:0;background:#fff;display:block}
+  #d{left:0;width:1440px;height:1000px}
+  #m{left:1500px;width:390px;height:1000px;box-shadow:0 0 0 1px #e2ddd4}
+  #lab{position:absolute;left:1500px;top:1010px;width:390px;letter-spacing:.14em;text-transform:uppercase}
 </style>
 </head>
 <body>
-<div id="stage"><iframe id="f" title="shot"></iframe></div>
+<iframe id="d" title="desktop"></iframe>
+<iframe id="m" title="mobile"></iframe>
+<div id="lab"></div>
 <script>
   const q = new URLSearchParams(location.search);
-  const w = +(q.get('w') || 1440);
-  const h = +(q.get('h') || 1324);
-  const s = +(q.get('s') || 1);
   const hash = q.get('hash') || '';
-  const f = document.getElementById('f');
-  f.style.width = w + 'px';
-  f.style.height = h + 'px';
-  document.getElementById('stage').style.transform = 'scale(' + s + ')';
-  f.src = './index.html' + (hash ? '#' + hash : '');
+  const suffix = hash ? '#' + hash : '';
+  document.getElementById('d').src = './index.html' + suffix;
+  document.getElementById('m').src = './index.html' + suffix;
+  document.getElementById('lab').textContent = (q.get('lab') || '') + '  ·  desktop 1440 / mobile 390';
 </script>
 </body>
 </html>
