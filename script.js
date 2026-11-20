@@ -70,6 +70,111 @@
     });
   });
 
+  /* ── shared helpers: smooth scroll, quote prefill, clipboard ───────── */
+  var scrollToEl = function (el) {
+    if (!el) return;
+    var top = el.getBoundingClientRect().top + window.scrollY - (window.innerWidth > 860 ? 76 : 64);
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  };
+
+  var requestQuote = function (opts) {
+    var form = document.getElementById('inquiryForm');
+    var contact = document.getElementById('contact');
+    if (!form || !contact) return;
+
+    var brandInput = form.querySelector('[name="brand"]');
+    var msg = form.querySelector('[name="message"]');
+    var company = form.querySelector('[name="company"]');
+
+    if (brandInput) brandInput.value = opts.brand || '';
+    if (msg) {
+      msg.value = opts.message;
+      msg.classList.add('is-prefilled');
+      window.setTimeout(function () { msg.classList.remove('is-prefilled'); }, 1800);
+    }
+
+    var result = document.getElementById('formResult');
+    if (result) result.hidden = true;
+
+    scrollToEl(contact);
+    window.setTimeout(function () {
+      if (company && window.innerWidth > 860) company.focus({ preventScroll: true });
+    }, 520);
+  };
+
+  var copyText = function (text, onDone, onFail) {
+    var fallback = function () {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok && onDone) onDone(); else if (!ok && onFail) onFail();
+      } catch (e) {
+        if (onFail) onFail();
+      }
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        if (onDone) onDone();
+      }).catch(fallback);
+    } else {
+      fallback();
+    }
+  };
+
+  /* address copy */
+  var copyAddrBtn = document.getElementById('copyAddr');
+  var copyNote = document.getElementById('copyNote');
+  if (copyAddrBtn) {
+    var addr = copyAddrBtn.getAttribute('data-addr') || '';
+    copyAddrBtn.addEventListener('click', function () {
+      var say = function (msg) {
+        if (!copyNote) return;
+        copyNote.textContent = msg;
+        copyNote.classList.add('is-on');
+        window.setTimeout(function () { copyNote.classList.remove('is-on'); }, 2600);
+      };
+      copyText(addr, function () {
+        say('사업장 주소가 복사되었습니다 — ' + addr);
+      }, function () {
+        say('복사가 차단되었습니다. 주소를 직접 선택해 주세요 — ' + addr);
+      });
+    });
+  }
+
+  /* package cards → quote prefill */
+  document.addEventListener('click', function (e) {
+    var pack = e.target.closest('a[data-quote]');
+    if (!pack) return;
+    var name = pack.getAttribute('data-quote');
+    requestQuote({
+      message: '[' + name + '] 구성으로 납품 견적을 문의합니다.\n\n' +
+        '· 업체 / 매장 : \n' +
+        '· 필요 품목 : \n' +
+        '· 수량 : \n' +
+        '· 납품 장소 : \n' +
+        '· 희망 납기 : '
+    });
+  });
+
+  /* mobile floating bar hides over the contact section */
+  var floatBar = document.getElementById('floatBar');
+  var contactSection = document.getElementById('contact');
+  if (floatBar && contactSection && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        floatBar.classList.toggle('is-hidden', entry.isIntersecting);
+      });
+    }, { threshold: 0.14 }).observe(contactSection);
+  }
+
   /* brand picker + detail */
   var BRANDS = [
     {
@@ -81,7 +186,7 @@
     {
       no: '02', name: '키친플라워', en: 'NAMYANG KITCHEN FLOWER · 쿠킨', cat: 'cook', catLabel: '냄비·팬',
       desc: '(주)남양키친플라워의 주방·생활용품 브랜드. 쿠킨 라인의 냄비·전기포트·밥솥·믹서를 자사몰에서 만납니다.',
-      items: ['브리오 인덕션 멀티팟 4P 세트', '쿠킨 꼬꼬 경량 뚝배기 IH냄비', '쿠킨 IH 인덕션 스텐 주전자', '쿠킨 전기 보온 밥솥 (KCJ-380CP)', '원터치 스텐304 밀폐용기 4종'],
+      items: ['브리오 인덕션 멀티팟 4P 세트', '쿠킨 꼬꼬 경량 뚝배기 IH냄비', '쿠킨 IH 인덕션 스테인리스 주전자', '쿠킨 전기 보온 밥솥 (KCJ-380CP)', '원터치 스테인리스 304 밀폐용기 4종'],
       url: 'https://kitchenflower.co.kr/', urlLabel: 'kitchenflower.co.kr'
     },
     {
@@ -98,32 +203,32 @@
     },
     {
       no: '05', name: '키친아트', en: 'KITCHEN ART · INCHEON', cat: 'cook', catLabel: '냄비·팬',
-      desc: '압력솥·냄비·쌀통까지 아우르는 국내 주방용품 제조사. 통3중·통오중 스텐과 IH 라인을 갖추고 있습니다.',
-      items: ['포르트플러스 통3중 압력솥', 'Easy 압력솥 1.2L', '갤럭시 5 스테인레스 POT', '금상첨화 인덕션 궁중전골 냄비 24cm', '헥사 통오중 엠보 냄비', 'Easy 진공쌀통 10kg'],
+      desc: '압력솥·냄비·쌀통까지 아우르는 국내 주방용품 제조사. 통3중·통오중 스테인리스과 IH 라인을 갖추고 있습니다.',
+      items: ['포르트플러스 통3중 압력솥', 'Easy 압력솥 1.2L', '갤럭시 5 스테인리스 POT', '금상첨화 인덕션 궁중전골 냄비 24cm', '헥사 통오중 엠보 냄비', 'Easy 진공쌀통 10kg'],
       url: 'https://www.kitchenart.co.kr/', urlLabel: 'kitchenart.co.kr'
     },
     {
       no: '06', name: '선학', en: 'SUNHAK CO., LTD. · PAJU', cat: 'cook', catLabel: '냄비·팬',
       desc: '경기 파주 자체 공장에서 IH 냄비·찜솥·오븐글라스·밀폐용기를 직접 만드는 주방용품 제조사입니다.',
-      items: ['IH 스텐 라면냄비', 'IH 스텐 전골냄비', '스테인레스 IH 2단 찜솥', '스위칠랜드 아미 저압냄비 5L·7L', 'SH 오븐글라스 세트', '스위칠랜드아미 스텐 밀폐용기'],
+      items: ['IH 스테인리스 라면냄비', 'IH 스테인리스 전골냄비', '스테인리스 IH 2단 찜솥', '스위칠랜드 아미 저압냄비 5L·7L', 'SH 오븐글라스 세트', '스위칠랜드아미 스테인리스 밀폐용기'],
       url: 'https://sunhakco.kr/', urlLabel: 'sunhakco.kr'
     },
     {
       no: '07', name: '퀸센스', en: 'QUEENSENSE · SESHIN', cat: 'cook', catLabel: '냄비·팬',
-      desc: '세신퀸센스(주)의 쿡웨어 브랜드. 통3중·통5중 스텐과 IH 세라믹, 밀폐용기까지 폭넓게 갖췄습니다.',
-      items: ['아띠 스테인레스 통3중 양수냄비 18·20·24cm', '모던304 인덕션 양수냄비 18cm', '올보르 스테인리스304 IH 양수냄비 16·20cm', '쿠치니 던켈 IH 세라믹 양수냄비 20·24cm', 'CESSIN 7PLY 316 양수20·곰솥30'],
+      desc: '세신퀸센스(주)의 쿡웨어 브랜드. 통3중·통5중 스테인리스과 IH 세라믹, 밀폐용기까지 폭넓게 갖췄습니다.',
+      items: ['아띠 스테인리스 통3중 양수냄비 18·20·24cm', '모던304 인덕션 양수냄비 18cm', '올보르 스테인리스304 IH 양수냄비 16·20cm', '쿠치니 던켈 IH 세라믹 양수냄비 20·24cm', 'CESSIN 7PLY 316 양수20·곰솥30'],
       url: 'https://seshinmall.com/', urlLabel: 'seshinmall.com'
     },
     {
       no: '08', name: '리빙코리아', en: 'LIVING KOREA · LIVINGWELL', cat: 'appliance', catLabel: '주방가전',
       desc: '(주)리빙앤코리아의 생활가전 브랜드. 에어프라이어·전기오븐 등 주방가전을 자체 기획·유통합니다.',
-      items: ['올스텐 대용량 에어프라이어 AF300', '40L 대용량 컨벤션 전기오븐 AF400', '영업용 75L 초대형 전기오븐 OV750', '컨벡션 전기오븐 48L', '2in1 무선청소기 VC310'],
+      items: ['올스테인리스 대용량 에어프라이어 AF300', '40L 대용량 컨벤션 전기오븐 AF400', '영업용 75L 초대형 전기오븐 OV750', '컨벡션 전기오븐 48L', '2in1 무선청소기 VC310'],
       url: 'https://livingkorea.kr/', urlLabel: 'livingkorea.kr'
     },
     {
       no: '09', name: '제니얼', en: 'ZENIAL · HWASEONG', cat: 'tool', catLabel: '조리도구·수저',
       desc: '경기 화성의 주방조리기구 제조사. 쿠치나 IH 세라믹웍과 조리도구·칼류를 생산합니다.',
-      items: ['쿠치나 IH 인덕션 세라믹 웍 26cm', '돌핀 식도 칼블럭 세트 622', '돌핀 과도(톱니)', '다용도 스테인레스 주방 1004가위', 'GC시리즈 바움 3P'],
+      items: ['쿠치나 IH 인덕션 세라믹 웍 26cm', '돌핀 식도 칼블럭 세트 622', '돌핀 과도(톱니)', '다용도 스테인리스 주방 1004가위', 'GC시리즈 바움 3P'],
       url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미운영'
     },
     {
@@ -177,7 +282,7 @@
     {
       no: '18', name: '네오플램', en: 'NEOFLAM · WONJU', cat: 'cook', catLabel: '냄비·팬',
       desc: '강원 원주에 본사·공장을 둔 주방용품 브랜드. PFAS-free 코팅 쿡웨어와 밀폐용기, 테이블웨어를 전개합니다.',
-      items: ['피카 IH 인덕션 냄비·프라이팬', '대니쉬 IH 인덕션 프라이팬 24cm', '소이 인덕션 편수냄비 18cm', '엣지 통3중 IH 스텐 프라이팬 28cm', '까사 오브제 TPU 도마'],
+      items: ['피카 IH 인덕션 냄비·프라이팬', '대니쉬 IH 인덕션 프라이팬 24cm', '소이 인덕션 편수냄비 18cm', '엣지 통3중 IH 스테인리스 프라이팬 28cm', '까사 오브제 TPU 도마'],
       url: 'https://neoflamshop.co.kr/', urlLabel: 'neoflamshop.co.kr'
     },
     {
@@ -189,7 +294,7 @@
     {
       no: '20', name: '그라첸', en: 'GRACHEN · HWASEONG', cat: 'cook', catLabel: '냄비·팬',
       desc: '경기 화성의 주방용품 수입·유통사. 데이세븐·셰프라인 등 인덕션 쿡웨어와 업소용 주방기물을 들여옵니다.',
-      items: ['데이세븐 비타 IH 3중 올스텐 편수냄비 16cm', '조선 티타늄 IH 편수냄비 18cm', '셰프쿡 4단 찜전골 스텐 냄비', '셰프라인 스테인리스 스틸 주전자', '그라첸 타워 미니들통 22cm'],
+      items: ['데이세븐 비타 IH 3중 올스테인리스 편수냄비 16cm', '조선 티타늄 IH 편수냄비 18cm', '셰프쿡 4단 찜전골 스테인리스 냄비', '셰프라인 스테인리스 스틸 주전자', '그라첸 타워 미니들통 22cm'],
       url: '', urlLabel: '수입사 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
@@ -242,8 +347,8 @@
     },
     {
       no: '29', name: '월드종합주방', en: 'WORLD KITCHEN · BUSAN', cat: 'supply', catLabel: '유통·도매',
-      desc: '업소용 주방용품 전문 스토어. 대형 코팅 후라이팬·볶음솥(36~60cm)과 코팅웍, 주방가위, 스텐·PC 밧드와 튀김 바스켓까지 업소에서 쓰는 기물을 모아 공급합니다.',
-      items: ['업소용 대형 코팅 후라이팬 36~60cm', '유진토스코 업소용 코팅웍', '업소용 PC·스텐 밧드(바트)', '튀김 바스켓', '오복 업소용 주방가위'],
+      desc: '업소용 주방용품 전문 스토어. 대형 코팅 프라이팬·볶음솥(36~60cm)과 코팅웍, 주방가위, 스테인리스·PC 밧드와 튀김 바스켓까지 업소에서 쓰는 기물을 모아 공급합니다.',
+      items: ['업소용 대형 코팅 프라이팬 36~60cm', '유진토스코 업소용 코팅웍', '업소용 PC·스테인리스 밧드(바트)', '튀김 바스켓', '오복 업소용 주방가위'],
       url: 'https://smartstore.naver.com/world_-', urlLabel: 'smartstore.world_-'
     }
   ];
@@ -319,6 +424,30 @@
         off.textContent = (b.offNote || '공식 홈페이지 미운영') + ' · ' + b.urlLabel;
         detail.appendChild(off);
       }
+
+      var quote = document.createElement('button');
+      quote.type = 'button';
+      quote.className = 'bd-quote';
+      quote.setAttribute('data-brand', b.name);
+      var quoteTxt = document.createElement('span');
+      quoteTxt.textContent = '이 브랜드 납품 견적 문의';
+      var quoteArrow = document.createElement('span');
+      quoteArrow.className = 'bd-quote-arrow';
+      quoteArrow.setAttribute('aria-hidden', 'true');
+      quoteArrow.textContent = '→';
+      quote.appendChild(quoteTxt);
+      quote.appendChild(quoteArrow);
+      quote.addEventListener('click', function () {
+        requestQuote({
+          brand: b.name,
+          message: '[' + b.name + '] 제품 납품 견적을 문의합니다.\n\n' +
+            '· 희망 품목 : \n' +
+            '· 수량 : \n' +
+            '· 납품 장소 : \n' +
+            '· 희망 납기 : '
+        });
+      });
+      detail.appendChild(quote);
     };
 
     BRANDS.forEach(function (b, i) {
@@ -431,14 +560,40 @@
     targets.forEach(function (t) { spy.observe(t); });
   }
 
-  /* inquiry form — no backend yet: validation + honest hand-off */
+  /* inquiry form — build the message, hand it to the visitor's mail app */
   var form = document.getElementById('inquiryForm');
   var note = document.getElementById('formNote');
+  var result = document.getElementById('formResult');
+  var resultText = document.getElementById('resultText');
+  var mailtoBtn = document.getElementById('mailtoBtn');
+  var copyMsgBtn = document.getElementById('copyMsgBtn');
+  var copyState = document.getElementById('copyState');
+
+  var MAIL_TO = 'grandchef@naver.com';
+  var MAIL_CC = 'grandcook.com@gmail.com';
 
   var say = function (msg, isError) {
     if (!note) return;
     note.textContent = msg;
     note.classList.toggle('error', !!isError);
+  };
+
+  var buildSummary = function (data) {
+    return [
+      '[그랑쉐프 홈페이지 납품 문의]',
+      '',
+      '회사명 : ' + (data.company || ''),
+      '담당자 : ' + (data.name || ''),
+      '연락처 : ' + (data.phone || ''),
+      '이메일 : ' + (data.email || '-'),
+      '문의 유형 : ' + (data.type || '-'),
+      '관심 브랜드 : ' + (data.brand || '-'),
+      '',
+      '문의 내용',
+      (data.message || ''),
+      '',
+      '— (주)그랑쉐프 홈페이지 문의 폼에서 작성되었습니다.'
+    ].join('\n');
   };
 
   if (form) {
@@ -459,6 +614,7 @@
       });
 
       if (firstBad) {
+        if (result) result.hidden = true;
         say('필수 항목을 확인해 주세요.', true);
         firstBad.focus();
         return;
@@ -467,18 +623,41 @@
       var data = {};
       new FormData(form).forEach(function (v, k) { data[k] = v; });
 
-      /* 1차 시안: 실제 접수 채널 연결 전 — 전화 안내로 대신합니다 */
-      say(
-        (data.name || '') + ' 님, 문의 내용이 확인되었습니다. ' +
-        '현재 시안 단계로 온라인 접수는 연결 전이며, ' +
-        '051-892-8930으로 연락 주시면 담당자가 바로 응대해 드립니다.',
-        false
-      );
-      form.querySelector('button[type="submit"]').textContent = '문의 내용 확인됨';
-      form.querySelectorAll('input, textarea, select').forEach(function (el) {
-        if (el.type !== 'checkbox') el.value = '';
-      });
+      var text = buildSummary(data);
+      var subject = '[그랑쉐프 홈페이지 문의] ' +
+        (data.company || '').trim() + ' ' + (data.name || '').trim();
+      var href = 'mailto:' + MAIL_TO +
+        '?cc=' + encodeURIComponent(MAIL_CC) +
+        '&subject=' + encodeURIComponent(subject.trim()) +
+        '&body=' + encodeURIComponent(text);
+
+      if (mailtoBtn) mailtoBtn.setAttribute('href', href);
+      if (resultText) resultText.textContent = text;
+      if (copyState) copyState.textContent = '보내주신 뒤 전화로 한 번 더 확인해 주시면 가장 빠릅니다.';
+
+      say((data.name || '') + ' 님, 문의 내용이 준비되었습니다. 아래에서 메일로 보내시거나 전화로 연락 주세요.', false);
+
+      if (result) {
+        result.hidden = false;
+        result.classList.add('is-on');
+        window.setTimeout(function () {
+          var top = result.getBoundingClientRect().top + window.scrollY - (window.innerWidth > 860 ? 90 : 76);
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }, 80);
+      }
     });
+
+    if (copyMsgBtn && resultText) {
+      copyMsgBtn.addEventListener('click', function () {
+        copyText(resultText.textContent, function () {
+          if (copyState) copyState.textContent = '문의 내용이 복사되었습니다. 두 주소(grandchef@naver.com · grandcook.com@gmail.com)로 보내주세요.';
+          copyMsgBtn.textContent = '복사됨';
+          window.setTimeout(function () { copyMsgBtn.textContent = '내용 복사'; }, 2400);
+        }, function () {
+          if (copyState) copyState.textContent = '복사가 차단되었습니다. 아래 내용을 직접 선택해 복사해 주세요.';
+        });
+      });
+    }
   }
 
   /* smooth anchor offset for older Safari */
