@@ -56,6 +56,13 @@
     revealEls.forEach(function (el) { el.classList.add('in'); });
   }
 
+  /* ?reveal=all — show every reveal block at once (captures, printing) */
+  try {
+    if (new URLSearchParams(window.location.search).get('reveal') === 'all') {
+      revealEls.forEach(function (el) { el.classList.add('in'); });
+    }
+  } catch (e) {}
+
   /* stagger children of grids */
   document.querySelectorAll('.cards, .grid-8, .values, .certs, .client-grid').forEach(function (group) {
     Array.prototype.forEach.call(group.children, function (child, i) {
