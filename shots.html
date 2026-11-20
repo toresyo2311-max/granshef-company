@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview</title>
+<style>
+  html,body{margin:0}
+  body{background:#cfcac2;font:12px/1 sans-serif}
+  .frame{background:#fff;margin:0 0 24px;display:block;border:0}
+  #desk{width:1440px;height:900px;overflow:auto}
+  #deskfull{width:1440px}
+  #mob{width:390px;height:844px}
+  #mobfull{width:390px}
+</style>
+</head>
+<body>
+<iframe id="deskfull" class="frame" src="./index.html" scrolling="no" title="desktop full"></iframe>
+<iframe id="mob" class="frame" src="./index.html" title="mobile viewport"></iframe>
+<iframe id="mobfull" class="frame" src="./index.html" scrolling="no" title="mobile full"></iframe>
+<script>
+  function fit(fr){
+    try{
+      var d = fr.contentDocument;
+      if(!d) return;
+      var h = Math.max(d.documentElement.scrollHeight, d.body.scrollHeight);
+      fr.style.height = h + 'px';
+    }catch(e){}
+  }
+  ['deskfull','mobfull'].forEach(function(id){
+    var fr = document.getElementById(id);
+    fr.addEventListener('load', function(){
+      fit(fr);
+      setTimeout(function(){ fit(fr); }, 1200);
+      setTimeout(function(){ fit(fr); }, 3000);
+    });
+  });
+</script>
+</body>
+</html>
