@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>모바일 화면 확인용 (임시)</title>
+<style>
+  html,body{margin:0;padding:0;background:#dcd6cb;font:12px/1.4 sans-serif;color:#333}
+  .frame{margin:16px;background:#fff;box-shadow:0 6px 24px -14px rgba(0,0,0,.6);display:inline-block;vertical-align:top}
+  .lab{padding:6px 10px;font-size:11px;letter-spacing:.06em;color:#666}
+  iframe{display:block;border:0}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="lab" id="lab"></div>
+  <iframe id="fr" title="모바일 미리보기"></iframe>
+</div>
+<script>
+  var q = new URLSearchParams(location.search);
+  var w = q.get('w') || '390';
+  var h = q.get('h') || '844';
+  var s = q.get('s') || '';
+  var fr = document.getElementById('fr');
+  fr.style.width = w + 'px';
+  fr.style.height = h + 'px';
+  fr.src = 'index.html?reveal=all' + (s ? '#' + s : '');
+  document.getElementById('lab').textContent = w + ' × ' + h + (s ? '  #' + s : '');
+</script>
+</body>
+</html>
