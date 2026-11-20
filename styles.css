@@ -703,6 +703,31 @@ button{font:inherit}
   padding-left:14px;word-break:keep-all;
 }
 
+/* bulk / foodservice note */
+.bulk-note{
+  margin-top:clamp(18px,2.4vw,28px);
+  padding:clamp(20px,2.4vw,28px);
+  background:linear-gradient(150deg,#fbf9f5,#f2ece1);
+  border:1px solid rgba(169,130,79,.28);
+  border-left:2px solid var(--bronze);
+  border-radius:4px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.bulk-head{display:flex;flex-direction:column;gap:6px}
+.bulk-kicker{
+  font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--bronze);font-weight:600;
+}
+.bulk-title{
+  margin:0;font-size:clamp(15px,1.6vw,18px);font-weight:600;
+  letter-spacing:-.02em;color:var(--ink);word-break:keep-all;
+}
+.bulk-desc{
+  margin:0;font-size:12.5px;line-height:1.85;color:var(--ink-soft);
+  word-break:keep-all;
+}
+.bulk-note .tags{margin-top:2px}
+
 /* clients / supply */
 .clients{background:linear-gradient(180deg,var(--paper-2) 0%,var(--paper-3) 100%)}
 .client-grid{
