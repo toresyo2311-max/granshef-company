@@ -110,17 +110,17 @@
     {
       no: '08', name: '리빙코리아', en: 'LIVING KOREA · LIVINGWELL', cat: 'appliance', catLabel: '주방가전',
       desc: '(주)리빙앤코리아의 생활가전 브랜드. 에어프라이어·전기오븐 등 주방가전을 자체 기획·유통합니다.',
-      items: ['올스텐 대용량 에어프라이어 AF300', '40L 대용량 컨벡션 전기오븐 AF400', '영업용 75L 초대형 전기오븐 OV750', '컨벡션 전기오븐 48L', '2in1 무선청소기 VC310'],
+      items: ['올스텐 대용량 에어프라이어 AF300', '40L 대용량 컨벤션 전기오븐 AF400', '영업용 75L 초대형 전기오븐 OV750', '컨벡션 전기오븐 48L', '2in1 무선청소기 VC310'],
       url: 'https://livingkorea.kr/', urlLabel: 'livingkorea.kr'
     },
     {
-      no: '09', name: '제니얼', en: 'ZENIAL · HWASEONG', cat: 'tool', catLabel: '조리도구·칼',
+      no: '09', name: '제니얼', en: 'ZENIAL · HWASEONG', cat: 'tool', catLabel: '조리도구·수저',
       desc: '경기 화성의 주방조리기구 제조사. 쿠치나 IH 세라믹웍과 조리도구·칼류를 생산합니다.',
       items: ['쿠치나 IH 인덕션 세라믹 웍 26cm', '돌핀 식도 칼블럭 세트 622', '돌핀 과도(톱니)', '다용도 스테인레스 주방 1004가위', 'GC시리즈 바움 3P'],
       url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미운영'
     },
     {
-      no: '10', name: '이라이프', en: 'ELIFE · LOTTE PACKAGING SOLUTIONS', cat: 'living', catLabel: '밀폐·생활',
+      no: '10', name: '이라이프', en: 'ELIFE · LOTTE PACKAGING SOLUTIONS', cat: 'living', catLabel: '식기·생활',
       desc: '롯데패키징솔루션즈(주)의 생활용품 브랜드. 밀폐용기·호일·위생백·일회용품 등 2,000여 품목을 전개합니다.',
       items: ['유리 밀폐용기 원형 640ml', '종이호일 알뜰형 30cm×20m', '이중 지퍼백 특대형', '1+1 위생롤백 대형 30×40', '이라이프 리빙박스 XXL 58.5L', '다회용 접시·컵'],
       url: 'https://lotteelife.co.kr/', urlLabel: 'lotteelife.co.kr'
@@ -138,19 +138,85 @@
       url: 'https://magicchefkorea.co.kr/', urlLabel: 'magicchefkorea.co.kr'
     },
     {
-      no: '13', name: '영진', en: 'YEONGJIN ALUMINIUM · DAEGU', cat: 'cook', catLabel: '냄비·팬',
-      desc: '대구 달서구의 알루미늄 주방기물 제조사 영진알루미늄(주). 양은냄비·들통·곰솥처럼 업소에서 많이 쓰는 알루미늄 제품을 만듭니다.',
-      items: ['영진 양은냄비(황냄비) 12~40cm', '알루미늄 들통', '알루미늄 곰솥', '양은 주전자', '알루미늄 프라이팬'],
+      no: '13', name: '영진알루미늄', en: 'YEONGJIN ALUMINIUM · DAEGU', cat: 'cook', catLabel: '냄비·팬',
+      desc: '대구 달서구의 알루미늄 주방기물 제조사. 양은냄비·들통·곰솥처럼 업소에서 많이 쓰는 알루미늄 제품을 만듭니다.',
+      items: ['영진 양은냄비(황냄비) 16~40cm', '알루미늄 들통', '알루미늄 곰솥', '양은 주전자', '알루미늄 프라이팬'],
       url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '14', name: '대원코리아', en: 'DAEWON KOREA · BUSAN', cat: 'supply', catLabel: '유통·연료',
-      desc: '그랑쉐프가 거래하는 주방·생활용품 유통처입니다. 업소·도매 채널에 필요한 주방 소도구와 소모품을 상담으로 공급합니다.',
-      items: ['업소용 주방 소도구', '주방 소모품·비품', '시즌·행사 기획 상품'],
+      no: '14', name: '대원경금속', en: 'DAEWON KYUNG METAL · DAEGU', cat: 'cook', catLabel: '냄비·팬',
+      desc: '대구 달서구 대천동의 알루미늄 주방용품 제조사. 양은냄비(황냄비)와 업소용 알루미늄 기물을 생산합니다.',
+      items: ['대원 황냄비(양은) 편수 16~24cm', '양은 양수냄비 16~30cm', '업소용 대형 황냄비', '알루미늄 들통'],
+      url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '15', name: '한국도자기', en: 'HANKOOK PORCELAIN · CHEONGJU', cat: 'living', catLabel: '식기·생활',
+      desc: '1943년부터 청주 공장에서 만드는 국내 대표 도자기 그릇 브랜드. 본차이나 식기와 프라우나 컬렉션을 전개합니다.',
+      items: ['므아레 블랑 공기·대접·접시', '연(姸) 컬렉션 식기', '프라우나 티보에렘 오브제', '화이트블룸', '연리지 2인조 식기세트 16p'],
+      url: 'https://www.hankook.com/', urlLabel: 'hankook.com'
+    },
+    {
+      no: '16', name: '영수인터내셔널', en: 'YOUNGSOO INTERNATIONAL · SIHEUNG', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '경기 시흥의 목제품·주방용품·일회용품 수입유통 업체. 수저·젓가락과 목주방용품, 일회용품을 갖췄습니다.',
+      items: ['띄움 수저세트 2P', '옻칠 수저세트', '황옻칠 숫가락 5P', '일회용 대나무젓가락 100p', '논스틱 라면 냄비 17cm'],
+      url: 'https://youngsoo.co.kr/', urlLabel: 'youngsoo.co.kr'
+    },
+    {
+      no: '17', name: '홈즈', en: 'HOMZ KOREA · MS JANE', cat: 'living', catLabel: '식기·생활',
+      desc: '1996년부터 생활용품 공간 솔루션을 만들어 온 (주)홈즈코리아. 수납·정리용품을 자체 브랜드로 전개합니다.',
+      items: ['Ms JANE 수납·정리용품', '욕실·세탁실 정리용품', '벽장·서랍 정리 솔루션'],
+      url: 'http://www.homzstore.com/', urlLabel: 'homzstore.com'
+    },
+    {
+      no: '18', name: '네오플램', en: 'NEOFLAM · WONJU', cat: 'cook', catLabel: '냄비·팬',
+      desc: '강원 원주에 본사·공장을 둔 주방용품 브랜드. PFAS-free 코팅 쿡웨어와 밀폐용기, 테이블웨어를 전개합니다.',
+      items: ['피카 IH 인덕션 냄비·프라이팬', '대니쉬 IH 인덕션 프라이팬 24cm', '소이 인덕션 편수냄비 18cm', '엣지 통3중 IH 스텐 프라이팬 28cm', '까사 오브제 TPU 도마'],
+      url: 'https://neoflamshop.co.kr/', urlLabel: 'neoflamshop.co.kr'
+    },
+    {
+      no: '19', name: '화영', en: 'HWA YOUNG · INCHEON', cat: 'living', catLabel: '식기·생활',
+      desc: '인천 남동공단의 업소용 스테인리스·티타늄 그릇류 제조·유통 업체. 화영·태림·태조 브랜드를 전개합니다.',
+      items: ['업소용 스테인리스 그릇·기물', '티타늄 그릇류', '스테인리스 수저', '업소용 조리기구'],
+      url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 접속 불가'
+    },
+    {
+      no: '20', name: '그라첸', en: 'GRACHEN · HWASEONG', cat: 'cook', catLabel: '냄비·팬',
+      desc: '경기 화성의 주방용품 수입·유통사. 데이세븐·셰프라인 등 인덕션 쿡웨어와 업소용 주방기물을 들여옵니다.',
+      items: ['데이세븐 비타 IH 3중 올스텐 편수냄비 16cm', '조선 티타늄 IH 편수냄비 18cm', '셰프쿡 4단 찜전골 스텐 냄비', '셰프라인 스테인리스 스틸 주전자', '그라첸 타워 미니들통 22cm'],
+      url: '', urlLabel: '수입사 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '21', name: '로이첸', en: 'ROICHEN · SEOUL', cat: 'cook', catLabel: '냄비·팬',
+      desc: '서울 송파의 주방·생활용품 브랜드. 손잡이에 조리도구가 붙는 아이마그넷과 스핀웹 쿡웨어로 알려져 있습니다.',
+      items: ['아이마그넷 인덕션 프라이팬·멀티팬', 'IH 스핀웹 사각 멀티 프라이팬 5종세트', 'IH 그레이트팬·바리에팬 28cm', '아이마그넷 실리콘 조리도구', '플로락 밀폐용기'],
+      url: 'https://roichen.com/', urlLabel: 'roichen.com'
+    },
+    {
+      no: '22', name: '세신유앤씨', en: 'SESHIN U&C · BUSAN', cat: 'supply', catLabel: '유통·도매',
+      desc: '부산 강서구의 업소용 주방용품 유통사. 퀸센스 제품과 자체 스테인리스 식기·냄비를 공급합니다.',
+      items: ['세신유앤씨 4찬 식판', '인덕션겸용 스테인리스 라면냄비', '퀸센스 인덕션 라면냄비', '업소용 스테인리스 식기'],
+      url: 'https://minishop.gmarket.co.kr/seshinunc', urlLabel: 'gmarket 세신유앤씨'
+    },
+    {
+      no: '23', name: '동복무역', en: 'DONGBOK TRADING · INCHEON', cat: 'living', catLabel: '식기·생활',
+      desc: '인천 남동구에서 30여 년간 주방용품을 수입·유통해 온 업체. 스테인리스 양푼·믹싱볼 같은 업소용 기물이 주력입니다.',
+      items: ['스테인리스 양푼', '스테인리스 믹싱볼', '스테인리스 반찬통', '스테인리스 국자', '절구'],
+      url: 'https://dongbok.kr/', urlLabel: 'dongbok.kr'
+    },
+    {
+      no: '24', name: 'TOSCO', en: 'TOSCO · EUGENE TOSCO', cat: 'cook', catLabel: '냄비·팬',
+      desc: '인천 남동공단의 업소용 주방용품 제조사 (주)유진토스코의 브랜드. 경질·코팅 프라이팬과 냄비 400여 종을 만듭니다.',
+      items: ['토스코 경질 프라이팬 18~36', 'IH 사각 에그팬 22cm', '하이본 경질 편수냄비 18cm', '경질 중화웍(중국팬)', '업소용 2·3단 대형 찜솥'],
+      url: 'http://www.eugenetosco.com', urlLabel: 'eugenetosco.com'
+    },
+    {
+      no: '25', name: '플랜비스', en: 'PLANVIS · BUSAN', cat: 'supply', catLabel: '유통·도매',
+      desc: '부산 해운대구의 주방·생활용품 유통사. 주방용품과 가정용 유리·도자기 제품을 도소매로 공급합니다.',
+      items: ['주방용품', '가정용 유리·도자기', '생활용품'],
       url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '15', name: '화석연료', en: 'FUEL & CONSUMABLES', cat: 'supply', catLabel: '유통·연료',
+      no: '26', name: '화석연료', en: 'FUEL & CONSUMABLES', cat: 'supply', catLabel: '유통·도매',
       desc: '업소·마트 채널에 공급하는 연료·소모품 취급처입니다. 부탄가스 등 휴대용 연료와 점화용 소모품을 상담으로 공급합니다.',
       items: ['부탄가스·휴대용 연료', '숯·점화용 소모품', '업소용 연료류'],
       url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
