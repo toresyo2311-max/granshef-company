@@ -681,6 +681,23 @@ button{font:inherit}
 .grid-note{
   margin:24px 0 0;font-size:11.5px;color:var(--ink-mute);letter-spacing:.01em;
 }
+.tile-group{
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  margin:0 0 clamp(14px,1.8vw,20px);
+  font-size:13px;color:var(--ink-mute);letter-spacing:-.01em;
+  word-break:keep-all;
+}
+.tile-group-sub{margin:clamp(28px,3.4vw,40px) 0 clamp(14px,1.8vw,20px)}
+.tile-group-k{
+  display:inline-flex;align-items:center;
+  font-size:10px;font-weight:700;letter-spacing:.14em;
+  color:var(--bronze-dp);
+  background:rgba(255,255,255,.8);
+  border:1px solid rgba(169,130,79,.45);
+  border-radius:999px;padding:5px 12px;
+  white-space:nowrap;
+}
+
 .tile{margin:0}
 .tile-img{position:relative}
 .tile-img{
@@ -753,6 +770,30 @@ button{font:inherit}
   word-break:keep-all;
 }
 .bulk-note .tags{margin-top:2px}
+
+/* supply points */
+.supply-points{
+  list-style:none;margin:clamp(18px,2.2vw,26px) 0 0;padding:0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:rgba(169,130,79,.22);
+  border:1px solid rgba(169,130,79,.22);
+  border-radius:4px;overflow:hidden;
+}
+.supply-points li{
+  background:#fff;
+  padding:clamp(16px,1.9vw,22px) clamp(14px,1.8vw,20px);
+  display:flex;flex-direction:column;gap:6px;
+}
+.supply-points strong{
+  font-size:13.5px;font-weight:700;color:var(--ink);letter-spacing:-.02em;
+}
+.supply-points strong::before{
+  content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--bronze);margin-right:7px;vertical-align:2px;
+}
+.supply-points span{
+  font-size:11.5px;line-height:1.7;color:var(--ink-mute);word-break:keep-all;
+}
 
 /* clients / supply */
 .clients{background:linear-gradient(180deg,var(--paper-2) 0%,var(--paper-3) 100%)}
@@ -1293,6 +1334,7 @@ button{font:inherit}
   .grid-8{grid-template-columns:repeat(2,1fr)}
   .certs{grid-template-columns:1fr 1fr}
   .client-grid{grid-template-columns:1fr}
+  .supply-points{grid-template-columns:1fr}
   .brand-shell{grid-template-columns:1fr}
   .brand-picker{grid-template-columns:repeat(3,minmax(0,1fr))}
   .loc-grid{grid-template-columns:1fr;gap:32px}

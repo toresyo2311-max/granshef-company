@@ -232,6 +232,12 @@
       desc: '경남 산청에서 점토와 황토로 그릇을 굽는 도자기 제조사 (주)오성세라믹. 도자기 솥과 약탕기를 주력으로 만듭니다.',
       items: ['도자기 솥', '약탕기', '황토 도자기 용기'],
       url: 'http://osungceramic.co.kr', urlLabel: 'osungceramic.co.kr'
+    },
+    {
+      no: '29', name: '월드종합주방', en: 'WORLD KITCHEN · BUSAN', cat: 'supply', catLabel: '유통·도매',
+      desc: '업소용 주방용품 전문 스토어. 대형 코팅 후라이팬·볶음솥(36~60cm)과 코팅웍, 주방가위, 스텐·PC 밧드와 튀김 바스켓까지 업소에서 쓰는 기물을 모아 공급합니다.',
+      items: ['업소용 대형 코팅 후라이팬 36~60cm', '유진토스코 업소용 코팅웍', '업소용 PC·스텐 밧드(바트)', '튀김 바스켓', '오복 업소용 주방가위'],
+      url: 'https://smartstore.naver.com/world_-', urlLabel: 'smartstore.world_-'
     }
   ];
 
