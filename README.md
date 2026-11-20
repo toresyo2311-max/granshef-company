@@ -29,6 +29,7 @@
 | `assets/logo.png` | 공식 로고 원본 512×512 (파비콘·애플 터치 아이콘) |
 | `assets/logo-lockup.png` | 같은 로고에서 흰 여백만 잘라낸 락업 (헤더·히어로·푸터 표시용) |
 | `assets/products/*.jpg` | 품목·사업분야 예시 이미지 |
+| `assets/img/items/*.jpg` | 상품별 세부 예시 이미지 81종(1100×1100, AI 생성) — products.html에서 상품마다 다른 사진 |
 | `tools/build_profile_pdf.py` | 회사소개서 PDF 생성 스크립트 |
 
 ## 로컬 확인

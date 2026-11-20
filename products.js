@@ -14,8 +14,10 @@
   var CAT_LABEL = {};
   CATS.forEach(function (c) { CAT_LABEL[c.k] = c.label; });
 
-  /* ── image per category / item ───────────────────────────────── */
+  /* ── image per item: 품목별 세부 이미지(catalog.js의 i 키) ───────── */
+  var ITEM_DIR = 'assets/img/items/';
   function imageFor(p) {
+    if (p.i) return ITEM_DIR + p.i + '.jpg';
     if (p.c === 'pro') {
       if (/뚝배기/.test(p.n)) return 'assets/products/pro-04-ttukbaegi.jpg';
       if (/볶음솥|전판/.test(p.n)) return 'assets/products/pro-01-wok-griddle.jpg';
