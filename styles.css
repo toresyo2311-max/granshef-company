@@ -586,7 +586,7 @@ button{font:inherit}
 .tile-img svg{
   width:56%;height:56%;
   color:var(--bronze-dp);
-  opacity:.55;
+  opacity:.68;
   transition:opacity .4s,transform .6s var(--ease);
 }
 .tile:hover .tile-img svg{opacity:.85;transform:translateY(-2px)}
