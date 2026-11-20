@@ -283,6 +283,7 @@
     var added = addToBasket(current);
     pdAdd.textContent = added ? '담김 ✓' : '이미 담김';
     render();
+    if (dlg && dlg.open) dlg.close();
     setBasketOpen(true);
   });
   if (pdAsk) pdAsk.addEventListener('click', function (e) {
