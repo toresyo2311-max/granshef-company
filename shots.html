@@ -19,8 +19,9 @@
   const q = new URLSearchParams(location.search);
   const hash = q.get('hash') || '';
   const suffix = hash ? '#' + hash : '';
-  document.getElementById('d').src = './index.html' + suffix;
-  document.getElementById('m').src = './index.html' + suffix;
+  const bust = '?v=' + Date.now();
+  document.getElementById('d').src = './index.html' + bust + suffix;
+  document.getElementById('m').src = './index.html' + bust + suffix;
   document.getElementById('lab').textContent = (q.get('lab') || '') + '  ·  desktop 1440 / mobile 390';
 </script>
 </body>
