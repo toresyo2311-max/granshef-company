@@ -1838,3 +1838,8 @@ body.basket-lock{overflow:hidden}
 .check-opt{margin-top:-6px}
 .consent-sum{display:block;margin-top:3px;font-size:10.5px;line-height:1.55;color:rgba(246,242,234,.4)}
 .hp-field{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+
+/* ── 2026-11-20 · 한국어 줄바꿈(어절 단위) 보정 ─────────────────── */
+.hero-lead,.cat-lead,.cat-scope,.products-cta-txt span,.cat-help p{word-break:keep-all;overflow-wrap:break-word}
+.pcard-name{word-break:keep-all;overflow-wrap:anywhere}
+.about-body p,.sec-lead,.b2b .faq-a p{word-break:keep-all}
