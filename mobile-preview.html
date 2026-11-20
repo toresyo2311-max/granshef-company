@@ -18,7 +18,7 @@
   var w = q.get('w') || '390', h = q.get('h') || '844', s = q.get('s') || '';
   fr.style.width = w + 'px';
   fr.style.height = h + 'px';
-  fr.src = 'index.html?reveal=all' + (s ? '#' + s : '');
+  fr.src = 'index.html?reveal=all&cb=' + Date.now() + (s ? '#' + s : '');
 </script>
 </body>
 </html>
