@@ -181,7 +181,7 @@
   var BRANDS = [
     {
       no: '01', name: 'PN풍년', en: 'PN PUNGNYUN · SINCE 1954', cat: 'cook', catLabel: '냄비·팬',
-      desc: '1954년 국내 최초 압력솥을 만든 압력솥·쿡웨어 대표 브랜드. 압력솥부터 IH 냄비, 주방소품까지 전개합니다.',
+      desc: '1954년 국내 최초 압력솥을 만든 압력솥·쿡웨어 대표 브랜드. 압력솥부터 IH 냄비, 주방소품까지 취급합니다.',
       items: ['풍년1954 뉴 손주물 압력솥', '몽꽁떼 스튜팟 IH', '위더스 티앤쿡 케틀팟 IH', '꾸노 폴딩 실리콘 채반', '위더스 프레시 밧드'],
       url: 'https://www.pn.co.kr/home', urlLabel: 'pn.co.kr'
     },
@@ -199,7 +199,7 @@
     },
     {
       no: '04', name: '해피콜', en: 'HAPPYCALL · HC COMPANY', cat: 'cook', catLabel: '냄비·팬',
-      desc: 'HC컴퍼니의 생활 주방 브랜드. 프라이팬·궁중팬·양면팬·냄비와 블렌더 등 주방가전을 함께 전개합니다.',
+      desc: 'HC컴퍼니의 생활 주방 브랜드. 프라이팬·궁중팬·양면팬·냄비와 블렌더 등 주방가전을 함께 판매합니다.',
       items: ['다이아몬드 포셀 인덕션 프라이팬 28cm', '다이아몬드 포셀 인덕션 궁중팬 28cm', '모던 티타늄 인덕션 프라이팬·궁중팬 세트 2P', '컴플리트 티타늄 계란말이팬', '다이아몬드 인덕션 냄비세트 4종'],
       url: 'https://www.happycall.kr/', urlLabel: 'happycall.kr'
     },
@@ -247,7 +247,7 @@
     },
     {
       no: '12', name: '매직쉐프', en: 'MAGIC CHEF KOREA', cat: 'appliance', catLabel: '주방가전',
-      desc: '(주)매직쉐프코리아의 주방·생활가전 브랜드. 전자레인지·오븐·에어프라이어부터 냉장고·제빙기까지 폭넓게 전개합니다.',
+      desc: '(주)매직쉐프코리아의 주방·생활가전 브랜드. 전자레인지·오븐·에어프라이어부터 냉장고·제빙기까지 폭넓게 취급합니다.',
       items: ['5L 전기주전자 MEK-L500SKP', '23L 전자레인지 MWM-M23FW', '에어프라이어 4.5L MAF-Y550IV', '20L 복합오븐 MAO-G200W', '전기압력밥솥 3L MRC-L30B'],
       url: 'https://magicchefkorea.co.kr/', urlLabel: 'magicchefkorea.co.kr'
     },
@@ -265,7 +265,7 @@
     },
     {
       no: '15', name: '한국도자기', en: 'HANKOOK PORCELAIN · CHEONGJU', cat: 'living', catLabel: '식기·생활',
-      desc: '1943년부터 청주 공장에서 만드는 국내 대표 도자기 그릇 브랜드. 본차이나 식기와 프라우나 컬렉션을 전개합니다.',
+      desc: '1943년부터 청주 공장에서 만드는 국내 대표 도자기 그릇 브랜드. 본차이나 식기와 프라우나 컬렉션을 판매합니다.',
       items: ['므아레 블랑 공기·대접·접시', '연(姸) 컬렉션 식기', '프라우나 티보에렘 오브제', '화이트블룸', '연리지 2인조 식기세트 16p'],
       url: 'https://www.hankook.com/', urlLabel: 'hankook.com'
     },
@@ -283,13 +283,13 @@
     },
     {
       no: '18', name: '네오플램', en: 'NEOFLAM · WONJU', cat: 'cook', catLabel: '냄비·팬',
-      desc: '강원 원주에 본사·공장을 둔 주방용품 브랜드. PFAS-free 코팅 쿡웨어와 밀폐용기, 테이블웨어를 전개합니다.',
+      desc: '강원 원주에 본사·공장을 둔 주방용품 브랜드. PFAS-free 코팅 쿡웨어와 밀폐용기, 테이블웨어를 취급합니다.',
       items: ['피카 IH 인덕션 냄비·프라이팬', '대니쉬 IH 인덕션 프라이팬 24cm', '소이 인덕션 편수냄비 18cm', '엣지 통3중 IH 스테인리스 프라이팬 28cm', '까사 오브제 TPU 도마'],
       url: 'https://neoflamshop.co.kr/', urlLabel: 'neoflamshop.co.kr'
     },
     {
       no: '19', name: '화영', en: 'HWA YOUNG · INCHEON', cat: 'living', catLabel: '식기·생활',
-      desc: '인천 남동공단의 업소용 스테인리스·티타늄 그릇류 제조·유통 업체. 화영·태림·태조 브랜드를 전개합니다.',
+      desc: '인천 남동공단의 업소용 스테인리스·티타늄 그릇류 제조·유통 업체. 화영·태림·태조 브랜드를 운영합니다.',
       items: ['업소용 스테인리스 그릇·기물', '티타늄 그릇류', '스테인리스 수저', '업소용 조리기구'],
       url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 접속 불가'
     },
