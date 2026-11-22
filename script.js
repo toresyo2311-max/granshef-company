@@ -2,6 +2,8 @@
 (function () {
   'use strict';
 
+  document.documentElement.setAttribute('data-js-ready', 'true');
+
   var header = document.getElementById('siteHeader');
   var burger = document.getElementById('burger');
   var nav = document.getElementById('nav');
@@ -233,7 +235,7 @@
     },
     {
       no: '10', name: '이라이프', en: 'ELIFE · LOTTE PACKAGING SOLUTIONS', cat: 'living', catLabel: '식기·생활',
-      desc: '롯데패키징솔루션즈(주)의 생활용품 브랜드. 밀폐용기·호일·위생백·일회용품 등 2,000여 품목을 전개합니다.',
+      desc: '롯데패키징솔루션즈(주)의 생활용품 브랜드. 밀폐용기·호일·위생백·일회용품 등 2,000여 품목을 취급합니다.',
       items: ['유리 밀폐용기 원형 640ml', '종이호일 알뜰형 30cm×20m', '이중 지퍼백 특대형', '1+1 위생롤백 대형 30×40', '이라이프 리빙박스 XXL 58.5L', '다회용 접시·컵'],
       url: 'https://lotteelife.co.kr/', urlLabel: 'lotteelife.co.kr'
     },
@@ -275,8 +277,8 @@
     },
     {
       no: '17', name: '홈즈', en: 'HOMZ KOREA · MS JANE', cat: 'living', catLabel: '식기·생활',
-      desc: '1996년부터 생활용품 공간 솔루션을 만들어 온 (주)홈즈코리아. 수납·정리용품을 자체 브랜드로 전개합니다.',
-      items: ['Ms JANE 수납·정리용품', '욕실·세탁실 정리용품', '벽장·서랍 정리 솔루션'],
+      desc: '1996년부터 수납·정리용품을 만들어 온 (주)홈즈코리아. 수납·정리용품을 자체 브랜드로 판매합니다.',
+      items: ['Ms JANE 수납·정리용품', '욕실·세탁실 정리용품', '벽장·서랍 정리용품'],
       url: 'http://www.homzstore.com/', urlLabel: 'homzstore.com'
     },
     {
@@ -360,10 +362,45 @@
     var current = -1;
 
     var hintHTML = function () {
-      var p = document.createElement('p');
-      p.className = 'bd-hint';
-      p.textContent = '브랜드를 선택하면 업체 소개와 공식 사이트 링크가 표시됩니다.';
-      return p;
+      var box = document.createElement('div');
+      box.className = 'bd-idle';
+
+      var k = document.createElement('p');
+      k.className = 'bd-idle-k';
+      k.textContent = '취급 브랜드 안내';
+
+      var lead = document.createElement('p');
+      lead.className = 'bd-idle-lead';
+      lead.textContent = '분류를 고르거나 브랜드를 선택하시면 업체 소개, 대표 취급 제품, 공식 홈페이지 링크가 표시됩니다.';
+
+      var ul = document.createElement('ul');
+      ul.className = 'bd-idle-list';
+      [
+        ['냄비·팬', '14곳'],
+        ['주방가전', '2곳'],
+        ['조리도구·수저', '2곳'],
+        ['식기·생활', '7곳'],
+        ['유통·도매', '4곳']
+      ].forEach(function (row) {
+        var li = document.createElement('li');
+        var nm = document.createElement('strong');
+        nm.textContent = row[0];
+        var ct = document.createElement('span');
+        ct.textContent = row[1];
+        li.appendChild(nm);
+        li.appendChild(ct);
+        ul.appendChild(li);
+      });
+
+      var note = document.createElement('p');
+      note.className = 'bd-idle-note';
+      note.textContent = '목록에 없는 브랜드와 품목도 상담으로 확인해 드립니다.';
+
+      box.appendChild(k);
+      box.appendChild(lead);
+      box.appendChild(ul);
+      box.appendChild(note);
+      return box;
     };
 
     var renderDetail = function (b) {

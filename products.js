@@ -264,7 +264,7 @@
     pdSpec.textContent = specText(p) || '규격 미표기 — 상담 확인';
     pdBarcode.textContent = '상담 확인 (표기 전 검증 필요)';
     pdImg.src = imageFor(p);
-    pdImg.alt = p.n + ' — ' + CAT_LABEL[p.c] + ' 분류 예시 이미지 (AI 생성)';
+    pdImg.alt = p.n + ' — ' + CAT_LABEL[p.c] + ' 품목 예시 이미지';
     pdNote.textContent = p.u
       ? '브랜드 공식 홈페이지에 게시된 취급 품목입니다. 실제 재고·규격·납기는 상담으로 확인합니다.'
       : '취급 품목으로 정리된 상품입니다. 실제 재고·규격·납기는 상담으로 확인합니다.';
@@ -323,7 +323,7 @@
       media.setAttribute('aria-label', p.n + ' 상세 보기');
       var img = document.createElement('img');
       img.src = imageFor(p);
-      img.alt = p.n + ' — ' + CAT_LABEL[p.c] + ' 예시 이미지 (AI 생성)';
+      img.alt = p.n + ' — ' + CAT_LABEL[p.c] + ' 품목 예시 이미지';
       img.width = 1100; img.height = 1100;
       img.loading = 'lazy';
       img.decoding = 'async';

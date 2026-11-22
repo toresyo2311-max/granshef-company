@@ -1,36 +1,44 @@
 <!doctype html>
 <html lang="ko">
 <head>
+<script>
+  document.documentElement.classList.add('js');
+  window.setTimeout(function () {
+    if (!document.documentElement.hasAttribute('data-js-ready')) {
+      document.documentElement.classList.remove('js');
+    }
+  }, 2500);
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>주식회사 그랑쉐프 | 주방용품 전문 유통 — 2001년 설립, 부산</title>
-<meta name="description" content="주식회사 그랑쉐프는 2001년 부산에서 시작한 주방용품 전문 유통기업입니다. 냄비·프라이팬부터 업소용 대형 볶음솥·전판, 밧드, 뚝배기까지 취급하고 마트 납품·특판·신상품 제안을 부산·울산·경남(부울경)에서 진행합니다.">
-<meta name="theme-color" content="#171614">
+<meta name="description" content="주식회사 그랑쉐프는 2001년 부산에서 시작한 주방용품 전문 유통기업입니다. 냄비·프라이팬부터 업소용 대형 볶음솥·전판, 밧드까지 취급하고, 부산·울산·경남 마트와 식당·급식소, 기업·관공서에 납품합니다.">
+<meta name="theme-color" content="#171410">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://grandchef.co.kr/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="주식회사 그랑쉐프">
-<meta property="og:title" content="주식회사 그랑쉐프 | GRANDCHEF Co., Ltd.">
-<meta property="og:description" content="업소용·가정용 주방용품 전문 유통. 대형 볶음솥·전판, 업소용 코팅팬·웍, 스테인리스·PC 밧드, 뚝배기까지 — 부울경 직배송과 정기 납품이 가능합니다.">
+<meta property="og:title" content="주식회사 그랑쉐프 | 주방용품 전문 유통">
+<meta property="og:description" content="업소용·가정용 주방용품 공급. 대형 볶음솥·전판, 업소용 코팅팬·웍, 스테인리스·PC 밧드, 뚝배기까지 — 부울경 직배송과 정기 납품.">
 <meta property="og:url" content="https://grandchef.co.kr/">
 <meta property="og:image" content="https://grandchef.co.kr/assets/og-grandchef-cookware.jpg">
 <meta property="og:image:secure_url" content="https://grandchef.co.kr/assets/og-grandchef-cookware.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="스테인리스 냄비와 프라이팬 — 그랑쉐프 대표 주방용품">
+<meta property="og:image:alt" content="스테인리스 냄비와 프라이팬 — 그랑쉐프 취급 주방용품">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="주식회사 그랑쉐프 | GRANDCHEF Co., Ltd.">
-<meta name="twitter:description" content="업소용·가정용 주방용품 전문 유통 — 부울경 직배송·정기 납품.">
+<meta name="twitter:title" content="주식회사 그랑쉐프 | 주방용품 전문 유통">
+<meta name="twitter:description" content="업소용·가정용 주방용품 공급 — 부울경 직배송·정기 납품.">
 <meta name="twitter:image" content="https://grandchef.co.kr/assets/og-grandchef-cookware.jpg">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="apple-touch-icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+KR:wght@300;400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261120z2">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261122a">
 </head>
 <body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
@@ -42,7 +50,7 @@
         <img src="assets/logo-lockup.png" alt="그랑쉐프 GRAND CHEF 로고" width="461" height="302" decoding="async">
       </span>
       <span class="brand-txt">
-        <strong>그랑쉐프</strong>
+        <strong>주식회사 그랑쉐프</strong>
         <em>GRANDCHEF CO., LTD.</em>
       </span>
     </a>
@@ -52,10 +60,10 @@
       <a href="#business">사업분야</a>
       <a href="products.html">취급상품</a>
       <a href="#brands">취급 브랜드</a>
-      <a href="#clients">거래처·납품</a>
+      <a href="#clients">주요 납품처</a>
       <a href="#quality">품질·유통</a>
       <a href="#location">오시는 길</a>
-      <a class="nav-cta" href="#contact">B2B 문의</a>
+      <a class="nav-cta" href="#contact">납품 문의</a>
     </nav>
 
     <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav">
@@ -68,105 +76,64 @@
 
   <!-- ── HERO ───────────────────────────────────────────── -->
   <section class="hero" id="top">
-    <div class="hero-grid wrap">
+    <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="dot"></span> SINCE 2001 · BUSAN, KOREA</p>
-        <h1 class="hero-title">
-          매일의 식탁을<br>
-          <span class="accent">조용히 지켜온</span> 25년.
-        </h1>
+        <p class="hero-meta">2001년 설립 · 부산 강서구 · 부울경 직배송</p>
+        <h1 class="hero-title">업소용·가정용<br>주방용품 전문 공급</h1>
         <p class="hero-lead">
-          주식회사 그랑쉐프는 냄비·프라이팬부터 업소용 대형 볶음솥과 밧드까지
-          주방에 필요한 것을 골라 공급하는 <strong>주방용품 전문 유통기업</strong>입니다.
-          2001년 부산에서 시작해, 부산·울산·경남(부울경)의 마트와 식당·급식소,
-          기업·관공서에 물건을 보내는 일을 합니다.
+          주식회사 그랑쉐프는 주방용품을 공급하는 유통기업입니다.
+          냄비·프라이팬 같은 가정용품부터 업소용 대형 볶음솥·전판, 밧드까지 취급하며
+          부산·울산·경남의 마트와 식당·급식소, 기업·관공서에 납품합니다.
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="products.html">취급상품 보기 <span aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="#contact">B2B 납품 문의</a>
-          <a class="btn btn-ghost btn-pdf" href="assets/grandchef-company-profile.pdf" download="그랑쉐프-회사소개서.pdf">회사소개서 다운로드 <span class="pdf-k">PDF</span></a>
+          <a class="btn btn-ghost" href="#contact">납품·견적 문의</a>
         </div>
+        <p class="hero-doc">
+          <a href="assets/grandchef-company-profile.pdf" download="그랑쉐프-회사소개서.pdf">회사소개서 내려받기 (PDF)</a>
+        </p>
         <dl class="hero-facts">
           <div><dt>설립</dt><dd>2001. 08</dd></div>
-          <div><dt>분야</dt><dd>주방·생활용품</dd></div>
-          <div><dt>거점</dt><dd>부산 강서구</dd></div>
+          <div><dt>취급 품목</dt><dd>주방·생활용품 11개 분류</dd></div>
+          <div><dt>납품 지역</dt><dd>부산·울산·경남</dd></div>
         </dl>
       </div>
-
-      <div class="hero-visual">
-        <div class="stage stage-brand">
-          <div class="stage-grid"></div>
-          <div class="halo"></div>
-          <div class="brand-card">
-            <span class="brand-card-badge">OFFICIAL BRAND · BUSAN, KOREA</span>
-            <img class="brand-card-logo" src="assets/logo-lockup.png"
-                 alt="GRAND CHEF 공식 로고 — PROFESSIONAL COOK, 셰프 일러스트"
-                 width="461" height="302" decoding="async">
-            <p class="brand-card-tag">PROFESSIONAL COOK <span aria-hidden="true">·</span> SINCE 2001</p>
-            <ul class="brand-keys" aria-label="브랜드 라인">
-              <li>GRAND CHEF</li>
-              <li>그랜드쿡</li>
-              <li>그랑쉐프몰</li>
-            </ul>
-            <p class="brand-card-note">대표 품목 — 냄비·솥 · 프라이팬</p>
-          </div>
-        </div>
-        <div class="hero-previews">
-          <figure>
-            <img src="assets/products/cat-01-pot.jpg" alt="냄비·솥 — 스테인리스 양수냄비와 압력솥" width="1100" height="1100" fetchpriority="high">
-            <figcaption>냄비·솥</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/products/cat-02-pan.jpg" alt="프라이팬 — 세라믹 코팅 프라이팬과 궁중팬" width="1100" height="1100" fetchpriority="high">
-            <figcaption>프라이팬</figcaption>
-          </figure>
-        </div>
-        <p class="visual-caption">공식 로고 · 주방용품 전문 브랜드</p>
-      </div>
     </div>
 
-    <div class="ticker" aria-hidden="true">
-      <div class="ticker-track">
-        <span>냄비·솥</span><span>·</span><span>프라이팬</span><span>·</span><span>주전자</span><span>·</span><span>식탁용품</span><span>·</span><span>조리도구</span><span>·</span><span>보온·물통</span><span>·</span><span>B2B 유통</span><span>·</span>
-        <span>냄비·솥</span><span>·</span><span>프라이팬</span><span>·</span><span>주전자</span><span>·</span><span>식탁용품</span><span>·</span><span>조리도구</span><span>·</span><span>보온·물통</span><span>·</span><span>B2B 유통</span><span>·</span>
-      </div>
-    </div>
+    <figure class="hero-media">
+      <img src="assets/products/cat-01-pot.jpg" alt="스테인리스 양수냄비와 압력솥" width="1100" height="1100" fetchpriority="high" decoding="async">
+    </figure>
   </section>
 
-  <!-- ── ABOUT / HERITAGE ───────────────────────────────── -->
+  <!-- ── 회사소개 ───────────────────────────────────────── -->
   <section class="section about" id="about">
     <div class="wrap about-grid">
       <div class="about-year reveal">
         <span class="year-num">2001</span>
-        <span class="year-label">FOUNDED IN BUSAN</span>
+        <span class="year-label">부산에서 설립</span>
       </div>
       <div class="about-body reveal">
-        <p class="kicker">ABOUT US</p>
-        <h2 class="section-title">좋은 주방은<br>좋은 도구에서 시작됩니다.</h2>
+        <p class="kicker"><b>01</b>회사소개</p>
+        <h2 class="section-title">2001년부터 부산에서<br>주방용품을 공급해 왔습니다.</h2>
         <p>
-          그랑쉐프는 2001년 부산에서 문을 열었습니다. 이후 지금까지
-          부산 강서구 대저1동에 본사와 사무실을 두고 주방용품과
-          생활용품을 기획하고, 직접 만들고, 유통해 왔습니다.
+          그랑쉐프는 2001년 부산에서 문을 열었습니다.
+          부산 강서구 대저1동에 본사와 사무실을 두고 주방용품과 생활용품을 기획·유통하고,
+          플라스틱 성형용기와 주방용품을 직접 제조합니다.
         </p>
         <p>
-          부산·울산·경남(부울경)의 마트와 식당·급식소, 기업·공공 채널에
-          물건을 공급하며, 지역 유통망과 함께 25년을 지나왔습니다.
-          한 제품을 고를 때 보는 것은 결국 두 가지입니다.
-          오래 써도 불편하지 않을 것, 그리고 필요한 곳에 제때 닿을 것.
-          냄비 하나를 고르는 일에도 같은 기준을 적용합니다.
+          부산·울산·경남의 마트와 식당·급식소, 기업·공공기관에 물건을 공급해 왔습니다.
+          제품을 고를 때 보는 기준은 두 가지입니다.
+          오래 써도 불편하지 않을 것, 필요한 곳에 제때 도착할 것.
         </p>
         <p>
-          주방용품 전문가 그랑쉐프는 좋은 제품을 합리적인 가격에
-          공급하는 부울경 주방·생활용품 유통·제조 기업입니다.
-          그랜드쿡(GRAND COOK) 브랜드와 그랑쉐프몰·종합주방몰 채널을
-          함께 두고, 조리기물부터 식탁·생활용품까지 한자리에서 만납니다.
+          그랜드쿡(GRAND COOK) 자체 브랜드와 그랑쉐프몰·종합주방몰 판매 채널을 함께 운영하며,
+          조리기물부터 식탁·생활용품까지 한 창구에서 공급합니다.
         </p>
-        <ul class="brand-line" aria-label="브랜드 키워드">
-          <li><span>BRAND</span>그랜드쿡 <em>GRAND COOK</em></li>
-          <li><span>STORE</span>그랑쉐프몰</li>
-          <li><span>CHANNEL</span>종합주방몰</li>
+        <ul class="brand-line">
+          <li><span>자체 브랜드</span>그랜드쿡 (GRAND COOK)</li>
+          <li><span>판매 채널</span>그랑쉐프몰 · 종합주방몰</li>
         </ul>
-        <a class="text-link" href="#business">하는 일 보기 <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="#business">사업분야 보기 <span aria-hidden="true">→</span></a>
       </div>
     </div>
 
@@ -174,7 +141,7 @@
       <div class="factbar reveal">
         <div class="fact">
           <span class="fact-num">2001</span>
-          <span class="fact-label">설립 · 올해로 25년</span>
+          <span class="fact-label">설립 · 25년</span>
         </div>
         <div class="fact">
           <span class="fact-num">11<span class="unit">개 분류</span></span>
@@ -192,92 +159,111 @@
     </div>
   </section>
 
-  <!-- ── BUSINESS ───────────────────────────────────────── -->
+  <!-- ── 사업분야 ───────────────────────────────────────── -->
   <section class="section business" id="business">
     <div class="wrap">
       <div class="sec-head reveal">
-        <p class="kicker">BUSINESS AREAS</p>
-        <h2 class="section-title">납품하고, 유통하고,<br>제안합니다.</h2>
+        <p class="kicker"><b>02</b>사업분야</p>
+        <h2 class="section-title">납품하고, 유통하고, 제안합니다.</h2>
         <p class="sec-lead">
           마트 납품, 주방용품 유통, 특판상품, 신상품 제안 — 네 가지 일을 합니다.
-          매장 진열대에 오를 상품을 고르고, 발주 단위와 납기까지 함께 맞춥니다.
-          부산·울산·경남은 직접 배송으로 보내고, 정기 납품도 진행합니다.
+          매장에 오를 상품을 고르고 발주 단위와 납기를 맞추며,
+          부산·울산·경남은 직접 배송하고 정기 납품도 진행합니다.
         </p>
       </div>
 
-      <div class="cards">
-        <article class="card reveal">
-          <div class="card-media">
-            <img class="card-photo" src="assets/products/biz-04-logistics.jpg" alt="마트 납품 — 지역 유통 물류 창고" width="1200" height="900" loading="lazy" decoding="async">
-          </div>
-          <div class="card-body">
-            <span class="card-no">01</span>
-            <h3>마트 납품</h3>
-            <p>서원유통(탑마트)·농협하나로마트·우리마트·홀마트 같은 지역 유통 채널에
-              주방·생활용품을 정기적으로 납품합니다. 매장별 상품 구성과 행사·판촉 일정에
-              맞춰 발주 단위와 납기를 맞춥니다.</p>
-            <ul class="tags">
-              <li>지역 마트 정기 납품</li><li>행사·판촉 물량</li><li>부울경 직배송</li>
-            </ul>
-          </div>
-        </article>
-
-        <article class="card reveal">
-          <div class="card-media">
-            <img class="card-photo" src="assets/products/biz-01-cookware.jpg" alt="주방용품 유통 — 스테인리스 냄비와 프라이팬" width="1200" height="900" loading="lazy" decoding="async">
-          </div>
-          <div class="card-body">
-            <span class="card-no">02</span>
-            <h3>주방용품 유통</h3>
-            <p>냄비·프라이팬·주전자부터 식기·조리도구·밀폐용기까지, 국내 주방 브랜드 29곳의
-              제품을 도소매로 공급합니다. 업소·급식용 대용량 기물까지 한 창구에서 갖춥니다.</p>
-            <ul class="tags">
-              <li>냄비·프라이팬</li><li>식기·테이블웨어</li><li>조리도구·밀폐</li><li>업소용 대용량</li>
-            </ul>
+      <div class="ledger">
+        <article class="lrow reveal">
+          <span class="lrow-no">01</span>
+          <figure class="lrow-thumb">
+            <img src="assets/products/biz-04-logistics.jpg" alt="지역 유통 물류 창고" width="1200" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="lrow-body">
+            <div class="lrow-head">
+              <h3>마트 납품</h3>
+              <ul class="tags">
+                <li>지역 마트 정기 납품</li><li>행사·판촉 물량</li><li>부울경 직배송</li>
+              </ul>
+            </div>
+            <p>
+              서원유통(탑마트), 농협하나로마트, 우리마트, 홀마트 같은 지역 유통 채널에
+              주방·생활용품을 정기적으로 납품합니다.
+              매장별 상품 구성과 행사 일정에 맞춰 발주 단위와 납기를 맞춥니다.
+            </p>
           </div>
         </article>
 
-        <article class="card reveal">
-          <div class="card-media">
-            <img class="card-photo" src="assets/products/biz-02-tableware.jpg" alt="특판상품 — 선물·판촉용 식기 구성" width="1200" height="900" loading="lazy" decoding="async">
-          </div>
-          <div class="card-body">
-            <span class="card-no">03</span>
-            <h3>특판상품</h3>
-            <p>기업 복지·명절 선물세트, 관공서 특판, 행사·판촉 물량을 상담으로 구성합니다.
-              냄비·프라이팬 세트부터 머그·밀폐용기까지, 예산과 수량에 맞춰 포장·라벨까지 조정합니다.</p>
-            <ul class="tags">
-              <li>기업 복지·명절 선물</li><li>관공서 특판</li><li>포장·라벨 상담</li>
-            </ul>
+        <article class="lrow reveal">
+          <span class="lrow-no">02</span>
+          <figure class="lrow-thumb">
+            <img src="assets/products/biz-01-cookware.jpg" alt="스테인리스 냄비와 프라이팬" width="1200" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="lrow-body">
+            <div class="lrow-head">
+              <h3>주방용품 유통</h3>
+              <ul class="tags">
+                <li>냄비·프라이팬</li><li>식기·테이블웨어</li><li>조리도구·밀폐용기</li><li>업소용 대용량</li>
+              </ul>
+            </div>
+            <p>
+              냄비·프라이팬·주전자부터 식기·조리도구·밀폐용기까지
+              국내 주방 브랜드 29곳의 제품을 도소매로 공급합니다.
+              업소·급식용 대용량 기물도 함께 취급합니다.
+            </p>
           </div>
         </article>
 
-        <article class="card reveal">
-          <div class="card-media">
-            <img class="card-photo" src="assets/products/biz-03-tools.jpg" alt="신상품 제안 — 조리도구와 밀폐용기 구성" width="1200" height="900" loading="lazy" decoding="async">
+        <article class="lrow reveal">
+          <span class="lrow-no">03</span>
+          <figure class="lrow-thumb">
+            <img src="assets/products/biz-02-tableware.jpg" alt="선물·판촉용 식기 구성" width="1200" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="lrow-body">
+            <div class="lrow-head">
+              <h3>특판상품</h3>
+              <ul class="tags">
+                <li>기업 복지·명절 선물</li><li>관공서 특판</li><li>포장·라벨 상담</li>
+              </ul>
+            </div>
+            <p>
+              기업 복지·명절 선물세트, 관공서 특판, 행사·판촉 물량을 상담으로 구성합니다.
+              냄비·프라이팬 세트부터 머그·밀폐용기까지 예산과 수량에 맞춰
+              포장과 라벨을 조정합니다.
+            </p>
           </div>
-          <div class="card-body">
-            <span class="card-no">04</span>
-            <h3>신상품 제안</h3>
-            <p>거래처의 매장 구성과 판매 흐름을 보고 신상품과 구성을 제안합니다.
-              요청하시면 샘플·카탈로그·사진 자료를 보내고, 시즌에 맞춘 품목 교체도 함께 상담합니다.</p>
-            <ul class="tags">
-              <li>신상품·구성 제안</li><li>샘플·카탈로그</li><li>시즌 품목 교체</li>
-            </ul>
+        </article>
+
+        <article class="lrow reveal">
+          <span class="lrow-no">04</span>
+          <figure class="lrow-thumb">
+            <img src="assets/products/biz-03-tools.jpg" alt="조리도구와 밀폐용기 구성" width="1200" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="lrow-body">
+            <div class="lrow-head">
+              <h3>신상품 제안</h3>
+              <ul class="tags">
+                <li>신상품·구성 제안</li><li>샘플·카탈로그</li><li>시즌 품목 교체</li>
+              </ul>
+            </div>
+            <p>
+              거래처의 매장 구성과 판매 흐름을 보고 신상품과 구성을 제안합니다.
+              요청하시면 샘플·카탈로그·사진 자료를 보내드리고,
+              시즌에 맞춘 품목 교체도 함께 상담합니다.
+            </p>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ── CLIENTS / SUPPLY ───────────────────────────────── -->
+  <!-- ── 주요 납품처 ────────────────────────────────────── -->
   <section class="section clients" id="clients">
     <div class="wrap">
       <div class="sec-head reveal">
-        <p class="kicker">CLIENTS &amp; SUPPLY</p>
-        <h2 class="section-title">주요 거래처 · 납품</h2>
+        <p class="kicker"><b>03</b>주요 납품처</p>
+        <h2 class="section-title">부울경 유통망과 기업·공공기관</h2>
         <p class="sec-lead">
-          부울경 유통망과 기업·공공 채널에 주방·생활용품을 공급합니다.
+          지역 유통 채널과 기업·공공기관에 주방·생활용품을 공급합니다.
           매장 상품 구성부터 행사·판촉, 기관 단위 특판까지 상담으로 맞춥니다.
         </p>
       </div>
@@ -306,10 +292,10 @@
         </article>
 
         <article class="client-card reveal">
-          <span class="client-k">기업 · 공공 납품</span>
-          <h3>대기업 · 관공서 B2B 납품</h3>
+          <span class="client-k">기업 · 공공기관 납품</span>
+          <h3>사내 복지·비품, 관공서 특판</h3>
           <p>
-            대기업 사내 복지·비품 채널과 관공서 특판 납품을 함께 진행합니다.
+            대기업 사내 복지·비품 채널과 관공서 특판 납품을 진행합니다.
             정기 납품, 행사·판촉 물량, 기관 단위 발주까지 상담으로 맞춥니다.
           </p>
           <ul class="tags">
@@ -321,7 +307,7 @@
       <ul class="supply-points reveal">
         <li>
           <strong>부울경 직배송</strong>
-          <span>부산·울산·경남은 직접 배송으로 빠르게 보냅니다.</span>
+          <span>부산·울산·경남은 직접 배송합니다.</span>
         </li>
         <li>
           <strong>정기 납품</strong>
@@ -329,29 +315,29 @@
         </li>
         <li>
           <strong>업소·급식 대응</strong>
-          <span>대용량 기물과 식자재 부자재·소모품까지 한 창구에서.</span>
+          <span>대용량 기물과 식자재 부자재·소모품까지 한 창구에서 공급합니다.</span>
         </li>
       </ul>
 
       <div class="clients-ctl reveal">
-        <a class="text-link" href="#b2b">납품 구성 예시·실무 FAQ 보기 <span aria-hidden="true">→</span></a>
-        <a class="btn btn-small ghost" href="assets/grandchef-company-profile.pdf" download="그랑쉐프-회사소개서.pdf">회사소개서 다운로드 (PDF)</a>
+        <a class="text-link" href="#b2b">납품 구성 예시와 FAQ 보기 <span aria-hidden="true">→</span></a>
+        <a class="btn btn-small ghost" href="assets/grandchef-company-profile.pdf" download="그랑쉐프-회사소개서.pdf">회사소개서 내려받기 (PDF)</a>
       </div>
 
       <p class="grid-note reveal">
-        ※ 거래처 표기는 납품 채널 기준이며, 거래 조건·단가는 별도 협의 사항입니다.
+        ※ 거래처는 납품 채널 기준이며, 거래 조건과 단가는 별도 협의로 정합니다.
       </p>
     </div>
   </section>
 
-  <!-- ── B2B PACKAGES & FAQ ─────────────────────────────── -->
+  <!-- ── 납품 안내 ──────────────────────────────────────── -->
   <section class="section b2b" id="b2b">
     <div class="wrap">
       <div class="sec-head reveal">
-        <p class="kicker">FOR BUSINESS</p>
-        <h2 class="section-title">납품 구성 예시와<br>실무 안내.</h2>
+        <p class="kicker"><b>04</b>납품 안내</p>
+        <h2 class="section-title">납품 구성 예시</h2>
         <p class="sec-lead">
-          같은 기물이라도 쓰는 곳에 따라 갖춰야 할 구성이 다릅니다.
+          업장에 따라 필요한 구성이 다릅니다.
           상담이 많은 세 가지 경우를 예로 정리했습니다.
           품목과 수량은 매장 규모와 예산에 맞춰 다시 짭니다.
         </p>
@@ -361,7 +347,7 @@
         <article class="pack reveal">
           <div class="pack-head">
             <span class="pack-no">01</span>
-            <h3>식당 신규 오픈<br>주방 패키지</h3>
+            <h3>식당 신규 오픈<br>주방 기물</h3>
           </div>
           <p class="pack-for">개업 준비 · 주방 기물 일괄</p>
           <ul>
@@ -370,7 +356,7 @@
             <li>업소용 식기(멜라민·스테인리스), 뚝배기·전골</li>
             <li>주방가위·조리도구, 위생 소모품</li>
           </ul>
-          <a class="pack-link" href="#contact" data-quote="식당 신규 오픈 주방 패키지">이 구성으로 견적 문의 <span aria-hidden="true">→</span></a>
+          <a class="pack-link" href="#contact" data-quote="식당 신규 오픈 주방 기물">이 구성으로 견적 문의 <span aria-hidden="true">→</span></a>
         </article>
 
         <article class="pack reveal">
@@ -391,7 +377,7 @@
         <article class="pack reveal">
           <div class="pack-head">
             <span class="pack-no">03</span>
-            <h3>기업·관공서<br>복지·특판 선물세트</h3>
+            <h3>기업·관공서<br>복지·특판 선물</h3>
           </div>
           <p class="pack-for">명절·창립기념 · 단체 선물</p>
           <ul>
@@ -400,14 +386,14 @@
             <li>주방 소품 구성(조리도구·수저세트)</li>
             <li>포장·라벨·로고 인쇄 상담</li>
           </ul>
-          <a class="pack-link" href="#contact" data-quote="기업·관공서 복지·특판 선물세트">이 구성으로 견적 문의 <span aria-hidden="true">→</span></a>
+          <a class="pack-link" href="#contact" data-quote="기업·관공서 복지·특판 선물">이 구성으로 견적 문의 <span aria-hidden="true">→</span></a>
         </article>
       </div>
 
       <div class="faq-wrap">
         <div class="faq-head reveal">
-          <h3>B2B 납품 실무 FAQ</h3>
-          <p>발주·배송·정산·교환처럼 실제로 가장 많이 묻는 내용입니다.</p>
+          <h3>납품 관련 자주 묻는 질문</h3>
+          <p>발주·배송·정산·교환에 대해 가장 많이 문의하시는 내용입니다.</p>
         </div>
 
         <div class="faq-list reveal">
@@ -415,14 +401,14 @@
             <summary>발주 단위는 어떻게 되나요? 소량도 가능한가요?</summary>
             <div class="faq-a">
               <p>한 품목만 발주하는 단일 발주와 여러 품목을 묶는 혼합 발주 모두 상담으로 진행합니다.
-                최소 수량과 박스 단위는 품목·제조사에 따라 다르므로, 희망 품목과 수량을 알려주시면
-                가능한 단위로 다시 맞춰 안내드립니다.</p>
+                최소 수량과 박스 단위는 품목·제조사에 따라 다릅니다.
+                희망 품목과 수량을 알려주시면 가능한 단위로 맞춰 안내드립니다.</p>
             </div>
           </details>
           <details class="faq">
             <summary>부산·울산·경남 밖으로도 보내주시나요?</summary>
             <div class="faq-a">
-              <p>부울경(부산·울산·경남)은 직접 배송으로 보내고, 주 단위·월 단위 정기 납품도 함께 진행합니다.
+              <p>부산·울산·경남은 직접 배송하고, 주 단위·월 단위 정기 납품도 함께 진행합니다.
                 그 밖의 지역은 품목과 물량에 따라 배송 방법을 협의해 안내드립니다.</p>
             </div>
           </details>
@@ -430,22 +416,22 @@
             <summary>세금계산서 발행과 결제는 어떻게 하나요?</summary>
             <div class="faq-a">
               <p>사업자 거래는 세금계산서 발행 기준으로 진행하며, 법인카드 결제도 상담으로 맞춥니다.
-                관공서·기업은 기관이 요구하는 정산 서류와 절차를 확인해 진행합니다.
+                관공서·기업은 기관에서 요구하는 정산 서류와 절차를 확인해 진행합니다.
                 결제 조건은 거래 형태와 품목에 따라 별도로 정합니다.</p>
             </div>
           </details>
           <details class="faq">
             <summary>불량·파손 제품이 오면 어떻게 하나요?</summary>
             <div class="faq-a">
-              <p>수령 후 제품 상태를 확인하시고, 파손·불량이 있으면 사진과 함께 대표전화나 이메일로 알려주세요.
+              <p>제품을 받으신 뒤 상태를 확인하시고, 파손·불량이 있으면 사진과 함께 대표전화나 이메일로 알려주세요.
                 확인 후 교환·보완 절차를 안내드립니다. 운송 중 파손은 배송 상태를 함께 확인합니다.</p>
             </div>
           </details>
           <details class="faq">
             <summary>목록에 없는 브랜드나 품목도 구할 수 있나요?</summary>
             <div class="faq-a">
-              <p>기재한 29개 브랜드 외에도 수십여 개 협력 제조·유통사와 거래하고 있습니다.
-                찾는 브랜드·규격·모델명을 알려주시면 취급 가능 여부와 납기를 확인해 안내드립니다.</p>
+              <p>기재한 29개 브랜드 외에도 수십여 개 제조·유통사와 거래하고 있습니다.
+                찾으시는 브랜드·규격·모델명을 알려주시면 취급 가능 여부와 납기를 확인해 안내드립니다.</p>
             </div>
           </details>
           <details class="faq">
@@ -458,51 +444,57 @@
         </div>
 
         <p class="faq-note reveal">
-          ※ 위 내용은 일반적인 안내입니다. 수량·기간·금액 등 구체적인 조건은 품목과 거래 형태에 따라 달라지므로 상담으로 확정합니다.
+          ※ 위 내용은 일반적인 안내입니다. 수량·기간·금액 등 구체적인 조건은 품목과 거래 형태에 따라 달라지므로 상담으로 정합니다.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- ── PRODUCT CATEGORIES ─────────────────────────────── -->
+  <!-- ── 취급 품목 ──────────────────────────────────────── -->
   <section class="section products" id="products">
     <div class="wrap">
       <div class="sec-head reveal">
-        <p class="kicker">PRODUCT CATEGORIES</p>
-        <h2 class="section-title">취급 품목 <span class="accent">11</span>개 분류</h2>
+        <p class="kicker"><b>05</b>취급 품목</p>
+        <h2 class="section-title">11개 분류로 나누어 취급합니다</h2>
         <p class="sec-lead">
-          식당·급식소에서 쓰는 대형 볶음솥과 전판, 업소용 밧드·튀김 바스켓부터
-          집에서 쓰는 주방용품까지 — 열한 개 분류로 나누어 갖춥니다.
-          분류를 누르면 상품을 검색하고 여러 상품을 묶어 견적을 문의할 수 있습니다.
+          식당·급식소에서 쓰는 대형 볶음솥과 전판, 밧드·튀김 바스켓부터
+          가정에서 쓰는 주방용품까지 열한 개 분류로 나누어 갖춥니다.
+          분류를 선택하면 상품을 검색하고, 여러 상품을 담아 견적을 문의할 수 있습니다.
         </p>
       </div>
 
-      <p class="tile-group reveal">
-        <span class="tile-group-k">업소 · 급식용</span>
-        식당·급식소에서 쓰는 대형 기물과 조리용품
-      </p>
-
-      <div class="grid-8">
-        <figure class="tile reveal">
-          <a class="tile-link" href="products.html?cat=pro">
-            <div class="tile-img">
-              <img src="assets/products/pro-01-wok-griddle.jpg" alt="업소용 주방기물 — 스테인리스 대형 볶음솥과 전판 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
-            </div>
-            <figcaption><strong>업소용 주방기물</strong><span>대형 볶음솥·전판 · 밧드 · 튀김 바스켓 · 식판</span></figcaption>
-          </a>
+      <article class="pro-band reveal">
+        <figure class="pro-band-media">
+          <img src="assets/products/pro-01-wok-griddle.jpg" alt="스테인리스 대형 볶음솥과 전판" width="1100" height="1100" loading="lazy" decoding="async">
         </figure>
-      </div>
+        <div class="pro-band-body">
+          <p class="pro-band-k">업소 · 급식용</p>
+          <h3>식당·급식소에서 쓰는 대용량 기물</h3>
+          <p>
+            대형 볶음솥(36~60cm)과 전판, 업소용 코팅팬·웍, 스테인리스·PC 밧드와 튀김 바스켓,
+            뚝배기까지 — 장사하는 주방에 필요한 기물과 조리용품, 식자재 부자재·소모품을 공급합니다.
+            규격과 수량을 알려주시면 납기와 발주 단위까지 맞춰 드립니다.
+          </p>
+          <ul class="tags">
+            <li>대형 볶음솥·전판</li>
+            <li>업소용 코팅팬·웍</li>
+            <li>스테인리스·PC 밧드</li>
+            <li>튀김 바스켓</li>
+            <li>뚝배기</li>
+            <li>주방가위·조리도구</li>
+            <li>식자재 부자재·소모품</li>
+          </ul>
+          <a class="text-link" href="products.html?cat=pro">업소용 상품 보기 <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
 
-      <p class="tile-group tile-group-sub reveal">
-        <span class="tile-group-k">가정 · 일반용</span>
-        매일 쓰는 주방용품
-      </p>
+      <p class="grid-label reveal">가정 · 일반용</p>
 
       <div class="grid-8">
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=pot">
             <div class="tile-img">
-              <img src="assets/products/cat-01-pot.jpg" alt="냄비·솥 — 스테인리스 양수냄비와 압력솥 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-01-pot.jpg" alt="냄비·솥 — 스테인리스 양수냄비와 압력솥" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>냄비·솥</strong><span>IH·스테인리스 양수·편수 · 압력솥 · 곰솥 · 전골</span></figcaption>
           </a>
@@ -510,7 +502,7 @@
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=pan">
             <div class="tile-img">
-              <img src="assets/products/cat-02-pan.jpg" alt="프라이팬·웍 — 세라믹 코팅 프라이팬과 궁중팬 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-02-pan.jpg" alt="프라이팬·웍 — 세라믹 코팅 프라이팬과 궁중팬" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>프라이팬·웍</strong><span>인덕션·코팅 프라이팬 · 궁중팬 · 웍 · 구이판</span></figcaption>
           </a>
@@ -518,7 +510,7 @@
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=kettle">
             <div class="tile-img">
-              <img src="assets/products/cat-03-kettle.jpg" alt="주전자·보온 — 스테인리스 휘슬 주전자와 보온병 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-03-kettle.jpg" alt="주전자·보온 — 스테인리스 휘슬 주전자와 보온병" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>주전자·보온</strong><span>휘슬·IH 주전자 · 전기 주전자 · 보온·보냉</span></figcaption>
           </a>
@@ -526,7 +518,7 @@
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=mug">
             <div class="tile-img">
-              <img src="assets/products/cat-04-mug.jpg" alt="머그·컵 — 세라믹 머그와 유리컵 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-04-mug.jpg" alt="머그·컵 — 세라믹 머그와 유리컵" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>머그·컵</strong><span>머그 · 텀블러 · 유리컵 · 다회용 컵</span></figcaption>
           </a>
@@ -534,7 +526,7 @@
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=plate">
             <div class="tile-img">
-              <img src="assets/products/cat-05-plate.jpg" alt="공기·접시 — 도자기 식기 세트 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-05-plate.jpg" alt="공기·접시 — 도자기 식기 세트" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>공기·접시</strong><span>밥공기 · 대접 · 면기 · 찬기 · 접시 · 식기</span></figcaption>
           </a>
@@ -542,7 +534,7 @@
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=cutlery">
             <div class="tile-img">
-              <img src="assets/products/cat-10-cutlery.jpg" alt="수저·젓가락 — 스테인리스 수저와 젓가락 세트 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-10-cutlery.jpg" alt="수저·젓가락 — 스테인리스 수저와 젓가락 세트" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>수저·젓가락</strong><span>수저세트 · 숫가락 · 젓가락 · 수저통</span></figcaption>
           </a>
@@ -550,7 +542,7 @@
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=tool">
             <div class="tile-img">
-              <img src="assets/products/cat-06-tool.jpg" alt="조리도구·칼 — 식도·과도·주방가위와 실리콘 도구 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-06-tool.jpg" alt="조리도구·칼 — 식도·과도·주방가위와 실리콘 도구" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>조리도구·칼</strong><span>식도 · 과도 · 가위 · 채칼 · 도마 · 국자 · 채반</span></figcaption>
           </a>
@@ -558,7 +550,7 @@
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=storage">
             <div class="tile-img">
-              <img src="assets/products/cat-07-storage.jpg" alt="밀폐·보관 — 유리 밀폐용기와 스테인리스 용기 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-07-storage.jpg" alt="밀폐·보관 — 유리 밀폐용기와 스테인리스 용기" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>밀폐·보관</strong><span>밀폐용기 · 지퍼백 · 반찬통 · 리빙박스</span></figcaption>
           </a>
@@ -566,7 +558,7 @@
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=living">
             <div class="tile-img">
-              <img src="assets/products/cat-08-living.jpg" alt="생활·주방잡화 — 채반·밧드·도시락 등 주방 소품 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-08-living.jpg" alt="생활·주방잡화 — 채반·밧드·도시락 등 주방 소품" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>생활·주방잡화</strong><span>수납·정리 · 호일 · 숯·그릴 · 캠핑 · 청소</span></figcaption>
           </a>
@@ -574,59 +566,37 @@
         <figure class="tile reveal">
           <a class="tile-link" href="products.html?cat=appliance">
             <div class="tile-img">
-              <img src="assets/products/cat-09-appliance.jpg" alt="주방가전 — 스테인리스 에어프라이어와 전기오븐 (AI 생성 예시 이미지)" width="1100" height="1100" loading="lazy" decoding="async">
+              <img src="assets/products/cat-09-appliance.jpg" alt="주방가전 — 스테인리스 에어프라이어와 전기오븐" width="1100" height="1100" loading="lazy" decoding="async">
             </div>
             <figcaption><strong>주방가전</strong><span>에어프라이어 · 전기오븐 · 전자레인지 · 밥솥</span></figcaption>
           </a>
         </figure>
       </div>
 
-      <div class="products-cta reveal">
-        <div class="products-cta-txt">
-          <strong>11개 분류 상품을 한 번에 찾아보세요.</strong>
-          <span>브랜드·규격으로 검색하고, 여러 상품을 담아 묶음 견적으로 문의할 수 있습니다.</span>
-        </div>
-        <a class="btn btn-primary" href="products.html">상품 검색 · 견적 바구니 <span aria-hidden="true">→</span></a>
-      </div>
-
-      <div class="bulk-note reveal">
-        <div class="bulk-head">
-          <span class="bulk-kicker">FOR RESTAURANT &amp; FOODSERVICE</span>
-          <p class="bulk-title">식당·급식이 쓰는 대용량까지 함께 보냅니다.</p>
-        </div>
-        <p class="bulk-desc">
-          대형 볶음솥(36~60cm)과 전판, 업소용 코팅팬·웍, 스테인리스·PC 밧드와 튀김 바스켓,
-          뚝배기까지 — 장사하는 주방의 기물과 조리용품, 식자재 부자재·소모품을
-          한 창구에서 공급합니다. 규격과 수량을 알려주시면 납기와 발주 단위까지 맞춰 드립니다.
-        </p>
-        <ul class="tags">
-          <li>대형 볶음솥·전판</li>
-          <li>업소용 코팅팬·웍</li>
-          <li>스테인리스·PC 밧드</li>
-          <li>튀김 바스켓</li>
-          <li>뚝배기</li>
-          <li>주방가위·조리도구</li>
-          <li>식자재 부자재·소모품</li>
-        </ul>
-      </div>
-
       <p class="grid-note reveal">
         ※ 품목 구성은 거래처와 시즌에 따라 달라집니다. 취급 여부는 문의로 확인해 주세요.
-        이미지는 실제 제품 사진이 아닌 <strong>AI로 생성한 분류 예시 이미지</strong>입니다.
+        이미지는 품목 예시이며 실제 상품과 다를 수 있습니다.
       </p>
+
+      <div class="cta-band reveal">
+        <div class="cta-band-copy">
+          <strong>11개 분류 상품을 한 번에 찾아보세요.</strong>
+          <span>브랜드·규격으로 검색하고, 여러 상품을 담아 견적을 문의할 수 있습니다.</span>
+        </div>
+        <a class="btn btn-band" href="products.html">상품 검색 · 견적 바구니 <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 
-  <!-- ── BRAND PARTNERS ─────────────────────────────────── -->
+  <!-- ── 취급 브랜드 ────────────────────────────────────── -->
   <section class="section brands" id="brands">
     <div class="wrap">
       <div class="sec-head reveal">
-        <p class="kicker">BRAND PARTNERS</p>
-        <h2 class="section-title">취급 브랜드 <span class="accent">29</span></h2>
+        <p class="kicker"><b>06</b>취급 브랜드</p>
+        <h2 class="section-title">국내 주방 브랜드 29곳</h2>
         <p class="sec-lead">
-          냄비·프라이팬부터 주방가전, 식기·생활용품까지 — 국내 주방 브랜드 29곳의
-          제품을 함께 취급합니다. 브랜드를 선택하면 업체 소개와 대표 취급 제품,
-          공식 사이트 링크가 표시됩니다.
+          냄비·프라이팬부터 주방가전, 식기·생활용품까지 국내 주방 브랜드 29곳의 제품을 취급합니다.
+          브랜드를 선택하시면 업체 소개와 대표 취급 제품, 공식 홈페이지 링크를 보실 수 있습니다.
         </p>
       </div>
 
@@ -643,61 +613,59 @@
         <div class="brand-picker" id="brandPicker" role="group" aria-label="취급 브랜드 선택"></div>
 
         <article class="brand-detail" id="brandDetail" aria-live="polite">
-          <p class="bd-hint">
-            브랜드를 선택하면 업체 소개와 공식 사이트 링크가 표시됩니다.
-          </p>
+          <p class="bd-hint">브랜드를 선택하면 업체 소개와 공식 홈페이지 링크가 표시됩니다.</p>
         </article>
       </div>
 
       <p class="brand-more reveal">
         <span class="brand-more-chip">+ 외 수십여 개 협력 브랜드</span>
-        기재한 주요 브랜드 외에도 수십여 개 국내·외 전문 제조·협력사 제품을 함께 유통·공급합니다.
-        목록에 없는 품목도 상담으로 확인해 드립니다.
+        기재한 29개 브랜드 외에도 수십여 개 국내·외 제조사·협력사 제품을 공급합니다.
+        목록에 없는 품목도 문의로 확인해 드립니다.
       </p>
 
       <p class="grid-note reveal">
-        ※ 대표 제품은 각 브랜드 공식 홈페이지에 게시된 품목 기준으로 정리했습니다.
-        실제 취급 여부·규격·발주 단위는 시즌과 거래처에 따라 달라지므로 문의로 확인해 주세요.
+        ※ 대표 제품은 각 브랜드 공식 홈페이지에 게시된 품목을 기준으로 정리했습니다.
+        실제 취급 여부와 규격·발주 단위는 시즌과 거래처에 따라 달라지므로 문의로 확인해 주세요.
         공식 홈페이지가 없거나 확인되지 않는 업체는 '미운영·미확인'으로 표기했습니다.
       </p>
     </div>
   </section>
 
-  <!-- ── QUALITY / VALUES ───────────────────────────────── -->
+  <!-- ── 품질·유통 ──────────────────────────────────────── -->
   <section class="section dark quality" id="quality">
     <div class="wrap">
       <div class="sec-head reveal">
-        <p class="kicker light">QUALITY &amp; DISTRIBUTION</p>
-        <h2 class="section-title light">지키는 네 가지.</h2>
+        <p class="kicker light"><b>07</b>품질·유통</p>
+        <h2 class="section-title light">제품을 고르고 보내는 기준</h2>
         <p class="sec-lead light">
-          숫자로 자랑하기보다, 매일 반복되는 기준으로 말합니다.
+          품질과 공급에 대해 저희가 지키는 원칙을 정리했습니다.
         </p>
       </div>
 
       <ol class="values">
         <li class="value reveal">
           <span class="v-no">01</span>
-          <h3>쓰임에 맞는 소재</h3>
-          <p>가스인지 인덕션인지, 어떤 열과 세제를 견뎌야 하는지부터
-            확인합니다. 눈에 잘 보이지 않는 바닥과 모서리까지 같은 기준입니다.</p>
+          <h3>소재와 규격 확인</h3>
+          <p>가스용인지 인덕션용인지, 어떤 열과 세제를 견디는지부터 확인합니다.
+            바닥과 모서리처럼 눈에 덜 띄는 부분도 같은 기준으로 봅니다.</p>
         </li>
         <li class="value reveal">
           <span class="v-no">02</span>
-          <h3>반복되는 품질</h3>
-          <p>한 번 잘 만드는 것보다 같은 품질로 계속 보내는 것이 어렵습니다.
+          <h3>같은 품질로 반복</h3>
+          <p>한 번 잘 만드는 것보다 같은 품질로 계속 보내는 일이 어렵습니다.
             검수 기준을 정해 두고 같은 결과가 나오도록 관리합니다.</p>
         </li>
         <li class="value reveal">
           <span class="v-no">03</span>
-          <h3>끊기지 않는 공급</h3>
-          <p>제조와 유통을 함께 하기 때문에 재고와 일정을 한자리에서 봅니다.
+          <h3>공급 일정 관리</h3>
+          <p>제조와 유통을 함께 하기 때문에 재고와 일정을 한자리에서 확인합니다.
             행사 일정이나 발주 단위가 바뀌어도 빠르게 답을 드립니다.</p>
         </li>
         <li class="value reveal">
           <span class="v-no">04</span>
-          <h3>오래 쓰는 설계</h3>
-          <p>한 번 사서 오래 쓰는 물건을 지향합니다. 규격을 단순하게
-            유지해 매장에서도, 집에서도 고르기 쉽도록 만듭니다.</p>
+          <h3>오래 쓰는 규격</h3>
+          <p>한 번 사서 오래 쓰는 물건을 기준으로 고릅니다.
+            규격을 단순하게 유지해 매장에서도, 집에서도 고르기 쉽게 합니다.</p>
         </li>
       </ol>
 
@@ -726,14 +694,13 @@
     </div>
   </section>
 
-  <!-- ── LOCATION ───────────────────────────────────────── -->
+  <!-- ── 오시는 길 ──────────────────────────────────────── -->
   <section class="section location" id="location">
     <div class="wrap loc-grid">
       <div class="loc-copy reveal">
-        <p class="kicker">LOCATION</p>
-        <h2 class="section-title">부산 강서구,<br>대저1동.</h2>
-        <p>본사와 사무실이 함께 있습니다. 방문 전에 연락 주시면
-          담당자가 안내드립니다.</p>
+        <p class="kicker"><b>08</b>오시는 길</p>
+        <h2 class="section-title">부산 강서구 대저1동</h2>
+        <p>본사와 사무실이 함께 있습니다. 방문 전에 연락 주시면 담당자가 안내드립니다.</p>
 
         <dl class="loc-list">
           <div>
@@ -788,16 +755,16 @@
     </div>
   </section>
 
-  <!-- ── B2B CONTACT ────────────────────────────────────── -->
+  <!-- ── 납품 문의 ──────────────────────────────────────── -->
   <section class="section contact" id="contact">
     <div class="wrap contact-grid">
       <div class="contact-copy reveal">
-        <p class="kicker light">B2B INQUIRY</p>
-        <h2 class="section-title light">납품·제작 문의</h2>
+        <p class="kicker light"><b>09</b>납품 문의</p>
+        <h2 class="section-title light">납품·견적 문의</h2>
         <p class="sec-lead light">
           품목, 수량, 납기를 알려주시면 담당자가 확인 후 연락드립니다.
           마트 행사·판촉은 물론 식당·급식소의 대용량 주문도 함께 상담합니다.
-          부울경은 직배송, 정기 납품도 가능합니다. 급한 문의는 전화가 가장 빠릅니다.
+          부산·울산·경남은 직배송, 정기 납품도 가능합니다. 급하신 문의는 전화가 가장 빠릅니다.
         </p>
         <div class="contact-ways">
           <a class="contact-tel" href="tel:+82518928930">
@@ -811,7 +778,7 @@
             <span class="mail-note">두 주소 모두로 접수됩니다.</span>
           </div>
           <a class="btn btn-small contact-pdf" href="assets/grandchef-company-profile.pdf" download="그랑쉐프-회사소개서.pdf">
-            회사소개서 다운로드 (PDF)
+            회사소개서 내려받기 (PDF)
           </a>
         </div>
       </div>
@@ -842,7 +809,7 @@
         </div>
         <label class="field">
           <span>관심 브랜드 <em class="opt-mark">선택</em></span>
-          <input type="text" name="brand" id="brandInput" maxlength="40" placeholder="브랜드 상세의 '납품 견적 문의'를 누르면 자동 입력됩니다">
+          <input type="text" name="brand" id="brandInput" maxlength="40" placeholder="브랜드 상세에서 견적 문의를 누르면 자동으로 입력됩니다">
         </label>
         <label class="field">
           <span>문의 유형</span>
@@ -891,7 +858,7 @@
         </p>
 
         <div class="form-result" id="formResult" hidden>
-          <h3 class="fr-title">문의 내용이 준비되었습니다</h3>
+          <h3 class="fr-title">문의 내용을 확인해 주세요</h3>
           <p class="fr-lead">
             <strong>메일 앱으로 보내기</strong>를 누르면 두 주소로 문의 내용이 채워집니다.
             메일 앱이 열리지 않으면 <strong>내용 복사</strong> 후 보내주세요.
@@ -919,7 +886,7 @@
         <img src="assets/logo-lockup.png" alt="그랑쉐프 GRAND CHEF 로고" width="461" height="302" decoding="async">
       </span>
       <div>
-        <strong>그랑쉐프</strong>
+        <strong>주식회사 그랑쉐프</strong>
         <em>GRANDCHEF CO., LTD.</em>
       </div>
     </div>
@@ -928,10 +895,10 @@
       <a href="#business">사업분야</a>
       <a href="products.html">취급상품</a>
       <a href="#brands">취급 브랜드</a>
-      <a href="#clients">거래처·납품</a>
+      <a href="#clients">주요 납품처</a>
       <a href="#quality">품질·유통</a>
       <a href="#location">오시는 길</a>
-      <a href="#contact">B2B 문의</a>
+      <a href="#contact">납품 문의</a>
     </nav>
   </div>
 
@@ -963,6 +930,6 @@
   <a class="fb-quote" href="#contact">납품·견적 문의</a>
 </div>
 
-<script src="script.js?v=20261120z2" defer></script>
+<script src="script.js?v=20261122a" defer></script>
 </body>
 </html>
