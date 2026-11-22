@@ -549,6 +549,11 @@
     var chips = Array.prototype.slice.call(document.querySelectorAll('.brand-filter .chip'));
     var bpicks = Array.prototype.slice.call(picker.children);
 
+    if (current === -1) {
+      detail.innerHTML = '';
+      detail.appendChild(hintHTML());
+    }
+
     chips.forEach(function (chip) {
       chip.addEventListener('click', function () {
         var key = chip.getAttribute('data-filter');
