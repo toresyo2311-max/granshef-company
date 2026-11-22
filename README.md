@@ -29,7 +29,7 @@
 | `assets/logo.png` | 공식 로고 원본 512×512 (파비콘·애플 터치 아이콘) |
 | `assets/logo-lockup.png` | 같은 로고에서 흰 여백만 잘라낸 락업 (헤더·히어로·푸터 표시용) |
 | `assets/products/*.jpg` | 품목·사업분야 예시 이미지 |
-| `assets/img/items/*.jpg` | 상품별 세부 예시 이미지 96종(1100×1100, AI 생성) — products.html에서 상품마다 다른 사진 |
+| `assets/img/items/*.jpg` | 상품별 세부 예시 이미지 96종(1100×1100, 자체 제작) — products.html에서 상품마다 다른 사진 |
 | `tools/build_profile_pdf.py` | 회사소개서 PDF 생성 스크립트 |
 
 ## 로컬 확인
@@ -51,7 +51,7 @@ python3 tools/build_profile_pdf.py   # → assets/grandchef-company-profile.pdf
 
 ## 남은 작업
 
-- 제품 실사진(브랜드별 촬영본) 교체 — 현재는 AI 생성 분류 예시 이미지(화면에 표기)
+- 제품 실사진(브랜드별 촬영본) 교체 — 현재는 자체 제작 품목 예시 이미지(화면에 "품목 예시 이미지"로 표기)
 - 바코드·정확한 규격 표기 — 상품마스터(ERP 상품코드)와 브랜드 공식 품목을 대조한 뒤 기재
 - 전체 상품마스터(1,600 SKU) 게시 여부 결정 — 원가·공급가·마진·거래처 제거 후 게시 가능
 - 연혁 타임라인 추가 (연도별 사건 확인 필요)
