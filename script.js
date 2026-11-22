@@ -366,8 +366,104 @@
       desc: '업소용 주방용품 전문 스토어. 대형 코팅 프라이팬·볶음솥(36~60cm)과 코팅웍, 주방가위, 스테인리스·PC 밧드와 튀김 바스켓까지 업소에서 쓰는 기물을 모아 공급합니다.',
       items: ['업소용 대형 코팅 프라이팬 36~60cm', '유진토스코 업소용 코팅웍', '업소용 PC·스테인리스 밧드(바트)', '튀김 바스켓', '오복 업소용 주방가위'],
       url: 'https://smartstore.naver.com/world_-', urlLabel: 'smartstore.world_-'
+    },
+    {
+      no: '30', name: '직영거래처', en: 'GRANDCHEF 직영 공급 · 561품목', cat: 'supply', catLabel: '유통·도매',
+      desc: '그랑쉐프가 직영으로 공급하는 취급분입니다. 브랜드 표기가 따로 없는 직영 상품을 한데 묶어 머그·컵, 공기·접시, 수저·젓가락, 조리도구·칼, 생활용품까지 561품목을 정리했습니다. 실제 재고·규격·납기는 상담으로 확인합니다.',
+      items: ['IH모노포트 양수·전골·편수', '머그·유리컵·텀블러', '공기·접시·찬기·면기', '수저·젓가락 세트', '조리도구·칼·채반'],
+      url: '', urlLabel: '직영 공급', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '31', name: '페나테스', en: '취급 거래처 · 조리도구·수저 52품목', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '수저와 주방 소도구를 공급하는 취급 거래처입니다. 버들·체리·큐브 수저세트, 어린이 수저, 국자·집게·찜기·오프너·식도 등 52품목을 취급합니다.',
+      items: ['버들수저·버들티스푼 3p', '체리수저·큐브수저', '토끼 어린이수저', '부페집게·통닭집게', '찜기·멸치다시망'],
+      url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '32', name: '키친프리', en: '취급 거래처 · 스테인리스 식기 49품목', cat: 'living', catLabel: '식기·생활',
+      desc: '업소·가정용 스테인리스·멜라민 식기와 조리도구를 공급하는 거래처입니다. 이중탕기·이중찬기·이중공기, 펀칭볼·채반, 멜라민 앞접시·볼, 인덕션 소테팬 등 49품목을 취급합니다.',
+      items: ['이중탕기 대·중·소·특대', '스텐이중찬기 1~4호', '펀칭볼·펀칭채반', '멜라민 앞접시·원형볼', '인덕션소테팬 22~28cm'],
+      url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '33', name: '진성울트라', en: '취급 거래처 · 업소용 기물 40품목', cat: 'supply', catLabel: '유통·도매',
+      desc: '업소용 주방기물을 만드는 거래처입니다. PC계량컵, 건지기·뜰채·채망, 페스트푸드쟁반, 양념식판, 간식판 등 업소·급식용 기물 40품목을 취급합니다.',
+      items: ['PC계량컵 500·1000·2000ml', '진성건지기 A 1~5호', '국수·만두건지기', '파이브뜰채', '논슬립 페스트푸드쟁반', '양념식판 1~4구'],
+      url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '34', name: '세호', en: '취급 거래처 · 밧드(바트) 34품목', cat: 'supply', catLabel: '유통·도매',
+      desc: '스테인리스·PC 밧드(바트)를 공급하는 거래처입니다. PC밧드 2·4·6·8인치와 PC밧드커버, 밧드카바, 스테인리스 풀밧드 등 34품목을 취급합니다.',
+      items: ['PC밧드 2·4·6·8인치(1/2~1/9)', 'PC밧드커버', '밧드카바 1/9~6', '풀밧드 2·4·6인치'],
+      url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '35', name: '한성', en: '취급 거래처 · 주방 소도구 25품목', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '주방 소도구를 만드는 거래처입니다. 감자칼·감자다지기·계란절단기, 거품기·주걱·뒤지게집게, 칼갈이·오프너 등 조리 소도구 25품목을 취급합니다.',
+      items: ['Y감자칼·양면감자칼·호박감자칼', '감자다지기·계란절단기', '특A거품기·롱거품기', '한성주걱 대·특대', '숫돌링칼갈이·종합오프너'],
+      url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '36', name: '쿡스넷', en: '취급 거래처 · 국자·주걱 12품목', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '국자·주걱·집게와 뚝배기 받침을 공급하는 거래처입니다. 쿡스넷 국자·라면국자, 만두집게, 반원뒤지게, 뚝배기받침 등 12품목을 취급합니다.',
+      items: ['쿡스넷국자 소·특대', '쿡스넷라면국자', '쿡스넷만두 대·소·특대', '쿡스넷주걱 대·특대', '뚝배기받침 대·중·소'],
+      url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '37', name: '와우예스굳', en: '취급 거래처 · 키친아트 Wise 11품목', cat: 'cook', catLabel: '냄비·팬',
+      desc: '키친아트 Wise IH 라인을 공급하는 유통 거래처입니다. IH 와이즈 양수·전골·프라이팬 11품목을 취급하며, 품명에 키친아트 표기가 함께 있습니다.',
+      items: ['IH 와이즈 양수 16·20·24cm', 'IH 와이즈 전골 24cm', 'IH와이즈 프라이팬 20·24cm'],
+      url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '38', name: '천성', en: '취급 거래처 · 업소용 조리도구 8품목', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '업소용 조리도구를 만드는 거래처입니다. 삼각·헤라·사각 스펜치(스페치)와 스텐 호떡누르개 등 8품목을 취급합니다.',
+      items: ['천성삼각스펜치·헤라스펜치', '천성사각스페치 대·중·소', '스텐 호떡누르개'],
+      url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '39', name: '현은산업', en: '취급 거래처 · 식도·가위 6품목', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '식도·과도·가위 등 칼류를 공급하는 거래처입니다. 에이스식도·포에버식도, 크로바과도, 키친플라워 HE 주방용가위 등 6품목을 취급합니다.',
+      items: ['에이스식도 대·중', '포에버식도', '크로바과도', '키친플라워 HE-1·HE-2 주방용가위'],
+      url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '40', name: '리빙온', en: '취급 거래처 · 불판·가스용품 5품목', cat: 'cook', catLabel: '냄비·팬',
+      desc: '불판·그릴팬과 가스용품을 공급하는 거래처입니다. 리빙온 원형·사각 불판, 클로즈 그릴팬, 가스렌지, 멀티가스점화기 등 5품목을 취급합니다.',
+      items: ['리빙온 원형불판(원형·사각)', '클로즈그릴팬 30×23cm', '리빙온 가스렌지 100번', '리빙온 멀티가스점화기'],
+      url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '41', name: '가온', en: '취급 거래처 · 심플팬 4품목', cat: 'cook', catLabel: '냄비·팬',
+      desc: '프라이팬을 만드는 거래처입니다. 심플팬 양수 20·24cm, 편수 16·18cm 4품목을 취급합니다.',
+      items: ['심플팬 양수 20·24cm', '심플팬 편수 16·18cm'],
+      url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
+    },
+    {
+      no: '42', name: '대원알미늄', en: '취급 거래처 · 원오봉 알루미늄 4품목', cat: 'cook', catLabel: '냄비·팬',
+      desc: '업소용 알루미늄 밥통(원오봉)을 공급하는 거래처입니다. 원오봉 왕대·특대 등 4품목을 취급합니다. 대원경금속(14)과는 별개 법인입니다.',
+      items: ['원오봉 왕대·특대', '원오봉 왕왕대·특왕대'],
+      url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
     }
   ];
+
+  /* 분류별 브랜드 수 — 위 목록(BRANDS)에서 계산해 화면 표기와 실제 목록을 맞춥니다 */
+  var BRAND_CAT_ROWS = [
+    ['own', '자체 브랜드'],
+    ['cook', '냄비·팬'],
+    ['appliance', '주방가전'],
+    ['tool', '조리도구·수저'],
+    ['living', '식기·생활'],
+    ['supply', '유통·도매']
+  ];
+  var brandCatCount = {};
+  BRANDS.forEach(function (b) { brandCatCount[b.cat] = (brandCatCount[b.cat] || 0) + 1; });
+  Array.prototype.forEach.call(document.querySelectorAll('.brand-filter .chip'), function (chip) {
+    var key = chip.getAttribute('data-filter');
+    var num = key === 'all' ? BRANDS.length : (brandCatCount[key] || 0);
+    var bEl = chip.querySelector('b');
+    if (bEl) bEl.textContent = String(num);
+  });
 
   var picker = document.getElementById('brandPicker');
   var detail = document.getElementById('brandDetail');
@@ -389,19 +485,12 @@
 
       var ul = document.createElement('ul');
       ul.className = 'bd-idle-list';
-      [
-        ['자체 브랜드', '2곳'],
-        ['냄비·팬', '14곳'],
-        ['주방가전', '2곳'],
-        ['조리도구·수저', '2곳'],
-        ['식기·생활', '7곳'],
-        ['유통·도매', '4곳']
-      ].forEach(function (row) {
+      BRAND_CAT_ROWS.forEach(function (row) {
         var li = document.createElement('li');
         var nm = document.createElement('strong');
-        nm.textContent = row[0];
+        nm.textContent = row[1];
         var ct = document.createElement('span');
-        ct.textContent = row[1];
+        ct.textContent = (brandCatCount[row[0]] || 0) + '곳';
         li.appendChild(nm);
         li.appendChild(ct);
         ul.appendChild(li);
