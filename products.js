@@ -14,9 +14,11 @@
   var CAT_LABEL = {};
   CATS.forEach(function (c) { CAT_LABEL[c.k] = c.label; });
 
-  /* ── image per item: 품목별 세부 이미지(catalog.js의 i 키) ───────── */
+  /* ── image per item ─────────────────────────────────────────
+     우선순위: p.img(실제 제품 사진 — 외부 공식물 이미지 URL 또는 로컬 경로)
+             → p.i(로컬 세부 예시 이미지) → 분류 대표 이미지 */
   var ITEM_DIR = 'assets/img/items/';
-  function imageFor(p) {
+  function fallbackImage(p) {
     if (p.i) return ITEM_DIR + p.i + '.jpg';
     if (p.c === 'pro') {
       if (/뚝배기/.test(p.n)) return 'assets/products/pro-04-ttukbaegi.jpg';
@@ -30,6 +32,18 @@
       storage: 'cat-07-storage', living: 'cat-08-living', appliance: 'cat-09-appliance'
     };
     return 'assets/products/' + (map[p.c] || 'cat-01-pot') + '.jpg';
+  }
+  function imageFor(p) {
+    return p.img ? p.img : fallbackImage(p);
+  }
+  /* 매칭된 제품 사진이 없거나 로드되지 않으면 예시 이미지로 한 번만 대체 */
+  function bindImageFallback(imgEl, p) {
+    var swapped = false;
+    imgEl.addEventListener('error', function () {
+      if (swapped) return;
+      swapped = true;
+      imgEl.src = fallbackImage(p);
+    });
   }
 
   /* ── spec text ───────────────────────────────────────────────── */
@@ -264,7 +278,8 @@
     pdSpec.textContent = specText(p) || '규격 미표기 — 상담 확인';
     pdBarcode.textContent = '상담 확인 (표기 전 검증 필요)';
     pdImg.src = imageFor(p);
-    pdImg.alt = p.n + ' — ' + CAT_LABEL[p.c] + ' 품목 예시 이미지';
+    bindImageFallback(pdImg, p);
+    pdImg.alt = p.n + ' — ' + CAT_LABEL[p.c] + ' 제품 이미지';
     pdNote.textContent = p.u
       ? '브랜드 공식 홈페이지에 게시된 취급 품목입니다. 실제 재고·규격·납기는 상담으로 확인합니다.'
       : '취급 품목으로 정리된 상품입니다. 실제 재고·규격·납기는 상담으로 확인합니다.';
@@ -323,7 +338,8 @@
       media.setAttribute('aria-label', p.n + ' 상세 보기');
       var img = document.createElement('img');
       img.src = imageFor(p);
-      img.alt = p.n + ' — ' + CAT_LABEL[p.c] + ' 품목 예시 이미지';
+      bindImageFallback(img, p);
+      img.alt = p.n + ' — ' + CAT_LABEL[p.c] + (p.img ? ' 제품 이미지' : ' 품목 예시 이미지');
       img.width = 1100; img.height = 1100;
       img.loading = 'lazy';
       img.decoding = 'async';
