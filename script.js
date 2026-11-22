@@ -180,6 +180,20 @@
   /* brand picker + detail */
   var BRANDS = [
     {
+      self: true, no: '자체', name: '그랑쉐프', en: 'GRANDCHEF · 자체 브랜드 · SINCE 2001', cat: 'own', catLabel: '자체 브랜드',
+      desc: '주식회사 그랑쉐프가 직접 기획하고 공급하는 대표 자체 브랜드입니다. 2001년 부산에서 시작해 가정용 냄비·프라이팬부터 업소용 대형 볶음솥·전판, 식기·밀폐용기까지 취급 폭을 넓혀 왔습니다. 그랑쉐프몰·종합주방몰을 통해 판매합니다.',
+      itemsLabel: '취급 품목',
+      items: ['냄비·프라이팬·주전자', '식기·수저·밀폐용기', '업소용 볶음솥·전판·밧드', '플라스틱 성형용기(직접 제조)'],
+      url: 'products.html', urlLabel: 'products.html', linkLabel: '취급상품 보기'
+    },
+    {
+      self: true, no: '자체', name: '그랜드쿡', en: 'GRANDCOOK · 자체 브랜드', cat: 'own', catLabel: '자체 브랜드',
+      desc: '주식회사 그랑쉐프가 그랑쉐프와 함께 운영하는 자체 브랜드입니다. 같은 공급망에서 품목을 구성해 그랑쉐프몰·종합주방몰로 공급하며, 품목 구성은 시즌과 거래처에 따라 달라집니다. 취급 여부는 문의로 확인해 주십시오.',
+      itemsLabel: '취급 품목',
+      items: ['냄비·프라이팬·주전자', '식기·수저·조리도구', '업소·급식용 주방기물', '주방가전·생활용품'],
+      url: 'products.html', urlLabel: 'products.html', linkLabel: '취급상품 보기'
+    },
+    {
       no: '01', name: 'PN풍년', en: 'PN PUNGNYUN · SINCE 1954', cat: 'cook', catLabel: '냄비·팬',
       desc: '1954년 국내 최초 압력솥을 만든 압력솥·쿡웨어 대표 브랜드. 압력솥부터 IH 냄비, 주방소품까지 취급합니다.',
       items: ['풍년1954 뉴 손주물 압력솥', '몽꽁떼 스튜팟 IH', '위더스 티앤쿡 케틀팟 IH', '꾸노 폴딩 실리콘 채반', '위더스 프레시 밧드'],
@@ -371,11 +385,12 @@
 
       var lead = document.createElement('p');
       lead.className = 'bd-idle-lead';
-      lead.textContent = '분류를 고르거나 브랜드를 선택하시면 업체 소개, 대표 취급 제품, 공식 홈페이지 링크가 표시됩니다.';
+      lead.textContent = '분류를 고르거나 브랜드를 선택하시면 브랜드 안내, 대표 취급 제품, 공식 홈페이지 링크가 표시됩니다.';
 
       var ul = document.createElement('ul');
       ul.className = 'bd-idle-list';
       [
+        ['자체 브랜드', '2곳'],
         ['냄비·팬', '14곳'],
         ['주방가전', '2곳'],
         ['조리도구·수저', '2곳'],
@@ -407,7 +422,7 @@
       detail.innerHTML = '';
 
       var cat = document.createElement('span');
-      cat.className = 'bd-cat';
+      cat.className = 'bd-cat' + (b.self ? ' is-self' : '');
       cat.textContent = b.catLabel;
 
       var h = document.createElement('h3');
@@ -424,7 +439,7 @@
 
       var sub = document.createElement('h4');
       sub.className = 'bd-sub';
-      sub.textContent = '대표 취급 제품';
+      sub.textContent = b.itemsLabel || '대표 취급 제품';
 
       var ul = document.createElement('ul');
       ul.className = 'bd-items';
@@ -448,7 +463,8 @@
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
         var lab = document.createElement('span');
-        lab.textContent = '공식 홈페이지 열기 ↗';
+        lab.textContent = (b.linkLabel || '공식 홈페이지 열기') + ' ↗';
+        if (b.self) a.classList.add('own');
         var u = document.createElement('span');
         u.className = 'bd-url';
         u.textContent = b.urlLabel;
@@ -490,23 +506,25 @@
     BRANDS.forEach(function (b, i) {
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'bpick';
+      btn.className = 'bpick' + (b.self ? ' is-self' : '');
       btn.setAttribute('data-cat', b.cat);
       btn.setAttribute('data-index', String(i));
 
       var no = document.createElement('span');
       no.className = 'bpick-no';
-      no.textContent = b.no;
+      no.textContent = b.self ? '자체 브랜드' : b.no;
       var nm = document.createElement('span');
       nm.className = 'bpick-name';
       nm.textContent = b.name;
-      var ct = document.createElement('span');
-      ct.className = 'bpick-cat';
-      ct.textContent = b.catLabel;
 
       btn.appendChild(no);
       btn.appendChild(nm);
-      btn.appendChild(ct);
+      if (!b.self) {
+        var ct = document.createElement('span');
+        ct.className = 'bpick-cat';
+        ct.textContent = b.catLabel;
+        btn.appendChild(ct);
+      }
       btn.setAttribute('aria-pressed', 'false');
 
       btn.addEventListener('click', function () {

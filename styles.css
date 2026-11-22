@@ -733,6 +733,15 @@ button{font:inherit}
 .bpick.is-on .bpick-no{color:var(--bronze-lt)}
 .bpick.is-on .bpick-cat{color:rgba(246,242,234,.55)}
 .bpick.hide{display:none}
+.bpick.is-self{
+  background:linear-gradient(180deg,#fffdf8,#f8f3e9);
+  border-color:rgba(122,92,46,.5);
+}
+.bpick.is-self .bpick-no{
+  color:var(--bronze-dp);letter-spacing:.04em;
+}
+.bpick.is-self .bpick-name{font-size:15.5px}
+.bpick.is-self.is-on{background:var(--char);border-color:var(--char)}
 
 .brand-detail{
   position:sticky;top:92px;
@@ -792,6 +801,10 @@ button{font:inherit}
   padding:3px 9px;background:var(--paper);
   margin-bottom:12px;
 }
+.bd-cat.is-self{
+  color:var(--bronze-dp);border-color:rgba(122,92,46,.45);
+  background:rgba(122,92,46,.07);
+}
 .bd-name{
   font-size:clamp(21px,2.4vw,27px);font-weight:700;letter-spacing:-.03em;
   margin:0;color:var(--ink);word-break:keep-all;
@@ -846,6 +859,8 @@ button{font:inherit}
   background:var(--ink-mute);opacity:.5;
 }
 .bd-link.off:hover{background:rgba(0,0,0,.06);transform:none}
+.bd-link.own{background:var(--bronze-dp)}
+.bd-link.own:hover{background:#6b4f26}
 
 /* certifications */
 .certs{
