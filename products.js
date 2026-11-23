@@ -77,11 +77,23 @@
   function searchKey(p) {
     return (p.n + ' ' + p.b + ' ' + specText(p) + ' ' + CAT_LABEL[p.c]).toLowerCase();
   }
+  /* 검색어 색인은 첫 검색 때 한 번만 만든다 (타이핑마다 1,698개 문자열 조합 방지) */
+  var KEYS = null;
+  function searchKeys() {
+    if (!KEYS) KEYS = PRODUCTS.map(searchKey);
+    return KEYS;
+  }
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'cat' };
 
+  /* 한 번에 그리는 카드 수 — 1,698개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  var PAGE_SIZE = 60;
+  var shown = PAGE_SIZE;
+  var lastList = null;
+
   var $ = function (id) { return document.getElementById(id); };
   var grid = $('grid'), countEl = $('count'), emptyEl = $('empty');
+  var moreWrap = $('catMore'), moreBtn = $('moreBtn');
 
   /* ── chips (11 categories) ───────────────────────────────────── */
   var chipWrap = $('catChips');
@@ -152,11 +164,12 @@
   if (sortSel) sortSel.addEventListener('change', function () { state.sort = sortSel.value; render(); });
 
   function filtered() {
-    var list = PRODUCTS.filter(function (p) {
+    var keys = state.q ? searchKeys() : null;
+    var list = PRODUCTS.filter(function (p, i) {
       if (state.cat !== 'all' && p.c !== state.cat) return false;
       if (state.brand && p.b !== state.brand) return false;
       if (state.size && !p.g[state.size]) return false;
-      if (state.q && searchKey(p).indexOf(state.q) < 0) return false;
+      if (keys && keys[i].indexOf(state.q) < 0) return false;
       return true;
     });
     if (state.sort === 'name') list.sort(function (a, b) { return a.n.localeCompare(b.n, 'ko'); });
@@ -196,7 +209,7 @@
     basket.splice(i, 1);
     saveBasket();
     paintBasket();
-    render();
+    render(true);
   }
   function paintCount() {
     [$('basketCount'), $('basketCount2')].forEach(function (el) { if (el) el.textContent = String(basket.length); });
@@ -245,7 +258,7 @@
   var bc = $('basketClose'); if (bc) bc.addEventListener('click', function () { setBasketOpen(false); });
   var bclear = $('basketClear');
   if (bclear) bclear.addEventListener('click', function () {
-    basket = []; saveBasket(); paintBasket(); render();
+    basket = []; saveBasket(); paintBasket(); render(true);
   });
 
   /* ── hand a quote list to the inquiry form ───────────────────── */
@@ -299,7 +312,7 @@
     if (!current) return;
     var added = addToBasket(current);
     pdAdd.textContent = added ? '담김 ✓' : '이미 담김';
-    render();
+    render(true);
     if (dlg && dlg.open) dlg.close();
     setBasketOpen(true);
   });
@@ -316,83 +329,118 @@
     });
   }
 
-  function render() {
+  function render(keepShown) {
     if (!grid) return;
     var list = filtered();
+    lastList = list;
+    var total = list.length;
+    shown = keepShown ? Math.max(PAGE_SIZE, Math.min(shown, total)) : Math.min(PAGE_SIZE, total);
     grid.innerHTML = '';
     if (countEl) {
-      countEl.innerHTML = '<strong>' + list.length + '</strong>개 상품' +
+      countEl.innerHTML = '<strong>' + total + '</strong>개 상품' +
         (state.cat !== 'all' ? ' · ' + esc(CAT_LABEL[state.cat]) : '') +
         ' <span class="cat-count-all">/ 전체 ' + PRODUCTS.length + '개</span>';
     }
-    if (emptyEl) emptyEl.hidden = list.length > 0;
+    if (emptyEl) emptyEl.hidden = total > 0;
+    appendCards(list, 0, shown);
+    paintMore(total);
+  }
 
-    var frag = document.createDocumentFragment();
-    list.forEach(function (p) {
-      var card = document.createElement('article');
-      card.className = 'pcard';
+  function num(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
 
-      var media = document.createElement('button');
-      media.type = 'button';
-      media.className = 'pcard-media';
-      media.setAttribute('aria-label', p.n + ' 상세 보기');
-      var img = document.createElement('img');
-      img.src = imageFor(p);
-      bindImageFallback(img, p);
-      img.alt = p.n + ' — ' + CAT_LABEL[p.c] + (p.img ? ' 제품 이미지' : ' 품목 예시 이미지');
-      img.width = 1100; img.height = 1100;
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      media.appendChild(img);
-      media.addEventListener('click', function () { openDetail(p); });
+  /* "더 보기 (남은 N개)" — 남은 카드가 있을 때만 보인다 */
+  function paintMore(total) {
+    if (!moreBtn) return;
+    var rest = total - shown;
+    if (moreWrap) moreWrap.hidden = rest <= 0;
+    moreBtn.hidden = rest <= 0;
+    if (rest > 0) moreBtn.textContent = '더 보기 (남은 ' + num(rest) + '개)';
+  }
 
-      var body = document.createElement('div');
-      body.className = 'pcard-body';
-
-      var meta = document.createElement('p');
-      meta.className = 'pcard-meta';
-      meta.innerHTML = '<span>' + esc(p.b) + '</span><span>' + esc(CAT_LABEL[p.c]) + '</span>';
-
-      var h = document.createElement('h3');
-      h.className = 'pcard-name';
-      var nameBtn = document.createElement('button');
-      nameBtn.type = 'button';
-      nameBtn.textContent = p.n;
-      nameBtn.addEventListener('click', function () { openDetail(p); });
-      h.appendChild(nameBtn);
-
-      var spec = document.createElement('p');
-      spec.className = 'pcard-spec';
-      spec.textContent = specText(p) ? '규격 ' + specText(p) : '규격 상담 확인';
-
-      var foot = document.createElement('div');
-      foot.className = 'pcard-foot';
-      var price = document.createElement('span');
-      price.className = 'pcard-price';
-      price.textContent = '가격 상담';
-      var add = document.createElement('button');
-      add.type = 'button';
-      add.className = 'pcard-add' + (inBasket(p) ? ' is-in' : '');
-      add.textContent = inBasket(p) ? '담김 ✓' : '+ 견적 담기';
-      add.addEventListener('click', function () {
-        if (addToBasket(p)) {
-          add.textContent = '담김 ✓';
-          add.classList.add('is-in');
-        }
-        setBasketOpen(true);
-      });
-      foot.appendChild(price);
-      foot.appendChild(add);
-
-      body.appendChild(meta);
-      body.appendChild(h);
-      body.appendChild(spec);
-      body.appendChild(foot);
-      card.appendChild(media);
-      card.appendChild(body);
-      frag.appendChild(card);
+  if (moreBtn) {
+    moreBtn.addEventListener('click', function () {
+      var list = lastList || filtered();
+      var to = Math.min(shown + PAGE_SIZE, list.length);
+      appendCards(list, shown, to);
+      shown = to;
+      paintMore(list.length);
     });
+  }
+
+  function appendCards(list, from, to) {
+    if (!grid || to <= from) return;
+    var frag = document.createDocumentFragment();
+    for (var idx = from; idx < to; idx += 1) {
+      frag.appendChild(buildCard(list[idx]));
+    }
     grid.appendChild(frag);
+  }
+
+  function buildCard(p) {
+    var card = document.createElement('article');
+    card.className = 'pcard';
+
+    var media = document.createElement('button');
+    media.type = 'button';
+    media.className = 'pcard-media';
+    media.setAttribute('aria-label', p.n + ' 상세 보기');
+    var img = document.createElement('img');
+    img.src = imageFor(p);
+    bindImageFallback(img, p);
+    img.alt = p.n + ' — ' + CAT_LABEL[p.c] + (p.img ? ' 제품 이미지' : ' 품목 예시 이미지');
+    img.width = 1100; img.height = 1100;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    media.appendChild(img);
+    media.addEventListener('click', function () { openDetail(p); });
+
+    var body = document.createElement('div');
+    body.className = 'pcard-body';
+
+    var meta = document.createElement('p');
+    meta.className = 'pcard-meta';
+    meta.innerHTML = '<span>' + esc(p.b) + '</span><span>' + esc(CAT_LABEL[p.c]) + '</span>';
+
+    var h = document.createElement('h3');
+    h.className = 'pcard-name';
+    var nameBtn = document.createElement('button');
+    nameBtn.type = 'button';
+    nameBtn.textContent = p.n;
+    nameBtn.addEventListener('click', function () { openDetail(p); });
+    h.appendChild(nameBtn);
+
+    var spec = document.createElement('p');
+    spec.className = 'pcard-spec';
+    spec.textContent = specText(p) ? '규격 ' + specText(p) : '규격 상담 확인';
+
+    var foot = document.createElement('div');
+    foot.className = 'pcard-foot';
+    var price = document.createElement('span');
+    price.className = 'pcard-price';
+    price.textContent = '가격 상담';
+    var add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'pcard-add' + (inBasket(p) ? ' is-in' : '');
+    add.textContent = inBasket(p) ? '담김 ✓' : '+ 견적 담기';
+    add.addEventListener('click', function () {
+      if (addToBasket(p)) {
+        add.textContent = '담김 ✓';
+        add.classList.add('is-in');
+      }
+      setBasketOpen(true);
+    });
+    foot.appendChild(price);
+    foot.appendChild(add);
+
+    body.appendChild(meta);
+    body.appendChild(h);
+    body.appendChild(spec);
+    body.appendChild(foot);
+    card.appendChild(media);
+    card.appendChild(body);
+    return card;
   }
 
   paintBasket();

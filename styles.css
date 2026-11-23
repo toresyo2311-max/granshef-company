@@ -1644,6 +1644,21 @@ button{font:inherit}
 
 .cat-empty{margin:40px 0;text-align:center;color:var(--ink-soft);font-size:14px}
 .cat-empty a{color:var(--bronze-dp);text-decoration:underline}
+
+/* 점진 렌더링 — "더 보기 (남은 N개)" */
+.cat-more{display:flex;justify-content:center;margin:26px 0 4px}
+.cat-more[hidden]{display:none}
+.cat-more-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:1px solid rgba(23,20,16,.24);background:transparent;border-radius:100px;
+  padding:13px 30px;font:inherit;font-size:13.5px;font-weight:600;letter-spacing:.01em;
+  color:var(--ink);cursor:pointer;transition:.24s var(--ease)}
+.cat-more-btn:hover{border-color:var(--ink);background:rgba(23,20,16,.04);transform:translateY(-1px)}
+.cat-more-btn:active{transform:translateY(0)}
+.cat-more-btn:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+@media (max-width:560px){
+  .cat-more{margin:20px 0 2px}
+  .cat-more-btn{width:100%;padding:13px 18px;font-size:13px}
+}
 .cat-note{margin-top:26px}
 
 .cat-help{background:var(--paper-2);border-top:1px solid var(--line);padding-block:clamp(36px,5vw,56px)}
