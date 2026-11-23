@@ -1877,3 +1877,45 @@ body.basket-lock{overflow:hidden}
   .sum-stat b{font-size:19px}
   .cat-block-media{flex-basis:52px;width:52px;height:52px}
 }
+
+/* =========================================================
+   2026-11-24 · 취급상품 전체 목록 복구 (1,698품목 · 1,268카드)
+   분류 머리글 · 실사진 표시 · 실사진 모아보기
+   ========================================================= */
+#catHead{margin:0 0 16px}
+#catHead[hidden]{display:none}
+#catHead .cat-block-media{flex:0 0 72px;width:72px;height:72px}
+.cat-bar{flex-wrap:wrap}
+.cat-shot-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;
+  border-radius:100px;padding:9px 15px;font:inherit;font-size:12.5px;font-weight:600;color:var(--ink);
+  cursor:pointer;transition:.2s var(--ease);white-space:nowrap}
+.cat-shot-btn:hover{border-color:var(--bronze);color:var(--bronze-dp);transform:translateY(-1px)}
+.cat-shot-btn:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+
+.pcard-media{position:relative}
+.pcard-shot{position:absolute;left:8px;top:8px;z-index:1;background:rgba(23,22,20,.72);color:#f6f2ea;
+  font-size:10.5px;font-weight:700;letter-spacing:.02em;border-radius:100px;padding:2px 8px}
+
+/* 실제 제품 사진 모아보기 */
+.shotdlg{border:0;padding:0;width:min(1080px,calc(100% - 28px));max-height:90vh;
+  border-radius:16px;background:var(--paper);color:var(--ink);box-shadow:0 30px 70px rgba(23,22,20,.3)}
+.shotdlg::backdrop{background:rgba(23,22,20,.6);backdrop-filter:blur(3px)}
+.shotdlg-inner{padding:clamp(18px,2.4vw,26px)}
+.shotdlg-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.shotdlg-head h2{margin:4px 0 6px;font-family:var(--kr-serif);font-size:clamp(17px,2vw,21px);font-weight:600}
+.shotdlg-head p{margin:0;font-size:12.5px;line-height:1.6;color:var(--ink-mute)}
+.shotdlg-head .pdetail-close{position:static;flex:0 0 auto}
+.shot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:12px;
+  max-height:calc(90vh - 140px);overflow-y:auto;padding:2px}
+.shot{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:11px;
+  background:#fff;padding:0;overflow:hidden;cursor:pointer;text-align:left;transition:.2s var(--ease)}
+.shot:hover{border-color:rgba(169,130,79,.55);transform:translateY(-2px);box-shadow:0 10px 22px rgba(25,23,20,.08)}
+.shot img{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--paper-3);display:block}
+.shot-cap{display:flex;flex-direction:column;gap:1px;padding:0 9px 9px;min-width:0}
+.shot-cap strong{font-size:12px;font-weight:600;line-height:1.4;word-break:keep-all;overflow-wrap:anywhere}
+.shot-cap em{font-style:normal;font-size:10.5px;color:var(--ink-mute)}
+@media (max-width:560px){
+  .cat-shot-btn{width:100%;justify-content:center}
+  .shot-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #catHead .cat-block-media{flex:0 0 56px;width:56px;height:56px}
+}
