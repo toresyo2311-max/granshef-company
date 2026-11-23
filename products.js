@@ -325,7 +325,14 @@
       }
       list.push({ b: g.b, base: g.base, c: g.c, variants: vs });
     });
-    if (state.sort === 'name') {
+    if (state.sort === 'photo') {
+      /* 실제 제품 사진이 있는 카드를 먼저 — 사진을 앞에서 바로 보실 수 있게 */
+      list.sort(function (a, b) {
+        var pa = cardPhoto(a.variants).img ? 0 : 1;
+        var pb = cardPhoto(b.variants).img ? 0 : 1;
+        return (pa - pb) || (CAT_ORDER[a.c] - CAT_ORDER[b.c]) || cardTitle(a).localeCompare(cardTitle(b), 'ko');
+      });
+    } else if (state.sort === 'name') {
       list.sort(function (a, b) { return cardTitle(a).localeCompare(cardTitle(b), 'ko'); });
     } else if (state.sort === 'brand') {
       list.sort(function (a, b) {
