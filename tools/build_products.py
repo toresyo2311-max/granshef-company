@@ -574,9 +574,9 @@ TEMPLATE = '''<!doctype html>
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--source', help='전체 품목 catalog.js 경로 (없으면 git 이력에서 읽음)')
-    ap.add_argument('--css', default='20261123f')
-    ap.add_argument('--js', default='20261123f')
-    ap.add_argument('--pjs', default='20261123f')
+    ap.add_argument('--css', default='20261123k')
+    ap.add_argument('--js', default='20261123k')
+    ap.add_argument('--pjs', default='20261123l')
     args = ap.parse_args()
 
     data = load_full(args.source)

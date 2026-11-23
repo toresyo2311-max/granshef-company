@@ -63,20 +63,28 @@
     chipWrap.addEventListener('click', function (e) {
       var btn = e.target.closest('button[data-cat]');
       if (!btn) return;
-      state.cat = btn.getAttribute('data-cat');
+      setCat(btn.getAttribute('data-cat'));
+    });
+  }
+
+  /* 검색은 전체 분류에서 찾는다 — 분류 칩이 눌려 있으면 함께 풀어 준다 */
+  function setCat(key) {
+    state.cat = key;
+    if (chipWrap) {
       Array.prototype.forEach.call(chipWrap.children, function (c) {
-        var on = c === btn;
+        var on = c.getAttribute('data-cat') === key;
         c.classList.toggle('is-on', on);
         c.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
-      render();
-    });
+    }
+    render();
   }
 
   if (qEl) {
     qEl.addEventListener('input', function () {
       state.q = qEl.value.trim().toLowerCase();
       if (qClear) qClear.hidden = !qEl.value;
+      if (state.q && state.cat !== 'all') { setCat('all'); return; }
       render();
     });
   }
