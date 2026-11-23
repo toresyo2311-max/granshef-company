@@ -666,7 +666,8 @@
       tag.textContent = '실사진';
       media.appendChild(tag);
     }
-    media.addEventListener('click', function () { openDetail(view); });
+    /* 카드에 보이는 사진의 규격을 기본 선택해 연다 */
+    media.addEventListener('click', function () { openDetail(view, photo); });
 
     var body = document.createElement('div');
     body.className = 'pcard-body';
@@ -680,7 +681,7 @@
     var nameBtn = document.createElement('button');
     nameBtn.type = 'button';
     nameBtn.textContent = title;
-    nameBtn.addEventListener('click', function () { openDetail(view); });
+    nameBtn.addEventListener('click', function () { openDetail(view, photo); });
     h.appendChild(nameBtn);
 
     var spec = document.createElement('p');
