@@ -74,14 +74,86 @@
   }
   PRODUCTS.forEach(function (p) { p.g = sizeGroups(p); });
 
-  function searchKey(p) {
-    return (p.n + ' ' + p.b + ' ' + specText(p) + ' ' + CAT_LABEL[p.c]).toLowerCase();
+  /* ── 사이즈·규격만 다른 품목 묶기 ───────────────────────────────
+     같은 브랜드에서 품명의 규격 표기(30cm·1.2L·2호·30P·26*20·-1/3 등)만
+     다른 품목은 대표 카드 하나로 묶고, 카드에서 규격을 골라 담는다. */
+  var SIZE_UNIT = '(?:cm|mm|ml|mL|ML|리터|L|호|인치|인용|kg|g|개입|매|P|p)';
+
+  function splitName(name) {
+    var s = String(name);
+    var tags = [];
+    function cut(re) {
+      s = s.replace(re, function (m) { tags.push(m); return ' '; });
+    }
+    /* 145*80*490 같은 치수 */
+    cut(/\(?\d+(?:\.\d+)?\s*[*xX×]\s*\d+(?:\.\d+)?(?:\s*[*xX×]\s*\d+(?:\.\d+)?)?\)?/g);
+    /* 1/3 같은 분수 규격 */
+    cut(/-?\d+\s*\/\s*\d+/g);
+    /* 숫자+단위 (30cm · 1.2L · 2호 · 30P · 4인용) */
+    cut(new RegExp('[-_ ]?\\d+(?:\\.\\d+)?\\s*' + SIZE_UNIT, 'g'));
+    /* (18) 같은 괄호 숫자 */
+    cut(/\(\s*\d+(?:\.\d+)?\s*\)/g);
+    /* -26 · -14양수 처럼 하이픈 뒤 숫자 */
+    cut(/[-_ ]\d+(?:\.\d+)?(?=\s*(?:$|[\-)\s]|A|B|중|대|소|양수|편수|전골))/g);
+    var base = s.replace(/[\s_\-]+/g, ' ').replace(/^[\s\-_()]+/, '').replace(/[\s\-_()]+$/, '');
+    return { base: base, tags: tags };
   }
-  /* 검색어 색인은 첫 검색 때 한 번만 만든다 (타이핑마다 1,698개 문자열 조합 방지) */
-  var KEYS = null;
-  function searchKeys() {
-    if (!KEYS) KEYS = PRODUCTS.map(searchKey);
-    return KEYS;
+
+  function cleanTag(t) {
+    return String(t)
+      .replace(/^[\s\-_()]+/, '').replace(/[\s\-_()]+$/, '')
+      .replace(/\s*[*xX×]\s*/g, '×')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function unitGroup(p) {
+    var s = p.s && p.s[0];
+    if (!s) return 'none';
+    if (s.u === 'cm' || s.u === 'mm') return 'len';
+    if (s.u === 'L' || s.u === 'ml' || s.u === '리터') return 'vol';
+    if (s.u === 'kg' || s.u === 'g') return 'mass';
+    return 'count';
+  }
+
+  function variantLabel(p) {
+    var sp = specText(p);
+    if (sp) return sp;
+    var tags = (META[p.id].tags || []).map(cleanTag).filter(Boolean);
+    return tags.length ? tags.join(' ') : '규격 미표기';
+  }
+
+  var META = {};   /* 품목별 기본명·규격표기 — 원본 데이터는 건드리지 않는다 */
+  function metaOf(p) { return META[p.id]; }
+
+  var GROUPS = [];
+  (function buildGroups() {
+    var byKey = {};
+    PRODUCTS.forEach(function (p) {
+      var sp = splitName(p.n);
+      var m = META[p.id] = { base: sp.base || p.n, tags: sp.tags, vlabel: '' };
+      var key = p.b + '|' + m.base + '|' + unitGroup(p);
+      var g = byKey[key];
+      if (!g) {
+        g = { b: p.b, base: m.base, c: p.c, variants: [], labels: {}, gk: null };
+        byKey[key] = g;
+        GROUPS.push(g);
+      }
+      var lab = variantLabel(p);
+      if (g.labels[lab]) return; /* 같은 규격이 중복 기재된 행은 한 번만 */
+      g.labels[lab] = 1;
+      m.vlabel = lab;
+      g.variants.push(p);
+    });
+  })();
+
+  function groupText(g) {
+    if (g.gk === null) {
+      var parts = [g.base, g.b, CAT_LABEL[g.c]];
+      g.variants.forEach(function (p) { parts.push(p.n, p.code || '', specText(p)); });
+      g.gk = parts.join(' ').toLowerCase();
+    }
+    return g.gk;
   }
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'cat' };
@@ -163,22 +235,36 @@
   var sortSel = $('sortSel');
   if (sortSel) sortSel.addEventListener('change', function () { state.sort = sortSel.value; render(); });
 
+  /* 필터 결과는 "대표 카드" 목록 — variants 안에 선택 가능한 규격이 들어 있다 */
+  function cardTitle(v) {
+    return v.variants.length > 1 ? v.base : v.variants[0].n;
+  }
+
   function filtered() {
-    var keys = state.q ? searchKeys() : null;
-    var list = PRODUCTS.filter(function (p, i) {
-      if (state.cat !== 'all' && p.c !== state.cat) return false;
-      if (state.brand && p.b !== state.brand) return false;
-      if (state.size && !p.g[state.size]) return false;
-      if (keys && keys[i].indexOf(state.q) < 0) return false;
-      return true;
+    var list = [];
+    GROUPS.forEach(function (g) {
+      if (state.cat !== 'all' && g.c !== state.cat) return;
+      if (state.brand && g.b !== state.brand) return;
+      if (state.q && groupText(g).indexOf(state.q) < 0) return;
+      var vs = g.variants;
+      if (state.size) {
+        vs = vs.filter(function (p) { return p.g[state.size]; });
+        if (!vs.length) return;
+      }
+      list.push({ b: g.b, base: g.base, c: g.c, variants: vs });
     });
-    if (state.sort === 'name') list.sort(function (a, b) { return a.n.localeCompare(b.n, 'ko'); });
-    else if (state.sort === 'brand') {
-      list.sort(function (a, b) { return a.b.localeCompare(b.b, 'ko') || a.n.localeCompare(b.n, 'ko'); });
+    if (state.sort === 'name') {
+      list.sort(function (a, b) { return cardTitle(a).localeCompare(cardTitle(b), 'ko'); });
+    } else if (state.sort === 'brand') {
+      list.sort(function (a, b) {
+        return a.b.localeCompare(b.b, 'ko') || cardTitle(a).localeCompare(cardTitle(b), 'ko');
+      });
     } else {
       var order = {};
       CATS.forEach(function (c, i) { order[c.k] = i; });
-      list.sort(function (a, b) { return (order[a.c] - order[b.c]) || a.n.localeCompare(b.n, 'ko'); });
+      list.sort(function (a, b) {
+        return (order[a.c] - order[b.c]) || cardTitle(a).localeCompare(cardTitle(b), 'ko');
+      });
     }
     return list;
   }
@@ -275,29 +361,70 @@
     toInquiry(basket);
   });
 
-  /* ── product detail dialog ───────────────────────────────────── */
+  /* ── product detail dialog (규격 선택 포함) ─────────────────── */
   var dlg = $('pdetail');
   var pdName = $('pdName'), pdBrand = $('pdBrand'), pdCat = $('pdCat'),
       pdSpec = $('pdSpec'), pdBarcode = $('pdBarcode'), pdImg = $('pdImg'),
       pdNote = $('pdNote'), pdAdd = $('pdAdd'), pdAsk = $('pdAsk');
-  var current = null;
+  var pdSizesBox = $('pdSizes'), pdSizeChips = $('pdSizeChips'), pdSizeCount = $('pdSizeCount'),
+      pdVariant = $('pdVariant');
+  var current = null;      /* 열려 있는 카드(대표 카드) */
+  var currentItem = null;  /* 그 카드에서 선택된 규격의 품목 */
 
-  function openDetail(p) {
-    current = p;
-    if (!dlg || !dlg.showModal) return;
-    pdName.textContent = p.n;
+  function paintVariant(p) {
+    var multi = current && current.variants.length > 1;
+    pdName.textContent = multi ? current.base : p.n;
     pdBrand.textContent = p.b;
     pdCat.textContent = CAT_LABEL[p.c];
     pdSpec.textContent = specText(p) || '규격 미표기 — 상담 확인';
     pdBarcode.textContent = '상담 확인 (표기 전 검증 필요)';
+    if (pdVariant) {
+      pdVariant.hidden = !multi;
+      pdVariant.textContent = multi ? p.n : '';
+    }
     pdImg.src = imageFor(p);
     bindImageFallback(pdImg, p);
-    pdImg.alt = p.n + ' — ' + CAT_LABEL[p.c] + ' 제품 이미지';
+    pdImg.alt = p.n + ' — ' + CAT_LABEL[p.c] + (p.img ? ' 제품 이미지' : ' 품목 예시 이미지');
     pdNote.textContent = p.u
       ? '브랜드 공식 홈페이지에 게시된 취급 품목입니다. 실제 재고·규격·납기는 상담으로 확인합니다.'
       : '취급 품목으로 정리된 상품입니다. 실제 재고·규격·납기는 상담으로 확인합니다.';
-    pdAdd.textContent = inBasket(p) ? '담김 ✓' : '견적 담기';
-    pdAsk.onclick = null;
+    pdAdd.textContent = inBasket(p) ? '담김 ✓' : (multi ? '이 규격 견적 담기' : '견적 담기');
+    if (pdSizeChips) {
+      Array.prototype.forEach.call(pdSizeChips.children, function (chip) {
+        var on = chip.getAttribute('data-id') === p.id;
+        chip.classList.toggle('is-on', on);
+        chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+  }
+
+  function selectVariant(p) {
+    if (!p) return;
+    currentItem = p;
+    paintVariant(p);
+  }
+
+  function openDetail(view) {
+    if (!dlg || !dlg.showModal) return;
+    current = view;
+    var vs = view.variants;
+    if (pdSizeChips) pdSizeChips.innerHTML = '';
+    if (pdSizesBox) pdSizesBox.hidden = vs.length < 2;
+    if (pdSizeCount) pdSizeCount.textContent = vs.length > 1 ? '· ' + vs.length + '종' : '';
+    if (vs.length > 1 && pdSizeChips) {
+      vs.forEach(function (p) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'size-chip';
+        chip.setAttribute('data-id', p.id);
+        chip.setAttribute('aria-pressed', 'false');
+        chip.textContent = metaOf(p).vlabel;
+        chip.title = p.n;
+        chip.addEventListener('click', function () { selectVariant(p); });
+        pdSizeChips.appendChild(chip);
+      });
+    }
+    selectVariant(vs[0]);
     dlg.showModal();
   }
 
@@ -309,17 +436,17 @@
     });
   }
   if (pdAdd) pdAdd.addEventListener('click', function () {
-    if (!current) return;
-    var added = addToBasket(current);
+    if (!currentItem) return;
+    var added = addToBasket(currentItem);
     pdAdd.textContent = added ? '담김 ✓' : '이미 담김';
     render(true);
     if (dlg && dlg.open) dlg.close();
     setBasketOpen(true);
   });
   if (pdAsk) pdAsk.addEventListener('click', function (e) {
-    if (!current) return;
+    if (!currentItem) return;
     e.preventDefault();
-    toInquiry([{ n: current.n, b: current.b, c: current.c, s: specText(current) }]);
+    toInquiry([{ n: currentItem.n, b: currentItem.b, c: currentItem.c, s: specText(currentItem) }]);
   });
 
   /* ── render list ─────────────────────────────────────────────── */
@@ -337,9 +464,9 @@
     shown = keepShown ? Math.max(PAGE_SIZE, Math.min(shown, total)) : Math.min(PAGE_SIZE, total);
     grid.innerHTML = '';
     if (countEl) {
-      countEl.innerHTML = '<strong>' + total + '</strong>개 상품' +
+      countEl.innerHTML = '<strong>' + num(total) + '</strong>개 상품' +
         (state.cat !== 'all' ? ' · ' + esc(CAT_LABEL[state.cat]) : '') +
-        ' <span class="cat-count-all">/ 전체 ' + PRODUCTS.length + '개</span>';
+        ' <span class="cat-count-all">/ 전체 ' + num(PRODUCTS.length) + '개 품목</span>';
     }
     if (emptyEl) emptyEl.hidden = total > 0;
     appendCards(list, 0, shown);
@@ -378,14 +505,40 @@
     grid.appendChild(frag);
   }
 
-  function buildCard(p) {
+  /* 대표 카드가 품고 있는 규격 설명 — "8종 · 20cm~34cm" */
+  function sizeSummary(vs) {
+    var nums = [], unit = null, ok = true;
+    vs.forEach(function (p) {
+      var s = p.s && p.s[0];
+      if (!s || typeof s.v !== 'number' || (s.u !== 'cm' && s.u !== 'mm' && s.u !== 'L' && s.u !== 'ml')) ok = false;
+      else {
+        if (unit && unit !== s.u) ok = false;
+        unit = s.u;
+        nums.push(s.v);
+      }
+    });
+    if (ok && nums.length) {
+      var mn = Math.min.apply(null, nums), mx = Math.max.apply(null, nums);
+      var u = unit === 'mm' ? 'mm' : unit;
+      return mn === mx ? mn + u : mn + u + '~' + mx + u;
+    }
+    var labels = vs.map(function (p) { return metaOf(p).vlabel; });
+    return labels.slice(0, 3).join(' · ') + (labels.length > 3 ? ' 외' : '');
+  }
+
+  function buildCard(view) {
+    var vs = view.variants;
+    var multi = vs.length > 1;
+    var p = vs[0];
+    var title = multi ? view.base : p.n;
     var card = document.createElement('article');
-    card.className = 'pcard';
+    card.className = 'pcard' + (multi ? ' pcard-group' : '');
+    card.setAttribute('data-group', multi ? '1' : '0');
 
     var media = document.createElement('button');
     media.type = 'button';
     media.className = 'pcard-media';
-    media.setAttribute('aria-label', p.n + ' 상세 보기');
+    media.setAttribute('aria-label', title + ' 상세 보기');
     var img = document.createElement('img');
     img.src = imageFor(p);
     bindImageFallback(img, p);
@@ -394,7 +547,7 @@
     img.loading = 'lazy';
     img.decoding = 'async';
     media.appendChild(img);
-    media.addEventListener('click', function () { openDetail(p); });
+    media.addEventListener('click', function () { openDetail(view); });
 
     var body = document.createElement('div');
     body.className = 'pcard-body';
@@ -407,13 +560,17 @@
     h.className = 'pcard-name';
     var nameBtn = document.createElement('button');
     nameBtn.type = 'button';
-    nameBtn.textContent = p.n;
-    nameBtn.addEventListener('click', function () { openDetail(p); });
+    nameBtn.textContent = title;
+    nameBtn.addEventListener('click', function () { openDetail(view); });
     h.appendChild(nameBtn);
 
     var spec = document.createElement('p');
     spec.className = 'pcard-spec';
-    spec.textContent = specText(p) ? '규격 ' + specText(p) : '규격 상담 확인';
+    if (multi) {
+      spec.innerHTML = '<span class="pcard-size-badge">규격 ' + vs.length + '종</span> ' + esc(sizeSummary(vs));
+    } else {
+      spec.textContent = specText(p) ? '규격 ' + specText(p) : '규격 상담 확인';
+    }
 
     var foot = document.createElement('div');
     foot.className = 'pcard-foot';
@@ -422,15 +579,21 @@
     price.textContent = '가격 상담';
     var add = document.createElement('button');
     add.type = 'button';
-    add.className = 'pcard-add' + (inBasket(p) ? ' is-in' : '');
-    add.textContent = inBasket(p) ? '담김 ✓' : '+ 견적 담기';
-    add.addEventListener('click', function () {
-      if (addToBasket(p)) {
-        add.textContent = '담김 ✓';
-        add.classList.add('is-in');
-      }
-      setBasketOpen(true);
-    });
+    if (multi) {
+      add.className = 'pcard-add is-pick';
+      add.textContent = '규격 선택';
+      add.addEventListener('click', function () { openDetail(view); });
+    } else {
+      add.className = 'pcard-add' + (inBasket(p) ? ' is-in' : '');
+      add.textContent = inBasket(p) ? '담김 ✓' : '+ 견적 담기';
+      add.addEventListener('click', function () {
+        if (addToBasket(p)) {
+          add.textContent = '담김 ✓';
+          add.classList.add('is-in');
+        }
+        setBasketOpen(true);
+      });
+    }
     foot.appendChild(price);
     foot.appendChild(add);
 

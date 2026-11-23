@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+KR:wght@300;400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261123c">
+<link rel="stylesheet" href="styles.css?v=20261123d">
 </head>
 <body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
@@ -140,6 +140,7 @@
       </p>
 
       <p class="grid-note cat-note">
+        ※ 같은 상품에서 <strong>사이즈·규격만 다른 품목</strong>은 카드 하나로 묶었습니다. 카드를 누르면 담을 규격을 고를 수 있습니다.<br>
         ※ 상품 이미지는 <strong>품목 예시 이미지 또는 브랜드 공식 홈페이지의 제품 이미지</strong>이며, 실제 제품과 다를 수 있습니다.
         표기된 규격은 상품명에 포함된 기준이며, 규격이 표기되지 않은 상품은 상담으로 확인해 주세요.
         원가·공급가·거래처 정보는 게시하지 않습니다.
@@ -188,6 +189,11 @@
     <div class="pdetail-body">
       <p class="pdetail-cat" id="pdCat"></p>
       <h2 class="pdetail-name" id="pdName"></h2>
+      <p class="pdetail-variant" id="pdVariant" hidden></p>
+      <div class="pdetail-sizes" id="pdSizes" hidden>
+        <p class="pdetail-sizes-title">규격 선택 <span class="pdetail-sizes-n" id="pdSizeCount"></span></p>
+        <div class="pdetail-size-chips" id="pdSizeChips" role="group" aria-label="규격 선택"></div>
+      </div>
       <dl class="pdetail-facts">
         <div><dt>브랜드</dt><dd id="pdBrand"></dd></div>
         <div><dt>규격</dt><dd id="pdSpec"></dd></div>
@@ -247,6 +253,6 @@
 
 <script src="assets/catalog.js?v=20261123a" defer></script>
 <script src="script.js?v=20261123a" defer></script>
-<script src="products.js?v=20261123c" defer></script>
+<script src="products.js?v=20261123d" defer></script>
 </body>
 </html>
