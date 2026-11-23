@@ -77,7 +77,7 @@
   /* ── 사이즈·규격만 다른 품목 묶기 ───────────────────────────────
      같은 브랜드에서 품명의 규격 표기(30cm·1.2L·2호·30P·26*20·-1/3 등)만
      다른 품목은 대표 카드 하나로 묶고, 카드에서 규격을 골라 담는다. */
-  var SIZE_UNIT = '(?:cm|mm|ml|mL|ML|리터|L|호|인치|인용|kg|g|개입|매|P|p)';
+  var SIZE_UNIT = '(?:cm|CM|mm|MM|ml|mL|ML|리터|kg|KG|Kg|g|G|L|P|p|호|인치|인용|개입|매)';
 
   function splitName(name) {
     var s = String(name);
@@ -95,7 +95,13 @@
     cut(/\(\s*\d+(?:\.\d+)?\s*\)/g);
     /* -26 · -14양수 처럼 하이픈 뒤 숫자 */
     cut(/[-_ ]\d+(?:\.\d+)?(?=\s*(?:$|[\-)\s]|A|B|중|대|소|양수|편수|전골))/g);
-    var base = s.replace(/[\s_\-]+/g, ' ').replace(/^[\s\-_()]+/, '').replace(/[\s\-_()]+$/, '');
+    var base = s.replace(/[\s_\-]+/g, ' ')
+      .replace(/^[\s\-_]+/, '')
+      .replace(/\(\s*\)/g, ' ')
+      .replace(/[\s\-_]+$/, '')
+      .replace(/\s*\($/, '')
+      .replace(/[\s\-_]+$/, '')
+      .trim();
     return { base: base, tags: tags };
   }
 
@@ -145,7 +151,24 @@
       m.vlabel = lab;
       g.variants.push(p);
     });
+    /* 규격이 작은 순서로 — 카드 기본 선택과 칩 순서가 자연스럽게 */
+    GROUPS.forEach(function (g) {
+      if (g.variants.length < 2) return;
+      g.variants.sort(function (a, b) {
+        var x = sizeValue(a), y = sizeValue(b);
+        if (x !== null && y !== null && x !== y) return x - y;
+        return String(metaOf(a).vlabel).localeCompare(String(metaOf(b).vlabel), 'ko');
+      });
+    });
   })();
+
+  function sizeValue(p) {
+    var s = p.s && p.s[0];
+    if (!s) return null;
+    var v = parseFloat(s.v);
+    if (isNaN(v)) return null;
+    return s.u === 'mm' ? v / 10 : v;
+  }
 
   function groupText(g) {
     if (g.gk === null) {
