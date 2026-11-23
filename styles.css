@@ -1781,3 +1781,97 @@ body.basket-lock{overflow:hidden}
 .hero-lead,.cat-lead,.cat-scope,.products-cta-txt span,.cat-help p{word-break:keep-all;overflow-wrap:break-word}
 .pcard-name{word-break:keep-all;overflow-wrap:anywhere}
 .about-body p,.sec-lead,.b2b .faq-a p{word-break:keep-all}
+
+/* =========================================================
+   2026-11-23 · 취급상품 요약 (products.html)
+   브랜드 16곳 · 분류별 대표 품목 76개
+   ========================================================= */
+.sum-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:26px 0 22px;max-width:760px}
+.sum-stat{background:var(--paper);padding:16px 18px}
+.sum-stat b{display:block;font-size:clamp(20px,2.6vw,27px);font-weight:700;line-height:1.15;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.sum-stat span{display:block;margin-top:4px;font-size:11.5px;color:var(--ink-mute);letter-spacing:.02em}
+@media (max-width:560px){
+  .sum-stats{grid-template-columns:repeat(2,1fr)}
+  .sum-stat{padding:14px 15px}
+}
+
+.sum-sec{padding-block:clamp(30px,4.4vw,54px);border-top:1px solid var(--line)}
+.sum-head{margin-bottom:clamp(18px,2.4vw,28px)}
+.sum-head .section-title{margin:0 0 10px}
+.sum-head .sec-lead{margin:0}
+
+/* 브랜드 요약 카드 */
+.bsum-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px}
+.bsum{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:18px 18px 16px;transition:.24s var(--ease)}
+.bsum:hover{border-color:rgba(154,122,70,.45);box-shadow:0 14px 30px rgba(25,23,20,.06)}
+.bsum-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.bsum-name{margin:0;font-family:var(--kr-serif);font-size:17.5px;font-weight:600;letter-spacing:-.01em}
+.bsum-n{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--bronze-dp);
+  background:rgba(154,122,70,.1);border-radius:100px;padding:2px 9px;font-variant-numeric:tabular-nums}
+.bsum-lines{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+.bsum-lines li{position:relative;padding-left:11px;font-size:13px;color:var(--ink-soft);line-height:1.65}
+.bsum-lines li::before{content:"·";position:absolute;left:0;top:-1px;color:var(--bronze);font-weight:700}
+.bsum-note{margin:0;font-size:11.5px;line-height:1.65;color:var(--ink-mute)}
+.bsum-link{margin-top:auto;padding-top:6px;font-size:12.5px}
+
+/* 분류별 대표 품목 */
+.cat-blocks{display:flex;flex-direction:column;gap:clamp(22px,3vw,34px)}
+.cat-block{display:grid;grid-template-columns:232px 1fr;gap:clamp(18px,2.6vw,32px);
+  padding-top:clamp(20px,2.6vw,28px);border-top:1px solid var(--line)}
+.cat-block[hidden]{display:none}
+.cat-blocks>.cat-block:first-child{border-top:0;padding-top:0}
+.cat-block-media{margin:0 0 12px;border-radius:12px;overflow:hidden;background:var(--paper-3);
+  border:1px solid var(--line);aspect-ratio:1/1}
+.cat-block-media img{width:100%;height:100%;object-fit:cover;display:block}
+.cat-block-head h3{margin:0 0 6px;font-family:var(--kr-serif);font-size:clamp(17px,2vw,20px);font-weight:600}
+.cat-block-head h3 span{font-size:12px;font-weight:700;color:var(--bronze-dp);margin-left:5px;
+  font-family:var(--sans);font-variant-numeric:tabular-nums}
+.cat-block-head>p{margin:0;font-size:12.5px;line-height:1.7;color:var(--ink-mute)}
+
+.prows{display:flex;flex-direction:column}
+.prow{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.prow:last-child{border-bottom:0}
+.prow[hidden]{display:none}
+.prow-media{flex:0 0 62px;width:62px;height:62px;padding:0;border:1px solid var(--line);border-radius:9px;
+  overflow:hidden;background:var(--paper-3);cursor:pointer}
+.prow-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s var(--ease)}
+.prow-media:hover img{transform:scale(1.06)}
+.prow-body{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+.prow-meta{margin:0;display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink-mute)}
+.prow-meta b{color:var(--bronze-dp);font-weight:700}
+.prow-meta span{position:relative;padding-left:8px}
+.prow-meta span::before{content:"";position:absolute;left:0;top:50%;width:2px;height:2px;
+  border-radius:50%;background:var(--line);transform:translateY(-50%)}
+.prow-name{margin:0;font-size:14.5px;line-height:1.4;font-weight:600;letter-spacing:-.01em}
+.prow-name button{border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer;
+  word-break:keep-all;overflow-wrap:anywhere}
+.prow-name button:hover{color:var(--bronze-dp)}
+.prow-spec{margin:0;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-soft);
+  font-variant-numeric:tabular-nums}
+.prow-dot{color:var(--ink-mute)}
+.prow-price{margin-left:auto;font-size:11.5px;color:var(--ink-mute);white-space:nowrap}
+.prow-add{flex:0 0 auto;border:1px solid var(--line);background:var(--paper);border-radius:100px;
+  padding:8px 13px;font:inherit;font-size:12px;font-weight:600;color:var(--ink);cursor:pointer;
+  white-space:nowrap;transition:.2s var(--ease)}
+.prow-add:hover{background:var(--char);color:var(--paper);border-color:var(--char)}
+.prow-add.is-in{background:rgba(154,122,70,.12);border-color:var(--bronze);color:var(--bronze-dp)}
+#items .cat-tools{align-items:stretch}
+#items .cat-tools .cat-basket-btn{align-self:flex-end;margin-bottom:1px}
+#items .cat-count{margin:0 0 16px}
+
+@media (max-width:860px){
+  .cat-block{grid-template-columns:1fr;gap:14px}
+  .cat-block-media{display:none}
+  .bsum-grid{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .prow{gap:11px;padding:10px 0}
+  .prow-media{flex-basis:52px;width:52px;height:52px}
+  .prow-name{font-size:13.5px}
+  .prow-add{padding:7px 11px;font-size:11.5px}
+  .prow-price{display:none}
+  .sum-stat b{font-size:19px}
+}
