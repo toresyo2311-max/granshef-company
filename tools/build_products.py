@@ -263,18 +263,18 @@ def row_html(r):
     spec = ('<span class="prow-dot">·</span>' + E(r['spec'])) if r['spec'] else ''
     cap = '실제 제품 사진' if r['kind'] == 'real' else '품목 예시 이미지'
     return (
-        '            <article class="prow" data-cat="%(cat)s" data-brand="%(brand)s" data-name="%(name)s"'
+        '              <article class="prow" data-cat="%(cat)s" data-brand="%(brand)s" data-name="%(name)s"'
         ' data-spec="%(spec)s" data-img="%(img)s" data-kind="%(kind)s">\n'
-        '              <button class="prow-media" type="button" aria-label="%(name)s 사진 크게 보기">\n'
-        '                <img src="%(img)s" alt="%(name)s — %(catlabel)s %(cap)s" width="1100" height="1100" loading="lazy" decoding="async">\n'
-        '              </button>\n'
-        '              <div class="prow-body">\n'
-        '                <p class="prow-meta"><b>%(brand)s</b><span>%(catlabel)s</span></p>\n'
-        '                <h4 class="prow-name"><button type="button">%(name)s</button></h4>\n'
-        '                <p class="prow-spec">%(specblock)s<span class="prow-price">가격 상담</span></p>\n'
-        '              </div>\n'
-        '              <button class="prow-add" type="button">+ 견적 담기</button>\n'
-        '            </article>' % {
+        '                <button class="prow-media" type="button" aria-label="%(name)s 사진 크게 보기">\n'
+        '                  <img src="%(img)s" alt="%(name)s — %(catlabel)s %(cap)s" width="1100" height="1100" loading="lazy" decoding="async">\n'
+        '                </button>\n'
+        '                <div class="prow-body">\n'
+        '                  <p class="prow-meta"><b>%(brand)s</b></p>\n'
+        '                  <h4 class="prow-name"><button type="button">%(name)s</button></h4>\n'
+        '                  <p class="prow-spec">%(specblock)s</p>\n'
+        '                </div>\n'
+        '                <button class="prow-add" type="button">+ 견적 담기</button>\n'
+        '              </article>' % {
             'cat': r['cat'], 'brand': E(r['brand']), 'name': E(r['name']),
             'spec': E(r['spec']), 'img': r['img'], 'kind': r['kind'],
             'catlabel': E(CAT_LABEL[r['cat']]), 'cap': cap, 'specblock': spec,
@@ -289,14 +289,16 @@ def cat_blocks(rows):
             continue
         body = '\n'.join(row_html(r) for r in mine)
         out.append(
-            '        <article class="cat-block reveal" data-block="%s">\n'
-            '          <div class="cat-block-head">\n'
-            '            <figure class="cat-block-media"><img src="assets/products/%s" alt="%s 예시" width="1100" height="1100" loading="lazy" decoding="async"></figure>\n'
-            '            <h3>%s <span>%d</span></h3>\n'
-            '            <p>%s</p>\n'
-            '          </div>\n'
-            '          <div class="prows">\n%s\n          </div>\n'
-            '        </article>' % (cat, img, E(label), E(label), len(mine), E(desc), body))
+            '          <article class="cat-block reveal" data-block="%s">\n'
+            '            <div class="cat-block-head">\n'
+            '              <figure class="cat-block-media"><img src="assets/products/%s" alt="%s 예시" width="1100" height="1100" loading="lazy" decoding="async"></figure>\n'
+            '              <div class="cat-block-txt">\n'
+            '                <h3>%s <span>%d개 품목</span></h3>\n'
+            '                <p>%s</p>\n'
+            '              </div>\n'
+            '            </div>\n'
+            '            <div class="prows">\n%s\n            </div>\n'
+            '          </article>' % (cat, img, E(label), E(label), len(mine), E(desc), body))
     return '\n'.join(out)
 
 

@@ -13,11 +13,11 @@
   var chipWrap = $('catChips'), qEl = $('q'), qClear = $('qClear');
   var state = { q: '', cat: 'all' };
 
-  /* 카테고리 한글 이름 — 행의 meta에서 그대로 읽어 쓴다 */
+  /* 카테고리 한글 이름 — 분류 블록 제목에서 그대로 읽어 쓴다 */
   var catLabelOf = {};
-  rows.forEach(function (r) {
-    var span = r.querySelector('.prow-meta span');
-    if (span) catLabelOf[r.getAttribute('data-cat')] = span.textContent.trim();
+  blocks.forEach(function (b) {
+    var h = b.querySelector('h3');
+    if (h && h.firstChild) catLabelOf[b.getAttribute('data-block')] = h.firstChild.textContent.trim();
   });
 
   function info(r) {
@@ -51,9 +51,13 @@
       b.hidden = !any;
     });
     if (countEl) {
-      countEl.innerHTML = '<strong>' + shown + '</strong>개 품목' +
-        (state.cat !== 'all' ? ' · ' + (catLabelOf[state.cat] || '') : '') +
-        ' <span class="cat-count-all">/ 대표 품목 ' + rows.length + '개</span>';
+      if (state.cat === 'all' && !state.q) {
+        countEl.innerHTML = '대표 품목 <strong>' + rows.length + '</strong>개';
+      } else {
+        countEl.innerHTML = '<strong>' + shown + '</strong>개 품목' +
+          (state.cat !== 'all' ? ' · ' + (catLabelOf[state.cat] || '') : '') +
+          ' <span class="cat-count-all">/ 대표 품목 ' + rows.length + '개</span>';
+      }
     }
     if (emptyEl) emptyEl.hidden = shown > 0;
     if (grid) grid.classList.toggle('is-empty', shown === 0);
