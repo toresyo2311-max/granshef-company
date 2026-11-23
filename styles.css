@@ -1910,7 +1910,7 @@ body.basket-lock{overflow:hidden}
 .shot{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:11px;
   background:#fff;padding:0;overflow:hidden;cursor:pointer;text-align:left;transition:.2s var(--ease)}
 .shot:hover{border-color:rgba(169,130,79,.55);transform:translateY(-2px);box-shadow:0 10px 22px rgba(25,23,20,.08)}
-.shot img{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--paper-3);display:block}
+.shot img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;background:var(--paper-3);display:block}
 .shot-cap{display:flex;flex-direction:column;gap:1px;padding:0 9px 9px;min-width:0}
 .shot-cap strong{font-size:12px;font-weight:600;line-height:1.4;word-break:keep-all;overflow-wrap:anywhere}
 .shot-cap em{font-style:normal;font-size:10.5px;color:var(--ink-mute)}
