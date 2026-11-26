@@ -590,7 +590,11 @@
       PRODUCTS.forEach(function (p) {
         if (!p.img || seenImg[p.img]) return; /* 한 규격 그룹이 함께 쓰는 사진은 한 번만 */
         seenImg[p.img] = 1;
-        var same = PRODUCTS.filter(function (x) { return x.img === p.img; });
+        var same = PRODUCTS.filter(function (x) { return x.img === p.img; }).sort(function (a, b) {
+          var x = sizeValue(a), y = sizeValue(b);
+          if (x !== null && y !== null && x !== y) return x - y;
+          return 0;
+        });
         var shotName = same.length > 1 ? metaOf(p).base : p.n;
         var fig = document.createElement('button');
         fig.type = 'button';
