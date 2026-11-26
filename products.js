@@ -1,5 +1,5 @@
 /* 주식회사 그랑쉐프 — 취급 상품 카탈로그
-   전체 1,698품목(assets/catalog.js)을 사이즈·규격만 다른 품목끼리 묶어 1,267개 카드로 보여 준다.
+   전체 1,698품목(assets/catalog.js)을 사이즈·규격만 다른 품목끼리 묶어 1,265개 카드로 보여 준다.
    검색·분류·브랜드·규격 필터, 60개씩 점진 렌더링(더 보기), 품목 상세(규격 선택),
    실제 제품 사진 295컷 모아보기, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
 (function () {
@@ -146,14 +146,16 @@
       p.id = (p.bn || '') + '-' + i;
       var sp = splitName(p.n);
       var m = META[p.id] = { base: sp.base || p.n, tags: sp.tags, vlabel: '' };
-      var key = p.b + '|' + m.base + '|' + unitGroup(p);
+      /* ser(시리즈 그룹 이름)가 있으면 품명이 달라도 한 카드로 묶는다 */
+      var base = p.ser || m.base;
+      var key = p.b + '|' + base + '|' + unitGroup(p);
       var g = byKey[key];
       if (!g) {
-        g = { b: p.b, base: m.base, c: p.c, variants: [], labels: {}, gk: null };
+        g = { b: p.b, base: base, c: p.c, variants: [], labels: {}, gk: null };
         byKey[key] = g;
         GROUPS.push(g);
       }
-      var lab = variantLabel(p);
+      var lab = p.vl || variantLabel(p);
       if (g.labels[lab]) return; /* 같은 규격이 중복 기재된 행은 한 번만 */
       g.labels[lab] = 1;
       m.vlabel = lab;
@@ -188,9 +190,11 @@
     return g.gk;
   }
 
-  /* 카드 대표 이미지 — 묶인 규격 가운데 실제 제품 사진이 있으면 그것을 먼저 쓴다 */
+  /* 카드 대표 이미지 — 대표로 지정된 사진(rep) → 묶인 규격 가운데 실제 제품 사진 → 첫 규격 */
   function cardPhoto(vs) {
-    for (var i = 0; i < vs.length; i += 1) if (vs[i].img) return vs[i];
+    var i;
+    for (i = 0; i < vs.length; i += 1) if (vs[i].rep && vs[i].img) return vs[i];
+    for (i = 0; i < vs.length; i += 1) if (vs[i].img) return vs[i];
     return vs[0];
   }
 
@@ -201,7 +205,7 @@
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'cat' };
 
-  /* 한 번에 그리는 카드 수 — 1,267개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  /* 한 번에 그리는 카드 수 — 1,265개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
   var shown = PAGE_SIZE;
   var lastList = null;
