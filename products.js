@@ -254,7 +254,7 @@
   PRODUCTS.forEach(function (p) { if (p.img) SHOT_IMG[p.img] = 1; });
   var SHOT_COUNT = Object.keys(SHOT_IMG).length;
 
-  var state = { q: '', cat: 'all', brand: '', size: '', sort: 'cat' };
+  var state = { q: '', cat: 'all', brand: '', size: '', sort: 'photo' }; /* 기본: 실사진 우선 */
 
   /* 한 번에 그리는 카드 수 — 1,242개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
@@ -416,12 +416,19 @@
     try { window.localStorage.setItem(KEY, JSON.stringify(basket)); } catch (e) {}
     paintCount();
   }
+  /* 취급문의 품목인지 — 담을 때 표시(q)를 저장하되, 그 전에 담아 둔 바구니도
+     현재 카탈로그에서 다시 확인해 표시가 빠지지 않게 한다 */
+  var INQ_LOOKUP = {};
+  PRODUCTS.forEach(function (p) { if (p.inq) INQ_LOOKUP[p.b + '|' + p.n] = 1; });
+  function isInqItem(it) {
+    return it.q === 1 || INQ_LOOKUP[it.b + '|' + it.n] === 1;
+  }
   function inBasket(p) {
     return basket.some(function (x) { return x.n === p.n && x.b === p.b; });
   }
   function addToBasket(p) {
     if (inBasket(p)) return false;
-    basket.push({ n: p.n, b: p.b, c: p.c, s: specText(p) });
+    basket.push({ n: p.n, b: p.b, c: p.c, s: specText(p), q: p.inq ? 1 : 0 });
     saveBasket();
     paintBasket();
     return true;
@@ -438,24 +445,39 @@
     if (b) b.classList.toggle('has-items', basket.length > 0);
   }
 
-  var basketEl = $('basket'), basketList = $('basketList'), basketEmpty = $('basketEmpty');
+  var basketEl = $('basket'), basketList = $('basketList'), basketEmpty = $('basketEmpty'),
+      basketInq = $('basketInq');
   function paintBasket() {
     if (!basketList) return;
     basketList.innerHTML = '';
+    var inqCount = 0;
     basket.forEach(function (it, i) {
+      var inq = isInqItem(it);
+      if (inq) inqCount += 1;
       var li = document.createElement('li');
+      li.className = inq ? 'is-inq' : '';
       var txt = document.createElement('span');
       txt.className = 'bl-txt';
+      var nameLine = document.createElement('span');
+      nameLine.className = 'bl-name';
       var strong = document.createElement('strong');
       strong.textContent = it.n;
+      nameLine.appendChild(strong);
+      if (inq) {
+        var tag = document.createElement('span');
+        tag.className = 'bl-inq';
+        tag.textContent = '취급문의';
+        tag.title = '공장 재고 확인 후 발주 가능한 품목입니다.';
+        nameLine.appendChild(tag);
+      }
       var meta = document.createElement('em');
       meta.textContent = it.b + (it.s ? ' · ' + it.s : '');
-      txt.appendChild(strong);
+      txt.appendChild(nameLine);
       txt.appendChild(meta);
       var by = document.createElement('button');
       by.type = 'button';
       by.className = 'bl-del';
-      by.setAttribute('aria-label', it.n + ' 삭제');
+      by.setAttribute('aria-label', it.n + (inq ? ' (취급문의)' : '') + ' 삭제');
       by.textContent = '✕';
       by.addEventListener('click', function () { removeFromBasket(i); });
       li.appendChild(txt);
@@ -463,6 +485,10 @@
       basketList.appendChild(li);
     });
     if (basketEmpty) basketEmpty.hidden = basket.length > 0;
+    if (basketInq) {
+      basketInq.hidden = inqCount === 0;
+      basketInq.textContent = '취급문의 ' + inqCount + '건이 담겨 있습니다. 취급문의 품목은 공장 재고 확인 후 발주 가능하며, 규격·납기는 상담으로 확인해 드립니다.';
+    }
     paintCount();
   }
 
@@ -485,7 +511,10 @@
   /* ── 견적 목록을 문의 폼으로 넘긴다 ─────────────────────────── */
   function toInquiry(items) {
     var payload = items.map(function (it) {
-      return { n: it.n, b: it.b, c: CAT_LABEL[it.c] || it.c || '', s: it.s || '' };
+      return {
+        n: it.n, b: it.b, c: CAT_LABEL[it.c] || it.c || '', s: it.s || '',
+        q: isInqItem(it) ? 1 : 0
+      };
     });
     try { window.sessionStorage.setItem('gc_quote_items', JSON.stringify(payload)); } catch (e) {}
     window.location.href = 'index.html#contact';
@@ -587,7 +616,10 @@
   if (pdAsk) pdAsk.addEventListener('click', function (e) {
     if (!currentItem) return;
     e.preventDefault();
-    toInquiry([{ n: currentItem.n, b: currentItem.b, c: currentItem.c, s: specText(currentItem) }]);
+    toInquiry([{
+      n: currentItem.n, b: currentItem.b, c: currentItem.c, s: specText(currentItem),
+      q: currentItem.inq ? 1 : 0
+    }]);
   });
 
   /* ── 실제 제품 사진 모아보기 (463컷) ─────────────────────────── */

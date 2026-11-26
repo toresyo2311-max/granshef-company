@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+KR:wght@300;400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261124b">
+<link rel="stylesheet" href="styles.css?v=20261126m">
 </head>
 <body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
@@ -304,8 +304,8 @@
           <label class="cat-field">
             <span>정렬</span>
             <select id="sortSel" aria-label="정렬">
+              <option value="photo" selected>실사진 우선</option>
               <option value="cat">분류순</option>
-              <option value="photo">사진 있는 품목 먼저</option>
               <option value="name">품목명순</option>
               <option value="brand">브랜드순</option>
             </select>
@@ -374,6 +374,7 @@
   <p class="basket-lead">담은 품목을 한 번에 묶어 견적을 문의합니다. 가격은 상담으로 안내됩니다.</p>
   <ul class="basket-list" id="basketList"></ul>
   <p class="basket-empty" id="basketEmpty">담긴 품목이 없습니다. 품목 오른쪽의 <strong>견적 담기</strong>를 눌러 주세요.</p>
+  <p class="basket-inq" id="basketInq" hidden></p>
   <div class="basket-actions">
     <button class="btn btn-primary btn-block" id="quoteGo" type="button">이 품목들로 묶음 견적 문의</button>
     <button class="btn btn-ghost btn-block" id="basketClear" type="button">바구니 비우기</button>
@@ -468,7 +469,7 @@
 </footer>
 
 <script src="assets/catalog.js?v=20261126l" defer></script>
-<script src="script.js?v=20261124a" defer></script>
-<script src="products.js?v=20261126l" defer></script>
+<script src="script.js?v=20261126m" defer></script>
+<script src="products.js?v=20261126m" defer></script>
 </body>
 </html>

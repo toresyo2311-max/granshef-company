@@ -840,10 +840,16 @@
         var msgEl = form.querySelector('[name="message"]');
         var brandEl = form.querySelector('[name="brand"]');
         var lines = ['[' + (items.length > 1 ? '상품 묶음 견적 문의' : '상품 견적 문의') + '] ' + items.length + '건', ''];
+        var inqN = 0;
         items.forEach(function (it, i) {
-          lines.push('· 상품 ' + (i + 1) + ' : ' + it.n +
+          var inq = it.q === 1 || it.q === true;
+          if (inq) inqN += 1;
+          lines.push('· 상품 ' + (i + 1) + ' : ' + it.n + (inq ? ' (취급문의)' : '') +
             (it.b ? ' (' + it.b + (it.s ? ' · ' + it.s : '') + ')' : ''));
         });
+        if (inqN) {
+          lines.push('', '· 취급문의 ' + inqN + '건 : 공장 재고 확인 후 발주 가능한 품목입니다. 규격·납기는 상담으로 확인해 주세요.');
+        }
         lines.push('', '· 업체 / 매장 : ', '· 수량 : ', '· 납품 장소 : ', '· 희망 납기 : ');
         if (msgEl) {
           msgEl.value = lines.join('\n');
