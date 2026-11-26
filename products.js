@@ -1,7 +1,7 @@
 /* 주식회사 그랑쉐프 — 취급 상품 카탈로그
-   전체 1,698품목(assets/catalog.js)을 사이즈·규격만 다른 품목끼리 묶어 1,268개 카드로 보여 준다.
+   전체 1,698품목(assets/catalog.js)을 사이즈·규격만 다른 품목끼리 묶어 1,267개 카드로 보여 준다.
    검색·분류·브랜드·규격 필터, 60개씩 점진 렌더링(더 보기), 품목 상세(규격 선택),
-   실제 제품 사진 291컷 모아보기, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
+   실제 제품 사진 295컷 모아보기, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
 (function () {
   'use strict';
 
@@ -194,11 +194,14 @@
     return vs[0];
   }
 
-  var SHOT_COUNT = PRODUCTS.filter(function (p) { return p.img; }).length;
+  /* 사진 컷 수 — 같은 시리즈 규격(예: 6·8·10인용)에 같은 사진을 함께 쓰므로 파일 기준으로 센다 */
+  var SHOT_IMG = {};
+  PRODUCTS.forEach(function (p) { if (p.img) SHOT_IMG[p.img] = 1; });
+  var SHOT_COUNT = Object.keys(SHOT_IMG).length;
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'cat' };
 
-  /* 한 번에 그리는 카드 수 — 1,268개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  /* 한 번에 그리는 카드 수 — 1,267개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
   var shown = PAGE_SIZE;
   var lastList = null;
@@ -523,30 +526,34 @@
     toInquiry([{ n: currentItem.n, b: currentItem.b, c: currentItem.c, s: specText(currentItem) }]);
   });
 
-  /* ── 실제 제품 사진 모아보기 (291컷) ─────────────────────────── */
+  /* ── 실제 제품 사진 모아보기 (295컷) ─────────────────────────── */
   var shotDlg = $('shotGallery'), shotGrid = $('shotGrid');
   var shotBuilt = false;
   function openGallery() {
     if (!shotDlg || !shotDlg.showModal) return;
     if (!shotBuilt && shotGrid) {
       var frag = document.createDocumentFragment();
+      var seenImg = {};
       PRODUCTS.forEach(function (p) {
-        if (!p.img) return;
+        if (!p.img || seenImg[p.img]) return; /* 한 규격 그룹이 함께 쓰는 사진은 한 번만 */
+        seenImg[p.img] = 1;
+        var same = PRODUCTS.filter(function (x) { return x.img === p.img; });
+        var shotName = same.length > 1 ? metaOf(p).base : p.n;
         var fig = document.createElement('button');
         fig.type = 'button';
         fig.className = 'shot';
         var im = document.createElement('img');
         im.src = p.img;
-        im.alt = p.n + ' — ' + (CAT_LABEL[p.c] || '') + ' 실제 제품 사진';
+        im.alt = shotName + ' — ' + (CAT_LABEL[p.c] || '') + ' 실제 제품 사진';
         im.width = 1100; im.height = 1100;
         im.loading = 'lazy';
         im.decoding = 'async';
         var cap = document.createElement('span');
         cap.className = 'shot-cap';
         var strong = document.createElement('strong');
-        strong.textContent = p.n;
+        strong.textContent = shotName;
         var em = document.createElement('em');
-        em.textContent = p.b + ' · ' + (CAT_LABEL[p.c] || '');
+        em.textContent = p.b + ' · ' + (CAT_LABEL[p.c] || '') + (same.length > 1 ? ' · ' + sizeSummary(same) : '');
         cap.appendChild(strong);
         cap.appendChild(em);
         fig.appendChild(im);
