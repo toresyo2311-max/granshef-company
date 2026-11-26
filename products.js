@@ -1,8 +1,8 @@
 /* 주식회사 그랑쉐프 — 취급 상품 카탈로그
    전체 1,698품목(assets/catalog.js)을 같은 시리즈의 사이즈·규격·형태(편수·양수·전골·곰솥 · 프라이팬·웍·궁중팬)만 다른 품목끼리
-   한 세트로 묶어 1,173개 카드로 보여 준다.
+   한 세트로 묶어 1,176개 카드로 보여 준다.
    검색·분류·브랜드·규격 필터, 60개씩 점진 렌더링(더 보기), 품목 상세(규격 선택),
-   실제 제품 사진 308컷 모아보기, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
+   실제 제품 사진 311컷 모아보기, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
 (function () {
   'use strict';
 
@@ -48,7 +48,9 @@
     }
     return 'assets/products/' + (CAT_IMG[p.c] || 'cat-01-pot') + '.jpg';
   }
-  function imageFor(p) { return p.img || exampleImage(p); }
+  /* 사진 파일은 경로를 그대로 두고 내용만 교체하므로, 브라우저 캐시를 비키도록 판올림 값을 붙인다 */
+  var IMG_V = '?v=20261126j';
+  function imageFor(p) { return p.img ? p.img + IMG_V : exampleImage(p); }
   /* 사진이 깨졌을 때 예시 이미지로 한 번만 대체 */
   function bindImageFallback(imgEl, p) {
     var swapped = false;
@@ -254,7 +256,7 @@
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'cat' };
 
-  /* 한 번에 그리는 카드 수 — 1,173개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  /* 한 번에 그리는 카드 수 — 1,176개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
   var shown = PAGE_SIZE;
   var lastList = null;
@@ -579,7 +581,7 @@
     toInquiry([{ n: currentItem.n, b: currentItem.b, c: currentItem.c, s: specText(currentItem) }]);
   });
 
-  /* ── 실제 제품 사진 모아보기 (308컷) ─────────────────────────── */
+  /* ── 실제 제품 사진 모아보기 (311컷) ─────────────────────────── */
   var shotDlg = $('shotGallery'), shotGrid = $('shotGrid');
   var shotBuilt = false;
   function openGallery() {
@@ -600,7 +602,7 @@
         fig.type = 'button';
         fig.className = 'shot';
         var im = document.createElement('img');
-        im.src = p.img;
+        im.src = p.img + IMG_V;
         im.alt = shotName + ' — ' + (CAT_LABEL[p.c] || '') + ' 실제 제품 사진';
         im.width = 1100; im.height = 1100;
         im.loading = 'lazy';
