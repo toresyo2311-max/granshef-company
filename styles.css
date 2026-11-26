@@ -1014,6 +1014,8 @@ button{font:inherit}
 }
 .inquiry .btn-primary{background:var(--bronze);color:#1a1815;font-weight:700}
 .inquiry .btn-primary:hover{background:var(--bronze-lt)}
+.inquiry .btn-primary[disabled]{opacity:.62;cursor:progress;transform:none}
+.inquiry.is-busy .btn-primary{pointer-events:none}
 .form-note{
   margin:14px 0 0;font-size:12.5px;line-height:1.7;
   color:var(--bronze-lt);min-height:0;
@@ -1487,6 +1489,25 @@ button{font:inherit}
   background:rgba(169,130,79,.1);
 }
 .form-result[hidden]{display:none}
+.form-result:focus{outline:none}
+.form-success{border-color:rgba(201,165,120,.62);background:rgba(169,130,79,.16)}
+.fs-check{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;margin-right:8px;
+  border-radius:50%;background:var(--bronze);color:#1a1815;
+  font-size:11px;font-weight:700;vertical-align:1px;
+}
+.fs-list{
+  margin:16px 0 0;padding:14px 16px;
+  border:1px solid rgba(246,242,234,.14);border-radius:4px;
+  background:rgba(0,0,0,.22);
+  font-size:12.4px;line-height:1.75;color:rgba(246,242,234,.82);
+}
+.fs-list:empty{display:none}
+.fs-list > div{display:flex;gap:10px}
+.fs-list > div + div{margin-top:3px}
+.fs-list dt{flex:0 0 68px;color:rgba(246,242,234,.48)}
+.fs-list dd{margin:0;word-break:break-word}
 .fr-title{font-size:15px;font-weight:700;color:#f7f3eb;letter-spacing:-.01em}
 .fr-lead{margin-top:8px;font-size:12.5px;line-height:1.7;color:rgba(246,242,234,.75)}
 .fr-lead strong{color:var(--bronze-lt);font-weight:600}

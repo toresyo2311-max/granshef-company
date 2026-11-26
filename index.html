@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261126w">
+<link rel="stylesheet" href="styles.css?v=20261126x">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -962,15 +962,25 @@
           <span aria-hidden="true">·</span>
           <a href="privacy.html" target="_blank" rel="noopener">개인정보 수집·이용 안내</a>
         </p>
-        <button class="btn btn-primary btn-block" type="submit">문의 남기기</button>
+        <button class="btn btn-primary btn-block" type="submit" id="inquirySubmit">문의 남기기</button>
         <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
         <p class="form-mailnote">
           접수 메일 — <a href="mailto:grandchef@naver.com">grandchef@naver.com</a> ·
           <a href="mailto:grandcook.com@gmail.com">grandcook.com@gmail.com</a>
         </p>
 
+        <div class="form-result form-success" id="formSuccess" tabindex="-1" role="status" aria-live="polite" hidden>
+          <h3 class="fr-title"><span class="fs-check" aria-hidden="true">✓</span>문의가 정상 접수되었습니다</h3>
+          <p class="fr-lead">
+            담당자 확인 후 연락드리겠습니다. 남겨주신 연락처로 영업일 기준 1~2일 안에 연락드리며,
+            급하신 문의는 <strong>전화 051-892-8930</strong>으로 주시면 더 빠릅니다.
+          </p>
+          <dl class="fs-list" id="successSummary"></dl>
+          <p class="fr-note" id="successNote"></p>
+        </div>
+
         <div class="form-result" id="formResult" hidden>
-          <h3 class="fr-title">문의 내용을 확인해 주세요</h3>
+          <h3 class="fr-title">자동 접수가 완료되지 않았습니다</h3>
           <p class="fr-lead">
             <strong>아직 접수되지 않았습니다.</strong>
             <strong>메일 앱으로 보내기</strong>를 누른 뒤 메일 앱에서 <strong>‘보내기’</strong>를 눌러야 최종 접수됩니다.
@@ -1044,6 +1054,6 @@
   <a class="fb-quote" href="#contact">납품·견적 문의</a>
 </div>
 
-<script src="script.js?v=20261126w" defer></script>
+<script src="script.js?v=20261126x" defer></script>
 </body>
 </html>

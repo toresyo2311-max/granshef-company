@@ -703,7 +703,7 @@
     targets.forEach(function (t) { spy.observe(t); });
   }
 
-  /* inquiry form — build the message, hand it to the visitor's mail app */
+  /* inquiry form — POST to the Google Apps Script web app, mail app only as fallback */
   var form = document.getElementById('inquiryForm');
   var note = document.getElementById('formNote');
   var result = document.getElementById('formResult');
@@ -711,14 +711,40 @@
   var mailtoBtn = document.getElementById('mailtoBtn');
   var copyMsgBtn = document.getElementById('copyMsgBtn');
   var copyState = document.getElementById('copyState');
+  var success = document.getElementById('formSuccess');
+  var successSummary = document.getElementById('successSummary');
+  var successNote = document.getElementById('successNote');
+  var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+  var submitLabel = submitBtn ? submitBtn.textContent : '문의 남기기';
+  var sending = false;
+  var quoteItems = [];
 
   var MAIL_TO = 'grandchef@naver.com';
   var MAIL_CC = 'grandcook.com@gmail.com';
+  /* Apps Script 웹앱 — JSON 헤더를 붙이지 않고 text/plain 단순 요청으로 보낸다(프리플라이트 회피) */
+  var INQUIRY_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwiItioML9UFBYTNoxQu9DHytpiy06jlpuPVw2uiKCpb02o5R6azJ1_t0LDapPfb3MI/exec';
 
   var say = function (msg, isError) {
     if (!note) return;
     note.textContent = msg;
     note.classList.toggle('error', !!isError);
+  };
+
+  var pad2 = function (n) { return ('0' + n).slice(-2); };
+
+  var stamp = function () {
+    var now = new Date();
+    return now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate()) +
+      ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes());
+  };
+
+  var buildItemsText = function (items) {
+    return items.map(function (it, i) {
+      var line = (i + 1) + '. ' + (it.n || '') +
+        (it.b ? ' / ' + it.b : '') + (it.s ? ' / ' + it.s : '');
+      if (it.q === 1 || it.q === true) line += ' (취급문의)';
+      return line;
+    }).join('\n');
   };
 
   var buildSummary = function (data) {
@@ -745,9 +771,88 @@
     ].join('\n');
   };
 
+  var setBusy = function (on) {
+    sending = on;
+    form.classList.toggle('is-busy', on);
+    form.setAttribute('aria-busy', on ? 'true' : 'false');
+    if (!submitBtn) return;
+    submitBtn.disabled = on;
+    submitBtn.textContent = on ? '접수 중...' : submitLabel;
+  };
+
+  var hidePanels = function () {
+    if (result) { result.hidden = true; result.classList.remove('is-on'); }
+    if (success) { success.hidden = true; success.classList.remove('is-on'); }
+  };
+
+  var scrollToPanel = function (el) {
+    if (!el) return;
+    window.setTimeout(function () {
+      var top = el.getBoundingClientRect().top + window.scrollY - (window.innerWidth > 860 ? 90 : 76);
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }, 80);
+  };
+
+  var showSuccess = function (data) {
+    hidePanels();
+    if (successSummary) {
+      successSummary.innerHTML = '';
+      var rows = [
+        ['담당자', (data.name || '').trim()],
+        ['회사명', (data.company || '').trim()],
+        ['연락처', (data.phone || '').trim()],
+        ['문의 유형', (data.type || '').trim()],
+        ['견적 품목', quoteItems.length ? quoteItems.length + '건' : ''],
+        ['접수 일시', stamp()]
+      ];
+      rows.forEach(function (row) {
+        if (!row[1]) return;
+        var wrap = document.createElement('div');
+        var dt = document.createElement('dt');
+        var dd = document.createElement('dd');
+        dt.textContent = row[0];
+        dd.textContent = row[1];
+        wrap.appendChild(dt);
+        wrap.appendChild(dd);
+        successSummary.appendChild(wrap);
+      });
+    }
+    if (successNote) {
+      successNote.textContent = (data.email || '').trim()
+        ? '접수 내용은 담당자에게 전달되었습니다. 급하신 문의는 전화(051-892-8930)로 연락 주세요.'
+        : '회신받으실 이메일을 적지 않으셨으니 담당자가 연락처로 연락드립니다. 급하신 문의는 전화(051-892-8930)로 주세요.';
+    }
+    say('문의가 정상 접수되었습니다. 담당자 확인 후 연락드리겠습니다.', false);
+    form.reset();
+    quoteItems = [];
+    Array.prototype.forEach.call(form.querySelectorAll('.field.invalid'), function (el) {
+      el.classList.remove('invalid');
+    });
+    if (success) {
+      success.hidden = false;
+      success.classList.add('is-on');
+      success.focus({ preventScroll: true });
+      scrollToPanel(success);
+    }
+  };
+
+  var showFallback = function (data, text, href, reason) {
+    hidePanels();
+    if (mailtoBtn) mailtoBtn.setAttribute('href', href);
+    if (resultText) resultText.textContent = text;
+    if (copyState) copyState.textContent = '메일 앱에서 ‘보내기’를 눌러야 접수됩니다. 메일 앱이 없으면 내용을 복사해 보내시거나 전화(051-892-8930)로 연락 주세요.';
+    say(reason, true);
+    if (result) {
+      result.hidden = false;
+      result.classList.add('is-on');
+      scrollToPanel(result);
+    }
+  };
+
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (sending) return;
 
       var required = Array.prototype.slice.call(form.querySelectorAll('[required]'));
       var firstBad = null;
@@ -770,7 +875,7 @@
       });
 
       if (firstBad) {
-        if (result) result.hidden = true;
+        hidePanels();
         say(firstBad.name === 'message'
           ? '문의 내용을 10자 이상 적어 주세요.'
           : firstBad.name === 'phone'
@@ -783,11 +888,6 @@
       var data = {};
       new FormData(form).forEach(function (v, k) { data[k] = v; });
 
-      /* 허니팟: 자동 입력 도구가 채우는 필드 — 채워져 있으면 조용히 중단 */
-      if (String(data.website || '').trim()) {
-        return;
-      }
-
       var text = buildSummary(data);
       var subject = '[그랑쉐프 홈페이지 문의] ' +
         (data.company || '').trim() + ' ' + (data.name || '').trim();
@@ -796,20 +896,54 @@
         '&subject=' + encodeURIComponent(subject.trim()) +
         '&body=' + encodeURIComponent(text);
 
-      if (mailtoBtn) mailtoBtn.setAttribute('href', href);
-      if (resultText) resultText.textContent = text;
-      if (copyState) copyState.textContent = '메일 앱에서 ‘보내기’를 눌러야 접수됩니다. 메일 앱이 없으면 내용을 복사해 보내시거나 전화(051-892-8930)로 연락 주세요.';
+      var payload = {
+        name: (data.name || '').trim(),
+        company: (data.company || '').trim(),
+        phone: (data.phone || '').trim(),
+        email: (data.email || '').trim(),
+        interest: data.type || '',
+        brand: (data.brand || '').trim(),
+        message: data.message || '',
+        agreeMarketing: data.agreeMarketing ? '동의함' : '동의하지 않음',
+        website: data.website || ''
+      };
+      if (quoteItems.length) payload.items = buildItemsText(quoteItems);
+      /* 허니팟(website)에 값이 있으면 서버가 메일을 보내지 않고 {"ok":true}만 돌려준다 — 봇에게는 정상 접수처럼 보인다 */
 
-      say((data.name || '') + ' 님, 문의 내용이 준비되었습니다. 아직 접수되지 않았으니 메일 앱에서 ‘보내기’를 눌러 주세요. 메일 앱이 없으면 내용 복사 또는 전화(051-892-8930)를 이용해 주세요.', false);
+      hidePanels();
+      setBusy(true);
+      say('문의를 접수하는 중입니다...', false);
 
-      if (result) {
-        result.hidden = false;
-        result.classList.add('is-on');
-        window.setTimeout(function () {
-          var top = result.getBoundingClientRect().top + window.scrollY - (window.innerWidth > 860 ? 90 : 76);
-          window.scrollTo({ top: top, behavior: 'smooth' });
-        }, 80);
-      }
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = window.setTimeout(function () { if (ctrl) ctrl.abort(); }, 25000);
+      var done = function () {
+        window.clearTimeout(timer);
+        setBusy(false);
+      };
+
+      fetch(INQUIRY_ENDPOINT, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        signal: ctrl ? ctrl.signal : undefined
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('http_' + res.status);
+          return res.json();
+        })
+        .then(function (res) {
+          done();
+          if (res && res.ok === true) {
+            showSuccess(data);
+            return;
+          }
+          showFallback(data, text, href,
+            '접수가 완료되지 않았습니다. 메일 앱 또는 전화(051-892-8930)로 문의해 주세요.');
+        })
+        .catch(function () {
+          done();
+          showFallback(data, text, href,
+            '접수 연결이 되지 않았습니다. 메일 앱 또는 전화(051-892-8930)로 문의해 주세요.');
+        });
     });
 
     if (copyMsgBtn && resultText) {
@@ -831,6 +965,7 @@
     if (rawQuote && form) {
       var items = JSON.parse(rawQuote);
       if (Array.isArray(items) && items.length) {
+        quoteItems = items;
         var msgEl = form.querySelector('[name="message"]');
         var brandEl = form.querySelector('[name="brand"]');
         var lines = ['[' + (items.length > 1 ? '상품 묶음 견적 문의' : '상품 견적 문의') + '] ' + items.length + '건', ''];
