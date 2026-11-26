@@ -1,5 +1,6 @@
 /* 주식회사 그랑쉐프 — 취급 상품 카탈로그
-   전체 1,698품목(assets/catalog.js)을 사이즈·규격만 다른 품목끼리 묶어 1,265개 카드로 보여 준다.
+   전체 1,698품목(assets/catalog.js)을 같은 시리즈의 사이즈·규격·형태(편수·양수·전골·곰솥)만 다른 품목끼리
+   한 세트로 묶어 1,217개 카드로 보여 준다.
    검색·분류·브랜드·규격 필터, 60개씩 점진 렌더링(더 보기), 품목 상세(규격 선택),
    실제 제품 사진 295컷 모아보기, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
 (function () {
@@ -130,13 +131,35 @@
   }
 
   var META = {};   /* 품목별 기본명·규격표기 — 원본 데이터는 건드리지 않는다 */
-  function metaOf(p) { return META[p.id] || { base: p.n, tags: [], vlabel: specText(p) || '규격 미표기' }; }
+  function metaOf(p) { return META[p.id] || { base: p.n, tags: [], forms: [], vlabel: specText(p) || '규격 미표기' }; }
+
+  /* ── 시리즈 세트 묶기 ─────────────────────────────────────────
+     같은 시리즈명 뒤에 붙는 형태(편수·양수·전골·곰솥·곰국·들통·냄비)는
+     규격처럼 보고 대표 카드 하나로 묶는다(모달에서 형태·사이즈를 고른다).
+     브랜드명만 남거나 최소 글자수에 못 미치면 묶지 않는다. */
+  var FORM_TAIL = /[\s\-]?(편수|양수|전골|곰솥|곰국|들통|냄비)$/;
+  /* 재질 이름만 남는 경우(양은·스텐 등)는 시리즈명이 아니므로 형태어를 떼지 않는다 */
+  var MATERIAL_HEAD = /^(양은|경질|스텐|스테인리스|알루미늄|법랑|무쇠|주물|놋|도자기|세라믹|유리|멜라민|실리콘)$/;
+  function splitForm(base, brand) {
+    var forms = [], head = base, guard = 0;
+    while (guard < 2) {
+      var m = FORM_TAIL.exec(head);
+      if (!m) break;
+      var cut = head.slice(0, m.index).replace(/[\s\-]+$/, '');
+      if (cut.length < 2 || cut === brand || MATERIAL_HEAD.test(cut)) break;
+      forms.unshift(m[1]);
+      head = cut;
+      guard += 1;
+    }
+    return { base: head, forms: forms };
+  }
 
   function variantLabel(p) {
+    var m = metaOf(p);
     var sp = specText(p);
-    if (sp) return sp;
-    var tags = ((META[p.id] && META[p.id].tags) || []).map(cleanTag).filter(Boolean);
-    return tags.length ? tags.join(' ') : '규격 미표기';
+    var core = sp || (m.tags || []).map(cleanTag).filter(Boolean).join(' ');
+    var lab = [core, (m.forms || []).join(' ')].filter(Boolean).join(' ').trim();
+    return lab || '규격 미표기';
   }
 
   var GROUPS = [];
@@ -145,10 +168,16 @@
     PRODUCTS.forEach(function (p, i) {
       p.id = (p.bn || '') + '-' + i;
       var sp = splitName(p.n);
-      var m = META[p.id] = { base: sp.base || p.n, tags: sp.tags, vlabel: '' };
-      /* ser(시리즈 그룹 이름)가 있으면 품명이 달라도 한 카드로 묶는다 */
-      var base = p.ser || m.base;
-      var key = p.b + '|' + base + '|' + unitGroup(p);
+      var m = META[p.id] = { base: sp.base || p.n, tags: sp.tags, forms: [], vlabel: '' };
+      /* ser(시리즈 이름)가 있으면 그것을, 없으면 품명 끝의 형태어를 떼어 시리즈명으로 쓴다 */
+      var base = m.base;
+      if (!p.ser) {
+        var sf = splitForm(m.base, p.b);
+        base = sf.base;
+        m.forms = sf.forms;
+      }
+      base = p.ser || base;
+      var key = p.b + '|' + base + '|' + p.c;
       var g = byKey[key];
       if (!g) {
         g = { b: p.b, base: base, c: p.c, variants: [], labels: {}, gk: null };
@@ -160,6 +189,25 @@
       g.labels[lab] = 1;
       m.vlabel = lab;
       g.variants.push(p);
+    });
+    GROUPS.forEach(function (g) {
+      if (g.variants.length < 2) return;
+      /* 규격이 모두 같은 형태뿐이면 카드 이름에 그 형태를 그대로 남긴다 (다용도곰솥·매운탕냄비) */
+      var sig = {};
+      g.variants.forEach(function (p) {
+        var f = (META[p.id].forms || []).join(' ');
+        sig[f] = (sig[f] || 0) + 1;
+      });
+      var keys = Object.keys(sig);
+      if (keys.length === 1 && keys[0]) {
+        g.base = META[g.variants[0].id].base;
+        return;
+      }
+      /* 여러 형태가 섞이면 시리즈 이름만 쓰되, 모든 규격이 냄비류면 '냄비'를 붙인다 */
+      var allPot = g.variants.every(function (p) {
+        return (META[p.id].forms || []).indexOf('냄비') >= 0;
+      });
+      if (allPot && !/냄비$/.test(g.base)) g.base += '냄비';
     });
     GROUPS.forEach(function (g) {
       if (g.variants.length < 2) return;
@@ -205,7 +253,7 @@
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'cat' };
 
-  /* 한 번에 그리는 카드 수 — 1,265개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  /* 한 번에 그리는 카드 수 — 1,217개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
   var shown = PAGE_SIZE;
   var lastList = null;
