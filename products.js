@@ -49,7 +49,7 @@
     return 'assets/products/' + (CAT_IMG[p.c] || 'cat-01-pot') + '.jpg';
   }
   /* 사진 파일은 경로를 그대로 두고 내용만 교체하므로, 브라우저 캐시를 비키도록 판올림 값을 붙인다 */
-  var IMG_V = '?v=20261126t';
+  var IMG_V = '?v=20261126u';
   function imageFor(p) { return p.img ? p.img + IMG_V : exampleImage(p); }
   /* 사진이 깨졌을 때 예시 이미지로 한 번만 대체 */
   function bindImageFallback(imgEl, p) {
@@ -269,6 +269,19 @@
     return vs[0];
   }
 
+  /* 카드 정렬 순위(실사진 우선) — 사진이 있으면 사진을 앞에서 바로 보실 수 있게 두되,
+     실제로 취급하는 품목이 먼저 오도록 취급문의를 그 다음으로 내린다.
+       0 실사진 + 일반 취급(일부 규격만 취급문의인 '일부 취급문의' 포함 — 취급 규격이 있음)
+       1 실사진 + 카드 전체가 취급문의
+       2 예시 이미지 + 일반 취급
+       3 예시 이미지 + 카드 전체가 취급문의 */
+  function cardRank(vs) {
+    var shot = !!cardPhoto(vs).img;
+    var allInq = vs.every(function (p) { return p.inq; });
+    if (shot) return allInq ? 1 : 0;
+    return allInq ? 3 : 2;
+  }
+
   /* 사진 컷 수 — 같은 시리즈 규격(예: 6·8·10인용)에 같은 사진을 함께 쓰므로 파일 기준으로 센다 */
   var SHOT_IMG = {};
   PRODUCTS.forEach(function (p) { if (p.img) SHOT_IMG[p.img] = 1; });
@@ -410,11 +423,10 @@
       list.push({ b: g.b, base: g.base, c: g.c, ser: g.ser, variants: vs });
     });
     if (state.sort === 'photo') {
-      /* 실제 제품 사진이 있는 카드를 먼저 — 사진을 앞에서 바로 보실 수 있게 */
+      /* 실제 제품 사진이 있는 카드를 먼저, 그 안에서 취급문의 카드는 뒤로 — 사진을 앞에서 바로 보시고
+         실제 취급 품목을 먼저 보실 수 있게. 같은 순위 안에서는 분류순 → 품목명 순서 그대로 */
       list.sort(function (a, b) {
-        var pa = cardPhoto(a.variants).img ? 0 : 1;
-        var pb = cardPhoto(b.variants).img ? 0 : 1;
-        return (pa - pb) || (CAT_ORDER[a.c] - CAT_ORDER[b.c]) || cardTitle(a).localeCompare(cardTitle(b), 'ko');
+        return (cardRank(a.variants) - cardRank(b.variants)) || (CAT_ORDER[a.c] - CAT_ORDER[b.c]) || cardTitle(a).localeCompare(cardTitle(b), 'ko');
       });
     } else if (state.sort === 'name') {
       list.sort(function (a, b) { return cardTitle(a).localeCompare(cardTitle(b), 'ko'); });
