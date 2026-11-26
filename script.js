@@ -822,7 +822,7 @@
         ? '접수 내용은 담당자에게 전달되었습니다. 급하신 문의는 전화(051-892-8930)로 연락 주세요.'
         : '회신받으실 이메일을 적지 않으셨으니 담당자가 연락처로 연락드립니다. 급하신 문의는 전화(051-892-8930)로 주세요.';
     }
-    say('문의가 정상 접수되었습니다. 담당자 확인 후 연락드리겠습니다.', false);
+    say('', false);
     form.reset();
     quoteItems = [];
     Array.prototype.forEach.call(form.querySelectorAll('.field.invalid'), function (el) {
