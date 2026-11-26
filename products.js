@@ -49,7 +49,7 @@
     return 'assets/products/' + (CAT_IMG[p.c] || 'cat-01-pot') + '.jpg';
   }
   /* 사진 파일은 경로를 그대로 두고 내용만 교체하므로, 브라우저 캐시를 비키도록 판올림 값을 붙인다 */
-  var IMG_V = '?v=20261126q';
+  var IMG_V = '?v=20261126r';
   function imageFor(p) { return p.img ? p.img + IMG_V : exampleImage(p); }
   /* 사진이 깨졌을 때 예시 이미지로 한 번만 대체 */
   function bindImageFallback(imgEl, p) {
