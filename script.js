@@ -798,9 +798,9 @@
 
       if (mailtoBtn) mailtoBtn.setAttribute('href', href);
       if (resultText) resultText.textContent = text;
-      if (copyState) copyState.textContent = '보내주신 뒤 전화로 한 번 더 확인해 주시면 가장 빠릅니다.';
+      if (copyState) copyState.textContent = '메일 앱에서 ‘보내기’를 눌러야 접수됩니다. 메일 앱이 없으면 내용을 복사해 보내시거나 전화(051-892-8930)로 연락 주세요.';
 
-      say((data.name || '') + ' 님, 문의 내용이 준비되었습니다. 아래에서 메일로 보내시거나 전화로 연락 주세요.', false);
+      say((data.name || '') + ' 님, 문의 내용이 준비되었습니다. 아직 접수되지 않았으니 메일 앱에서 ‘보내기’를 눌러 주세요. 메일 앱이 없으면 내용 복사 또는 전화(051-892-8930)를 이용해 주세요.', false);
 
       if (result) {
         result.hidden = false;

@@ -1147,6 +1147,12 @@ button{font:inherit}
   width:100%;border-collapse:collapse;margin:4px 0 16px;
   font-size:12.5px;
 }
+/* 열이 많은 표(국외 이전 등)는 좌우 스크롤 안에서 보여 문서 폭이 화면보다 넓어지지 않게 한다 */
+.legal-scroll{
+  margin:4px 0 16px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+}
+.legal-scroll>.legal-table{margin:0}
 .legal-table th,.legal-table td{
   border:1px solid var(--line);
   padding:10px 12px;text-align:left;vertical-align:top;

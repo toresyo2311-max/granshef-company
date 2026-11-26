@@ -1,6 +1,6 @@
 /* 주식회사 그랑쉐프 — 취급 상품 카탈로그
    전체 2,344품목(assets/catalog.js)을 같은 시리즈의 사이즈·규격·형태(편수·양수·전골·곰솥 · 프라이팬·웍·궁중팬)만 다른 품목끼리
-   한 세트로 묶어 1,634개 카드로 보여 준다.
+   한 세트로 묶어 1,439개 카드로 보여 준다.
    검색·분류·브랜드·규격 필터, 60개씩 점진 렌더링(더 보기), 품목 상세(규격 선택),
    실제 제품 사진 955컷 모아보기, 취급문의(공장 재고 확인 후 발주 가능) 표시, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
 (function () {
@@ -111,6 +111,7 @@
       .replace(/[\s\-_]+$/, '')
       .replace(/\s*\($/, '')
       .replace(/[\s\-_]+$/, '')
+      .replace(/[.,]+$/, '')
       .trim();
     return { base: base, tags: tags };
   }
@@ -140,29 +141,62 @@
      팬류: 후라이팬·프라이팬·궁중팬·웍·계란말이팬·구이팬)는 규격처럼 보고
      대표 카드 하나로 묶는다(모달에서 형태·사이즈를 고른다).
      브랜드명만 남거나 재질어만 남으면 묶지 않고, 분류(c)가 다르면 묶지 않는다. */
-  var FORM_TAIL = /[\s\-]?(편수|양수|전골|곰솥|곰국|들통|냄비|후라이팬|프라이팬|궁중팬|웍|계란말이팬|구이팬)$/;
+  var FORM_TAIL = /[\s\-]?(계란말이팬|구이팬|후라이팬|프라이팬|궁중팬|편수|양손|양수|전골|곰솥|곰국|들통|냄비|웍)$/;
+  /* 크기어(소소·중·대·특대 …)는 규격 표기다. 괄호로 묶인 (대)·(특소)도 같이 본다 */
+  var SIZE_TAIL = /[\s\-]?(소소|특중|특대|특소|왕대|대|중|소)$/;
+  /* 끝에 붙은 괄호 표기 — 내용이 크기·형태 표기면 괄호째로 라벨로 쓴다: (대) (특소) (미니소) */
+  var PAREN_TAIL = /\(\s*([가-힣]{1,8})\s*\)$/;
+  var PAREN_SIZE = /(소소|특중|특대|특소|왕대|대|중|소|편수|양수|전골|곰솥|냄비|국자|바구니|건지기|샥구|꼬지|자루)$/;
+  /* 한글·괄호에 바로 붙은 숫자(펀칭볼바구니20·후라이팬28·밧드카바2)도 규격 표기로 본다 */
+  var ATTACHED_NUM = /([가-힣)\]\d])(\d+(?:\.\d+)?)[\s\-]*$/;
   /* 재질 이름만 남는 경우(양은·스텐 등)는 시리즈명이 아니므로 형태어를 떼지 않는다 */
   var MATERIAL_HEAD = /^(양은|경질|스텐|스테인리스|알루미늄|법랑|무쇠|주물|놋|도자기|세라믹|유리|멜라민|실리콘)$/;
+  /* 품명 끝의 크기 글자가 제품 이름의 일부인 경우(받침대 등) — 크기어로 보지 않는다 */
+  var NOUN_TAIL = /(받침|받침대|좌대|궁)$/;
+  function trimCut(t) {
+    return t.replace(/[\s\-,.]+$/, '').replace(/\($/, '').replace(/[\s\-,.]+$/, '');
+  }
   function splitForm(base, brand) {
     var forms = [], head = base, guard = 0;
-    while (guard < 2) {
-      var m = FORM_TAIL.exec(head);
-      if (!m) break;
-      var cut = head.slice(0, m.index).replace(/[\s\-]+$/, '');
-      if (cut.length < 2 || cut === brand || MATERIAL_HEAD.test(cut)) break;
-      forms.unshift(m[1]);
+    function take(cut, token) {
+      if (!cut || cut.length < 2 || cut === brand || MATERIAL_HEAD.test(cut)) return false;
+      forms.unshift(token);
       head = cut;
-      guard += 1;
+      return true;
+    }
+    while (guard < 6) {
+      var pz = PAREN_TAIL.exec(head);
+      if (pz && PAREN_SIZE.test(pz[1]) && take(trimCut(head.slice(0, pz.index)), pz[1])) { guard += 1; continue; }
+      var m = FORM_TAIL.exec(head);
+      if (m && take(trimCut(head.slice(0, m.index)), cleanTag(m[1]))) { guard += 1; continue; }
+      var z = SIZE_TAIL.exec(head);
+      /* '통3중'처럼 숫자 뒤에 붙은 '중'은 크기어가 아니고, '뚝배기받침대'의 '대'처럼
+         품명 일부인 말은 떼지 않는다. */
+      if (z && !/\d$/.test(head.slice(0, z.index))) {
+        var zc = trimCut(head.slice(0, z.index));
+        if (!NOUN_TAIL.test(zc) && take(zc, cleanTag(z[1]))) { guard += 1; continue; }
+      }
+      var d = ATTACHED_NUM.exec(head);
+      if (d && take(trimCut(head.slice(0, d.index + d[1].length)), d[2])) { guard += 1; continue; }
+      break;
     }
     return { base: head, forms: forms };
+  }
+
+  /* 규격 라벨 — 규격 표기(치수·용량) + 이름에서 뗀 크기·형태 표기.
+     drop 에 넣은 표기는 그 카드의 모든 규격에 똑같이 붙으므로 라벨에서 뺀다. */
+  function labelWith(p, drop) {
+    var m = META[p.id] || {};
+    var f = (m.forms || []).filter(function (t) { return !drop || drop.indexOf(t) < 0; });
+    var lab = [m.core || '', f.join(' ')].filter(Boolean).join(' ').trim();
+    return lab || '규격 미표기';
   }
 
   function variantLabel(p) {
     var m = metaOf(p);
     var sp = specText(p);
-    var core = sp || (m.tags || []).map(cleanTag).filter(Boolean).join(' ');
-    var lab = [core, (m.forms || []).join(' ')].filter(Boolean).join(' ').trim();
-    return lab || '규격 미표기';
+    m.core = sp || (m.tags || []).map(cleanTag).filter(Boolean).join(' ');
+    return labelWith(p);
   }
 
   var SIZE_WORD = { '소소': 1, '소': 2, '중': 3, '특중': 4, '대': 5, '특대': 6, '왕대': 7 };
@@ -223,6 +257,36 @@
         return (META[p.id].forms || []).indexOf('냄비') >= 0;
       });
       if (allPot && !/냄비$/.test(g.base)) g.base += '냄비';
+    });
+    /* 모든 규격에 똑같이 붙는 표기(예: 품명 끝의 '2')는 규격을 구분하지 않으므로 라벨에서 뺐다.
+       빼고 나서도 라벨이 서로 겹치지 않을 때만 적용한다. */
+    GROUPS.forEach(function (g) {
+      if (g.variants.length < 2) return;
+      var shared = null;
+      g.variants.forEach(function (p) {
+        if (p.vl) { shared = []; return; }
+        var f = (META[p.id].forms || []).slice();
+        shared = shared === null ? f : shared.filter(function (t) { return f.indexOf(t) >= 0; });
+      });
+      if (!shared || !shared.length) return;
+      /* 크기·형태어(편수·양수·대)는 이름에 없더라도 카드 이름에 남는 경우가 많아 그대로 두고,
+         숫자만 된 표기(품명 끝의 '2' 등)만 뺀다. */
+      shared = shared.filter(function (t) { return /^\d+$/.test(t); });
+      /* 카드 이름에 이미 들어 있는 표기(통…냄비 카드의 '냄비')도 라벨에서 뺀다 */
+      g.variants.forEach(function (p) {
+        (META[p.id].forms || []).forEach(function (t) {
+          if (t.length > 1 && shared.indexOf(t) < 0 && g.base.indexOf(t) >= 0) shared.push(t);
+        });
+      });
+      if (!shared.length) return;
+      var seen = {}, ok = true;
+      g.variants.forEach(function (p) {
+        var l = p.vl || labelWith(p, shared);
+        if (seen[l]) ok = false;
+        seen[l] = 1;
+      });
+      if (!ok) return;
+      g.variants.forEach(function (p) { if (!p.vl) META[p.id].vlabel = labelWith(p, shared); });
     });
     GROUPS.forEach(function (g) {
       if (g.variants.length < 2) return;
@@ -289,7 +353,7 @@
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'photo' }; /* 기본: 실사진 우선 */
 
-  /* 한 번에 그리는 카드 수 — 1,634개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  /* 한 번에 그리는 카드 수 — 1,439개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
   var shown = PAGE_SIZE;
   var lastList = null;
@@ -579,7 +643,9 @@
     pdName.textContent = multi ? current.base : p.n;
     pdBrand.textContent = p.b;
     pdCat.textContent = CAT_LABEL[p.c] || '';
-    pdSpec.textContent = specText(p) || '규격 미표기 — 상담 확인';
+    /* 모달 상단 '규격' — 선택한 규격이 그대로 보이도록 한다(치수·용량이 없으면 이름에서 뗀 크기·형태 표기를 쓴다) */
+    var vlab = metaOf(p).vlabel;
+    pdSpec.textContent = specText(p) || ((vlab && vlab !== '규격 미표기') ? vlab : '규격 미표기 — 상담 확인');
     if (pdVariant) {
       pdVariant.hidden = !multi;
       pdVariant.textContent = multi ? p.n : '';
