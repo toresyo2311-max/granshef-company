@@ -720,7 +720,8 @@
     if (multi) {
       add.className = 'pcard-add is-pick';
       add.textContent = '규격 선택';
-      add.addEventListener('click', function () { openDetail(view); });
+      /* 카드에 보이는 사진의 규격을 기본 선택해 연다(사진 클릭과 같은 동작) */
+      add.addEventListener('click', function () { openDetail(view, photo); });
     } else {
       var p = vs[0];
       add.className = 'pcard-add' + (inBasket(p) ? ' is-in' : '');
