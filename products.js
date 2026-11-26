@@ -1,6 +1,6 @@
 /* 주식회사 그랑쉐프 — 취급 상품 카탈로그
    전체 1,871품목(assets/catalog.js)을 같은 시리즈의 사이즈·규격·형태(편수·양수·전골·곰솥 · 프라이팬·웍·궁중팬)만 다른 품목끼리
-   한 세트로 묶어 1,239개 카드로 보여 준다.
+   한 세트로 묶어 1,235개 카드로 보여 준다.
    검색·분류·브랜드·규격 필터, 60개씩 점진 렌더링(더 보기), 품목 상세(규격 선택),
    실제 제품 사진 471컷 모아보기, 취급문의(공장 재고 확인 후 발주 가능) 표시, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
 (function () {
@@ -49,7 +49,7 @@
     return 'assets/products/' + (CAT_IMG[p.c] || 'cat-01-pot') + '.jpg';
   }
   /* 사진 파일은 경로를 그대로 두고 내용만 교체하므로, 브라우저 캐시를 비키도록 판올림 값을 붙인다 */
-  var IMG_V = '?v=20261126r';
+  var IMG_V = '?v=20261126s';
   function imageFor(p) { return p.img ? p.img + IMG_V : exampleImage(p); }
   /* 사진이 깨졌을 때 예시 이미지로 한 번만 대체 */
   function bindImageFallback(imgEl, p) {
@@ -165,6 +165,12 @@
     return lab || '규격 미표기';
   }
 
+  var SIZE_WORD = { '소소': 1, '소': 2, '중': 3, '특중': 4, '대': 5, '특대': 6, '왕대': 7 };
+  function sizeWordRank(label) {
+    var w = String(label).split(/[\s(]/)[0];
+    return SIZE_WORD[w] || 0;
+  }
+
   var GROUPS = [];
   (function buildGroups() {
     var byKey = {};
@@ -183,12 +189,18 @@
       var key = p.b + '|' + base + '|' + p.c;
       var g = byKey[key];
       if (!g) {
-        g = { b: p.b, base: base, c: p.c, variants: [], labels: {}, gk: null };
+        g = { b: p.b, base: base, c: p.c, ser: p.ser || '', variants: [], labels: {}, gk: null };
         byKey[key] = g;
         GROUPS.push(g);
       }
       var lab = p.vl || variantLabel(p);
-      if (g.labels[lab]) return; /* 같은 규격이 중복 기재된 행은 한 번만 */
+      if (g.labels[lab]) {
+        /* 같은 규격이 중복 기재된 행(바코드만 다른 같은 제품)은 카드에 한 번만 싣되,
+           품명·바코드로는 찾을 수 있게 검색어에 남긴다 */
+        g.extra = g.extra || [];
+        g.extra.push(p.n, p.code || '');
+        return;
+      }
       g.labels[lab] = 1;
       m.vlabel = lab;
       g.variants.push(p);
@@ -214,7 +226,14 @@
     });
     GROUPS.forEach(function (g) {
       if (g.variants.length < 2) return;
+      /* 규격 표기가 모두 소·중·대처럼 크기어로 시작하면 그 순서대로(치수·용량이 없어도 소 → 중 → 대).
+         크기어가 섞여 있으면(주니어·드럼 등) 예전처럼 치수·품명 순서를 지킨다. */
+      var allRank = g.variants.every(function (p) { return sizeWordRank(metaOf(p).vlabel); });
       g.variants.sort(function (a, b) {
+        if (allRank) {
+          var ra = sizeWordRank(metaOf(a).vlabel), rb = sizeWordRank(metaOf(b).vlabel);
+          if (ra !== rb) return ra - rb;
+        }
         var x = sizeValue(a), y = sizeValue(b);
         if (x !== null && y !== null && x !== y) return x - y;
         return String(metaOf(a).vlabel).localeCompare(String(metaOf(b).vlabel), 'ko');
@@ -236,6 +255,7 @@
       g.variants.forEach(function (p) {
         parts.push(p.n, p.code || '', specText(p), metaOf(p).vlabel);
       });
+      if (g.extra) parts.push(g.extra.join(' '));
       g.gk = parts.join(' ').toLowerCase();
     }
     return g.gk;
@@ -256,7 +276,7 @@
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'photo' }; /* 기본: 실사진 우선 */
 
-  /* 한 번에 그리는 카드 수 — 1,239개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  /* 한 번에 그리는 카드 수 — 1,235개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
   var shown = PAGE_SIZE;
   var lastList = null;
@@ -368,7 +388,13 @@
   }
 
   /* ── 필터 결과 (대표 카드 목록) ──────────────────────────────── */
-  function cardTitle(v) { return v.variants.length > 1 ? v.base : v.variants[0].n; }
+  function cardTitle(v) {
+    if (v.variants.length > 1) return v.base;
+    /* 규격이 한 줄로 합쳐진 시리즈 카드는, 품명이 시리즈 이름을 담고 있지 않을 때만 시리즈 이름을 쓴다
+       (예: 남양한방주전자-6.3L → 한방주전자 / 다용도집게대 → 그대로) */
+    var n = v.variants[0].n;
+    return (v.ser && n.indexOf(v.ser) !== 0) ? v.base : n;
+  }
 
   function filtered() {
     var list = [];
@@ -381,7 +407,7 @@
         vs = vs.filter(function (p) { return p.g[state.size]; });
         if (!vs.length) return;
       }
-      list.push({ b: g.b, base: g.base, c: g.c, variants: vs });
+      list.push({ b: g.b, base: g.base, c: g.c, ser: g.ser, variants: vs });
     });
     if (state.sort === 'photo') {
       /* 실제 제품 사진이 있는 카드를 먼저 — 사진을 앞에서 바로 보실 수 있게 */
@@ -759,7 +785,7 @@
     var vs = view.variants;
     var multi = vs.length > 1;
     var photo = cardPhoto(vs);
-    var title = multi ? view.base : vs[0].n;
+    var title = cardTitle(view);
     var card = document.createElement('article');
     card.className = 'pcard' + (multi ? ' pcard-group' : '');
 
