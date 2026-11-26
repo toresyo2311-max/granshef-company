@@ -1,8 +1,8 @@
 /* 주식회사 그랑쉐프 — 취급 상품 카탈로그
-   전체 1,698품목(assets/catalog.js)을 같은 시리즈의 사이즈·규격·형태(편수·양수·전골·곰솥 · 프라이팬·웍·궁중팬)만 다른 품목끼리
-   한 세트로 묶어 1,176개 카드로 보여 준다.
+   전체 1,871품목(assets/catalog.js)을 같은 시리즈의 사이즈·규격·형태(편수·양수·전골·곰솥 · 프라이팬·웍·궁중팬)만 다른 품목끼리
+   한 세트로 묶어 1,242개 카드로 보여 준다.
    검색·분류·브랜드·규격 필터, 60개씩 점진 렌더링(더 보기), 품목 상세(규격 선택),
-   실제 제품 사진 311컷 모아보기, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
+   실제 제품 사진 463컷 모아보기, 취급문의(카탈로그에만 있는 품목) 표시, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
 (function () {
   'use strict';
 
@@ -256,7 +256,7 @@
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'cat' };
 
-  /* 한 번에 그리는 카드 수 — 1,176개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  /* 한 번에 그리는 카드 수 — 1,242개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
   var shown = PAGE_SIZE;
   var lastList = null;
@@ -501,7 +501,7 @@
   var dlg = $('pdetail');
   var pdName = $('pdName'), pdBrand = $('pdBrand'), pdCat = $('pdCat'),
       pdSpec = $('pdSpec'), pdImg = $('pdImg'), pdImgCap = $('pdImgCap'),
-      pdNote = $('pdNote'), pdAdd = $('pdAdd'), pdAsk = $('pdAsk'),
+      pdNote = $('pdNote'), pdAdd = $('pdAdd'), pdAsk = $('pdAsk'), pdInq = $('pdInq'),
       pdSizesBox = $('pdSizes'), pdSizeChips = $('pdSizeChips'),
       pdSizeCount = $('pdSizeCount'), pdVariant = $('pdVariant');
   var current = null;      /* 열려 있는 카드 */
@@ -518,12 +518,18 @@
       pdVariant.textContent = multi ? p.n : '';
     }
     var real = !!p.img;
+    if (pdInq) {
+      pdInq.hidden = !p.inq;
+      pdInq.textContent = '취급문의 — 지금은 취급하지 않는 품목입니다. 취급 가능 여부·규격·납기를 상담으로 확인해 드립니다.';
+    }
     pdImg.src = imageFor(p);
     pdImg.alt = p.n + ' — ' + (CAT_LABEL[p.c] || '') + (real ? ' 제품 이미지' : ' 품목 예시 이미지');
     if (pdImgCap) pdImgCap.textContent = real ? '제조사·유통 카탈로그 실제 제품 사진 · 실제 제품과 다를 수 있음' : '품목 예시 이미지 · 실제 제품과 다를 수 있음';
-    pdNote.textContent = p.u
-      ? '브랜드 공식 홈페이지에 게시된 취급 품목입니다. 실제 재고·규격·납기는 상담으로 확인합니다.'
-      : '취급 품목으로 정리한 상품입니다. 실제 재고·규격·납기는 상담으로 확인합니다.';
+    pdNote.textContent = p.inq
+      ? '카탈로그에 실린 품목이지만 지금은 취급하지 않습니다. 취급 가능 여부와 규격·납기는 상담으로 안내해 드립니다.'
+      : (p.u
+        ? '브랜드 공식 홈페이지에 게시된 취급 품목입니다. 실제 재고·규격·납기는 상담으로 확인합니다.'
+        : '취급 품목으로 정리한 상품입니다. 실제 재고·규격·납기는 상담으로 확인합니다.');
     pdAdd.textContent = inBasket(p) ? '담김 ✓' : (multi ? '이 규격 견적 담기' : '견적 담기');
     if (pdSizeChips) {
       Array.prototype.forEach.call(pdSizeChips.children, function (chip) {
@@ -548,13 +554,16 @@
     if (pdSizesBox) pdSizesBox.hidden = vs.length < 2;
     if (pdSizeCount) pdSizeCount.textContent = vs.length > 1 ? '· ' + vs.length + '종' : '';
     if (vs.length > 1 && pdSizeChips) {
+      var inqN = 0;
+      vs.forEach(function (p) { if (p.inq) inqN += 1; });
+      var mixed = inqN > 0 && inqN < vs.length;
       vs.forEach(function (p) {
         var chip = document.createElement('button');
         chip.type = 'button';
         chip.className = 'size-chip';
         chip.setAttribute('data-id', p.id);
         chip.setAttribute('aria-pressed', 'false');
-        chip.textContent = metaOf(p).vlabel;
+        chip.textContent = metaOf(p).vlabel + (mixed && p.inq ? ' · 취급문의' : '');
         chip.title = p.n;
         chip.addEventListener('click', function () { selectVariant(p); });
         pdSizeChips.appendChild(chip);
@@ -581,7 +590,7 @@
     toInquiry([{ n: currentItem.n, b: currentItem.b, c: currentItem.c, s: specText(currentItem) }]);
   });
 
-  /* ── 실제 제품 사진 모아보기 (311컷) ─────────────────────────── */
+  /* ── 실제 제품 사진 모아보기 (463컷) ─────────────────────────── */
   var shotDlg = $('shotGallery'), shotGrid = $('shotGrid');
   var shotBuilt = false;
   function openGallery() {
@@ -738,6 +747,18 @@
       tag.className = 'pcard-shot';
       tag.textContent = '실사진';
       media.appendChild(tag);
+    }
+    /* 취급문의 — 카탈로그에는 있으나 아직 취급이 확인되지 않은 품목 */
+    var inqN = 0;
+    vs.forEach(function (p) { if (p.inq) inqN += 1; });
+    if (inqN) {
+      var inqTag = document.createElement('span');
+      inqTag.className = 'pcard-inq' + (inqN === vs.length ? '' : ' is-part');
+      inqTag.textContent = inqN === vs.length ? '취급문의' : '일부 취급문의';
+      inqTag.title = inqN === vs.length
+        ? '현재 취급하지 않는 품목입니다. 상담으로 취급 가능 여부를 확인해 드립니다.'
+        : '이 카드의 일부 규격은 현재 취급하지 않습니다. 상담으로 확인해 드립니다.';
+      media.appendChild(inqTag);
     }
     /* 카드에 보이는 사진의 규격을 기본 선택해 연다 */
     media.addEventListener('click', function () { openDetail(view, photo); });
