@@ -1,6 +1,6 @@
 /* 주식회사 그랑쉐프 — 취급 상품 카탈로그
    전체 2,342품목(assets/catalog.js)을 같은 시리즈의 사이즈·규격·형태(편수·양수·전골·곰솥 · 프라이팬·웍·궁중팬)만 다른 품목끼리
-   한 세트로 묶어 1,436개 카드로 보여 준다.
+   한 세트로 묶어 1,434개 카드로 보여 준다.
    검색·분류·브랜드·규격 필터, 60개씩 점진 렌더링(더 보기), 품목 상세(규격 선택),
    실제 제품 사진 955컷 모아보기, 취급문의(공장 재고 확인 후 발주 가능) 표시, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
 (function () {
@@ -49,7 +49,7 @@
     return 'assets/products/' + (CAT_IMG[p.c] || 'cat-01-pot') + '.jpg';
   }
   /* 사진 파일은 경로를 그대로 두고 내용만 교체하므로, 브라우저 캐시를 비키도록 판올림 값을 붙인다 */
-  var IMG_V = '?v=20261126z';
+  var IMG_V = '?v=20261127a';
   function imageFor(p) { return p.img ? p.img + IMG_V : exampleImage(p); }
   /* 사진이 깨졌을 때 예시 이미지로 한 번만 대체 */
   function bindImageFallback(imgEl, p) {
@@ -353,7 +353,7 @@
 
   var state = { q: '', cat: 'all', brand: '', size: '', sort: 'photo' }; /* 기본: 실사진 우선 */
 
-  /* 한 번에 그리는 카드 수 — 1,436개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  /* 한 번에 그리는 카드 수 — 1,434개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
   var shown = PAGE_SIZE;
   var lastList = null;
