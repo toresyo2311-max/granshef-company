@@ -693,7 +693,8 @@
     var list = filtered();
     lastList = list;
     var total = list.length;
-    shown = keepShown ? Math.max(PAGE_SIZE, Math.min(shown, total)) : Math.min(PAGE_SIZE, total);
+    /* 보던 개수를 유지하되, 걸러진 목록보다 많이 그리지 않는다(빈 카드 참조 오류 방지) */
+    shown = keepShown ? Math.min(Math.max(PAGE_SIZE, shown), total) : Math.min(PAGE_SIZE, total);
     grid.innerHTML = '';
     if (countEl) {
       var filteredNow = state.cat !== 'all' || state.brand || state.q || state.size;
