@@ -1,2 +1,13 @@
 .DS_Store
 node_modules/
+
+# 임시·대용량 작업물(원본 카탈로그 PDF·압축 파일·스크립트 저장소) — 저장소에 넣지 않는다
+work/
+tmp/
+*.zip
+*.pdf
+*.psd
+*.ai
+
+# 사이트에서 실제로 내려받는 문서는 제외 규칙에서 뺀다
+!assets/*.pdf
