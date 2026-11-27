@@ -1,8 +1,8 @@
 /* 주식회사 그랑쉐프 — 취급 상품 카탈로그
-   전체 2,342품목(assets/catalog.js)을 같은 시리즈의 사이즈·규격·형태(편수·양수·전골·곰솥 · 프라이팬·웍·궁중팬)만 다른 품목끼리
-   한 세트로 묶어 1,434개 카드로 보여 준다.
+   전체 2,443품목(assets/catalog.js)을 같은 시리즈의 사이즈·규격·형태(편수·양수·전골·곰솥 · 프라이팬·웍·궁중팬)만 다른 품목끼리
+   한 세트로 묶어 1,503개 카드로 보여 준다.
    검색·분류·브랜드·규격 필터, 60개씩 점진 렌더링(더 보기), 품목 상세(규격 선택),
-   실제 제품 사진 955컷 모아보기, 취급문의(공장 재고 확인 후 발주 가능) 표시, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
+   실제 제품 사진 1,045컷 모아보기, 취급문의(공장 재고 확인 후 발주 가능) 표시, 견적 바구니(브라우저 저장) → 문의 폼 전달까지 이 스크립트가 맡는다. */
 (function () {
   'use strict';
 
@@ -77,7 +77,7 @@
   }
 
   /* ── 규격 표기 ─────────────────────────────────────────────────
-     카탈로그 s 배열이 비어 있는 품목(2026-11-27 기준 1,394행)은 품명에서 규격을 읽어 낸다.
+     카탈로그 s 배열이 비어 있는 품목(2026-11-27 기준 1,445행)은 품명에서 규격을 읽어 낸다.
        '경질 라면냄비-14양수' → 14cm · '경질북경팬33cm' → 33cm · '국내 다리 도마 - 1호' → 1호
        '밧드카바 2인치 1/2 (270×330)' → 2인치 + 270×330 · '양수(18)' → 18cm */
   var NAME_UNIT = /(\d+(?:\.\d+)?)\s*(cm|CM|mm|MM|mL|ML|ml|L|리터|kg|KG|g|G|P|p|호|인치|개입|매)/g;
@@ -435,6 +435,11 @@
     SYN_PAIRS.forEach(function (pair) { s = s.replace(pair[0], pair[1]); });
     return s.replace(/\s+/g, ' ').trim();
   }
+  /* 띄어쓰기 무시 비교용 — 검색어와 색인 양쪽에서 공백을 모두 지운 형태를 함께 둔다.
+     '사각다용도'로 쳐도 '사각 다용도', '진공걸이'로 쳐도 '진공 걸이'가 걸리게. */
+  function squeezeQuery(t) {
+    return String(t).replace(/\s+/g, '');
+  }
 
   function groupText(g) {
     if (g.gk === null) {
@@ -444,8 +449,43 @@
       });
       if (g.extra) parts.push(g.extra.join(' '));
       g.gk = normalizeQuery(parts.join(' '));
+      g.gkn = squeezeQuery(g.gk);
     }
     return g.gk;
+  }
+  function groupNoSpace(g) {
+    groupText(g);
+    if (g.gkn === undefined) g.gkn = squeezeQuery(g.gk);
+    return g.gkn;
+  }
+
+  /* 붙여 쓴 검색어를 두 글자씩 끊어(마지막이 한 글자로 남지 않게) 그 조각이 색인에 차례대로 있는지 본다.
+     '진공걸이' → 진공·걸이 → '… 진공 흡착 걸이 …' 에 차례대로 있으므로 맞음.
+     낱말 사이에 수식어가 낀 이름('진공 흡착 걸이')을 붙여 쳐도 찾기 위한 마지막 단계다. */
+  function chunkedMatch(text, compact) {
+    var pieces = [], i = 0;
+    while (i < compact.length) {
+      var size = (compact.length - i === 3) ? 3 : 2;
+      pieces.push(compact.substr(i, size));
+      i += size;
+    }
+    if (pieces.length < 2) return false;
+    var at = 0;
+    for (i = 0; i < pieces.length; i += 1) {
+      at = text.indexOf(pieces[i], at);
+      if (at < 0) return false;
+      at += pieces[i].length;
+    }
+    return true;
+  }
+
+  /* 카드 하나가 검색어와 얼마나 맞는지 — 0 띄어쓰기까지 같은 글자열, 1 띄어쓰기만 다름,
+     2 낱말 사이에 다른 말이 낌. 맞으면 0~2, 아니면 -1. 앞 단계가 뒤 단계보다 앞에 보이게 한다. */
+  function matchRank(g, q, compact) {
+    if (groupText(g).indexOf(q) >= 0) return 0;
+    if (compact && groupNoSpace(g).indexOf(compact) >= 0) return 1;
+    if (compact.length >= 4 && chunkedMatch(groupNoSpace(g), compact)) return 2;
+    return -1;
   }
 
   /* 카드 대표 이미지 — 대표로 지정된 사진(rep) → 묶인 규격 가운데 실제 제품 사진 → 첫 규격 */
@@ -474,9 +514,15 @@
   PRODUCTS.forEach(function (p) { if (p.img) SHOT_IMG[p.img] = 1; });
   var SHOT_COUNT = Object.keys(SHOT_IMG).length;
 
-  var state = { q: '', qraw: '', cat: 'all', brand: '', size: '', sort: 'photo' }; /* 기본: 실사진 우선 */
+  var state = { q: '', qn: '', qraw: '', cat: 'all', brand: '', size: '', sort: 'photo' }; /* 기본: 실사진 우선 */
+  /* 검색어 한 곳에서만 넣는다 — 띄어쓰기 그대로(q)·무시(qn)·주소에 실을 원문(qraw)을 함께 맞춘다 */
+  function setQuery(raw) {
+    state.qraw = String(raw == null ? '' : raw).trim();
+    state.q = normalizeQuery(state.qraw);
+    state.qn = squeezeQuery(state.q);
+  }
 
-  /* 한 번에 그리는 카드 수 — 1,434개를 한꺼번에 만들지 않고 60개씩 붙인다 */
+  /* 한 번에 그리는 카드 수 — 1,503개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
   var shown = PAGE_SIZE;
   var lastList = null;
@@ -574,8 +620,7 @@
   var q = $('q'), qClear = $('qClear');
   if (q) {
     q.addEventListener('input', function () {
-      state.q = normalizeQuery(q.value);
-      state.qraw = q.value.trim();
+      setQuery(q.value);
       if (qClear) qClear.hidden = !q.value;
       /* 검색은 전체 분류에서 찾는다 — 분류 칩이 눌려 있으면 함께 풀어 준다 */
       if (state.q && state.cat !== 'all') { setCat('all'); return; }
@@ -584,7 +629,7 @@
   }
   if (qClear) {
     qClear.addEventListener('click', function () {
-      q.value = ''; state.q = ''; state.qraw = ''; qClear.hidden = true; q.focus(); render();
+      q.value = ''; setQuery(''); qClear.hidden = true; q.focus(); render();
     });
   }
 
@@ -602,7 +647,11 @@
     GROUPS.forEach(function (g) {
       if (state.cat !== 'all' && g.c !== state.cat) return;
       if (state.brand && g.b !== state.brand) return;
-      if (state.q && groupText(g).indexOf(state.q) < 0) return;
+      var mk = 0;
+      if (state.q) {
+        mk = matchRank(g, state.q, state.qn);
+        if (mk < 0) return;
+      }
       var vs = g.variants;
       if (state.size === 'none') {
         /* '규격 미표기' 는 규격을 하나도 못 읽은 카드만 — 일부만 비어 있는 카드가
@@ -612,23 +661,23 @@
         vs = vs.filter(function (p) { return p.g[state.size]; });
         if (!vs.length) return;
       }
-      list.push({ b: g.b, base: g.base, c: g.c, ser: g.ser, variants: vs });
+      list.push({ b: g.b, base: g.base, c: g.c, ser: g.ser, variants: vs, mk: mk });
     });
     if (state.sort === 'photo') {
       /* 실제 제품 사진이 있는 카드를 먼저, 그 안에서 취급문의 카드는 뒤로 — 사진을 앞에서 바로 보시고
          실제 취급 품목을 먼저 보실 수 있게. 같은 순위 안에서는 분류순 → 품목명 순서 그대로 */
       list.sort(function (a, b) {
-        return (cardRank(a.variants) - cardRank(b.variants)) || (CAT_ORDER[a.c] - CAT_ORDER[b.c]) || cardTitle(a).localeCompare(cardTitle(b), 'ko');
+        return (a.mk - b.mk) || (cardRank(a.variants) - cardRank(b.variants)) || (CAT_ORDER[a.c] - CAT_ORDER[b.c]) || cardTitle(a).localeCompare(cardTitle(b), 'ko');
       });
     } else if (state.sort === 'name') {
-      list.sort(function (a, b) { return cardTitle(a).localeCompare(cardTitle(b), 'ko'); });
+      list.sort(function (a, b) { return (a.mk - b.mk) || cardTitle(a).localeCompare(cardTitle(b), 'ko'); });
     } else if (state.sort === 'brand') {
       list.sort(function (a, b) {
-        return a.b.localeCompare(b.b, 'ko') || cardTitle(a).localeCompare(cardTitle(b), 'ko');
+        return (a.mk - b.mk) || a.b.localeCompare(b.b, 'ko') || cardTitle(a).localeCompare(cardTitle(b), 'ko');
       });
     } else {
       list.sort(function (a, b) {
-        return (CAT_ORDER[a.c] - CAT_ORDER[b.c]) || cardTitle(a).localeCompare(cardTitle(b), 'ko');
+        return (a.mk - b.mk) || (CAT_ORDER[a.c] - CAT_ORDER[b.c]) || cardTitle(a).localeCompare(cardTitle(b), 'ko');
       });
     }
     return list;
@@ -856,8 +905,8 @@
   });
 
   /* ── 실제 제품 사진 모아보기 ───────────────────────────────
-     사진 955컷을 한 번에 DOM으로 만들면 클릭 직후 화면이 멈춘다(품목 2,342건을 사진마다
-     filter로 훑어 222만 번 비교하는 구조였다). 사진 → 품목 역인덱스를 한 번만 만들어 두고
+     사진 1,045컷을 한 번에 DOM으로 만들면 클릭 직후 화면이 멈춘다(품목 2,443건을 사진마다
+     filter로 훑어 255만 번 비교하는 구조였다). 사진 → 품목 역인덱스를 한 번만 만들어 두고
      60컷씩 나눠 그린다. 대화상자를 열면 즉시 첫 60컷이 보이고, 끝까지 스크롤하면 이어서 채운다. */
   var shotDlg = $('shotGallery'), shotGrid = $('shotGrid');
   var shotMoreWrap = $('shotMore'), shotMoreBtn = $('shotMoreBtn');
@@ -1224,8 +1273,7 @@
     if (sort && sortSel) { sortSel.value = sort; state.sort = sort; }
     if (kw && q) {
       q.value = kw;
-      state.qraw = kw.trim();
-      state.q = normalizeQuery(kw);
+      setQuery(kw);
       if (qClear) qClear.hidden = !kw;
     }
     render();
