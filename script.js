@@ -284,8 +284,8 @@
       url: 'https://www.hankook.com/', urlLabel: 'hankook.com'
     },
     {
-      no: '16', name: '영수인터내셔널', en: 'YOUNGSOO INTERNATIONAL · SIHEUNG · 513품목', cat: 'tool', catLabel: '조리도구·수저',
-      desc: '경기 시흥의 목제품·주방용품·일회용품 수입유통 업체. 68쪽 카탈로그 기준 도마·절구공이·밀대 같은 목주방용품부터 옻칠·황옻칠·베트남 옻칠 수저와 젓가락, 일회용품·청소·생활용품까지 513품목을 취급합니다.',
+      no: '16', name: '영수인터내셔널', en: 'YOUNGSOO INTERNATIONAL · SIHEUNG', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '경기 시흥의 목제품·주방용품·일회용품 수입유통 업체. 68쪽 카탈로그 기준 도마·절구공이·밀대 같은 목주방용품부터 옻칠·황옻칠·베트남 옻칠 수저와 젓가락, 일회용품·청소·생활용품까지 취급합니다.',
       items: ['국내 다리 도마 특호~4호', '옻칠 수저세트·황옻칠 숫가락 5P', '절구공이·목밀대 대~미니소', '대나무 조리도구', '일회용 대나무 젓가락 100P'],
       url: 'https://youngsoo.co.kr/', urlLabel: 'youngsoo.co.kr'
     },
@@ -368,74 +368,74 @@
       url: 'https://smartstore.naver.com/world_-', urlLabel: 'smartstore.world_-'
     },
     {
-      no: '30', name: '직영 공급', en: 'GRANDCHEF 직영 공급 · 514품목', cat: 'supply', catLabel: '유통·도매',
-      desc: '그랑쉐프가 직영으로 공급하는 취급분입니다. 브랜드 표기가 따로 없는 직영 상품을 한데 묶어 머그·컵, 공기·접시, 수저·젓가락, 조리도구·칼, 생활용품까지 514품목을 정리했습니다. 실제 재고·규격·납기는 상담으로 확인합니다.',
+      no: '30', name: '직영 공급', en: 'GRANDCHEF 직영 공급', cat: 'supply', catLabel: '유통·도매',
+      desc: '그랑쉐프가 직영으로 공급하는 취급분입니다. 브랜드 표기가 따로 없는 직영 상품을 한데 묶어 머그·컵, 공기·접시, 수저·젓가락, 조리도구·칼, 생활용품까지 정리했습니다. 실제 재고·규격·납기는 상담으로 확인합니다.',
       items: ['IH모노포트 양수·전골·편수', '머그·유리컵·텀블러', '공기·접시·찬기·면기', '수저·젓가락 세트', '조리도구·칼·채반'],
       url: '', urlLabel: '직영 공급', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '31', name: '페나테스', en: '취급 거래처 · 조리도구·수저 52품목', cat: 'tool', catLabel: '조리도구·수저',
-      desc: '수저와 주방 소도구를 공급하는 취급 거래처입니다. 버들·체리·큐브 수저세트, 어린이 수저, 국자·집게·찜기·오프너·식도 등 52품목을 취급합니다.',
+      no: '31', name: '페나테스', en: '취급 거래처 · 조리도구·수저', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '수저와 주방 소도구를 공급하는 취급 거래처입니다. 버들·체리·큐브 수저세트, 어린이 수저, 국자·집게·찜기·오프너·식도를 취급합니다.',
       items: ['버들수저·버들티스푼 3p', '체리수저·큐브수저', '토끼 어린이수저', '부페집게·통닭집게', '찜기·멸치다시망'],
       url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '32', name: '키친프리', en: '취급 거래처 · 스테인리스 식기 49품목', cat: 'living', catLabel: '식기·생활',
-      desc: '업소·가정용 스테인리스·멜라민 식기와 조리도구를 공급하는 거래처입니다. 이중탕기·이중찬기·이중공기, 펀칭볼·채반, 멜라민 앞접시·볼, 인덕션 소테팬 등 49품목을 취급합니다.',
+      no: '32', name: '키친프리', en: '취급 거래처 · 스테인리스 식기', cat: 'living', catLabel: '식기·생활',
+      desc: '업소·가정용 스테인리스·멜라민 식기와 조리도구를 공급하는 거래처입니다. 이중탕기·이중찬기·이중공기, 펀칭볼·채반, 멜라민 앞접시·볼, 인덕션 소테팬 등을 취급합니다.',
       items: ['이중탕기 대·중·소·특대', '스텐이중찬기 1~4호', '펀칭볼·펀칭채반', '멜라민 앞접시·원형볼', '인덕션소테팬 22~28cm'],
       url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '33', name: '진성울트라', en: '취급 거래처 · 업소용 기물 40품목', cat: 'supply', catLabel: '유통·도매',
-      desc: '업소용 주방기물을 만드는 거래처입니다. PC계량컵, 건지기·뜰채·채망, 페스트푸드쟁반, 양념식판, 간식판 등 업소·급식용 기물 40품목을 취급합니다.',
+      no: '33', name: '진성울트라', en: '취급 거래처 · 업소용 기물', cat: 'supply', catLabel: '유통·도매',
+      desc: '업소용 주방기물을 만드는 거래처입니다. PC계량컵, 건지기·뜰채·채망, 페스트푸드쟁반, 양념식판, 간식판 등 업소·급식용 기물을 취급합니다.',
       items: ['PC계량컵 500·1000·2000ml', '진성건지기 A 1~5호', '국수·만두건지기', '파이브뜰채', '논슬립 페스트푸드쟁반', '양념식판 1~4구'],
       url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '34', name: '세호', en: '취급 거래처 · 밧드(바트) 34품목', cat: 'supply', catLabel: '유통·도매',
-      desc: '스테인리스·PC 밧드(바트)를 공급하는 거래처입니다. PC밧드 2·4·6·8인치와 PC밧드커버, 밧드카바, 스테인리스 풀밧드 등 34품목을 취급합니다.',
+      no: '34', name: '세호', en: '취급 거래처 · 밧드(바트)', cat: 'supply', catLabel: '유통·도매',
+      desc: '스테인리스·PC 밧드(바트)를 공급하는 거래처입니다. PC밧드 2·4·6·8인치와 PC밧드커버, 밧드카바, 스테인리스 풀밧드 등을 취급합니다.',
       items: ['PC밧드 2·4·6·8인치(1/2~1/9)', 'PC밧드커버', '밧드카바 1/9~6', '풀밧드 2·4·6인치'],
       url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '35', name: '한성', en: '취급 거래처 · 주방 소도구 25품목', cat: 'tool', catLabel: '조리도구·수저',
-      desc: '주방 소도구를 만드는 거래처입니다. 감자칼·감자다지기·계란절단기, 거품기·주걱·뒤지게집게, 칼갈이·오프너 등 조리 소도구 25품목을 취급합니다.',
+      no: '35', name: '한성', en: '취급 거래처 · 주방 소도구', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '주방 소도구를 만드는 거래처입니다. 감자칼·감자다지기·계란절단기, 거품기·주걱·뒤지게집게, 칼갈이·오프너 등 조리 소도구를 취급합니다.',
       items: ['Y감자칼·양면감자칼·호박감자칼', '감자다지기·계란절단기', '특A거품기·롱거품기', '한성주걱 대·특대', '숫돌링칼갈이·종합오프너'],
       url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '36', name: '쿡스넷', en: '취급 거래처 · 국자·주걱 12품목', cat: 'tool', catLabel: '조리도구·수저',
-      desc: '국자·주걱·집게와 뚝배기 받침을 공급하는 거래처입니다. 쿡스넷 국자·라면국자, 만두집게, 반원뒤지게, 뚝배기받침 등 12품목을 취급합니다.',
+      no: '36', name: '쿡스넷', en: '취급 거래처 · 국자·주걱', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '국자·주걱·집게와 뚝배기 받침을 공급하는 거래처입니다. 쿡스넷 국자·라면국자, 만두집게, 반원뒤지게, 뚝배기받침 등을 취급합니다.',
       items: ['쿡스넷국자 소·특대', '쿡스넷라면국자', '쿡스넷만두 대·소·특대', '쿡스넷주걱 대·특대', '뚝배기받침 대·중·소'],
       url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '37', name: '와우예스굳', en: '취급 거래처 · 키친아트 Wise 11품목', cat: 'cook', catLabel: '냄비·팬',
-      desc: '키친아트 Wise IH 라인을 공급하는 유통 거래처입니다. IH 와이즈 양수·전골·프라이팬 11품목을 취급하며, 품명에 키친아트 표기가 함께 있습니다.',
+      no: '37', name: '와우예스굳', en: '취급 거래처 · 키친아트 Wise', cat: 'cook', catLabel: '냄비·팬',
+      desc: '키친아트 Wise IH 라인을 공급하는 유통 거래처입니다. IH 와이즈 양수·전골·프라이팬을 취급하며, 품명에 키친아트 표기가 함께 있습니다.',
       items: ['IH 와이즈 양수 16·20·24cm', 'IH 와이즈 전골 24cm', 'IH와이즈 프라이팬 20·24cm'],
       url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '38', name: '천성', en: '취급 거래처 · 업소용 조리도구 8품목', cat: 'tool', catLabel: '조리도구·수저',
-      desc: '업소용 조리도구를 만드는 거래처입니다. 삼각·헤라·사각 스펜치(스페치)와 스텐 호떡누르개 등 8품목을 취급합니다.',
+      no: '38', name: '천성', en: '취급 거래처 · 업소용 조리도구', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '업소용 조리도구를 만드는 거래처입니다. 삼각·헤라·사각 스펜치(스페치)와 스텐 호떡누르개 등을 취급합니다.',
       items: ['천성삼각스펜치·헤라스펜치', '천성사각스페치 대·중·소', '스텐 호떡누르개'],
       url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '39', name: '현은산업', en: '취급 거래처 · 식도·가위 6품목', cat: 'tool', catLabel: '조리도구·수저',
-      desc: '식도·과도·가위 등 칼류를 공급하는 거래처입니다. 에이스식도·포에버식도, 크로바과도, 키친플라워 HE 주방용가위 등 6품목을 취급합니다.',
+      no: '39', name: '현은산업', en: '취급 거래처 · 식도·가위', cat: 'tool', catLabel: '조리도구·수저',
+      desc: '식도·과도·가위 등 칼류를 공급하는 거래처입니다. 에이스식도·포에버식도, 크로바과도, 키친플라워 HE 주방용가위 등을 취급합니다.',
       items: ['에이스식도 대·중', '포에버식도', '크로바과도', '키친플라워 HE-1·HE-2 주방용가위'],
       url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '40', name: '리빙온', en: '취급 거래처 · 불판·가스용품 5품목', cat: 'cook', catLabel: '냄비·팬',
-      desc: '불판·그릴팬과 가스용품을 공급하는 거래처입니다. 리빙온 원형·사각 불판, 클로즈 그릴팬, 가스렌지, 멀티가스점화기 등 5품목을 취급합니다.',
+      no: '40', name: '리빙온', en: '취급 거래처 · 불판·가스용품', cat: 'cook', catLabel: '냄비·팬',
+      desc: '불판·그릴팬과 가스용품을 공급하는 거래처입니다. 리빙온 원형·사각 불판, 클로즈 그릴팬, 가스렌지, 멀티가스점화기 등을 취급합니다.',
       items: ['리빙온 원형불판(원형·사각)', '클로즈그릴팬 30×23cm', '리빙온 가스렌지 100번', '리빙온 멀티가스점화기'],
       url: '', urlLabel: '취급처 직거래', offNote: '공식 홈페이지 미확인'
     },
     {
-      no: '41', name: '가온', en: '취급 거래처 · 심플팬 4품목', cat: 'cook', catLabel: '냄비·팬',
-      desc: '프라이팬을 만드는 거래처입니다. 심플팬 양수 20·24cm, 편수 16·18cm 4품목을 취급합니다.',
+      no: '41', name: '가온', en: '취급 거래처 · 심플팬', cat: 'cook', catLabel: '냄비·팬',
+      desc: '프라이팬을 만드는 거래처입니다. 심플팬 양수 20·24cm, 편수 16·18cm를 취급합니다.',
       items: ['심플팬 양수 20·24cm', '심플팬 편수 16·18cm'],
       url: '', urlLabel: '제조사 직거래', offNote: '공식 홈페이지 미확인'
     }
@@ -452,6 +452,12 @@
   ];
   var brandCatCount = {};
   BRANDS.forEach(function (b) { brandCatCount[b.cat] = (brandCatCount[b.cat] || 0) + 1; });
+  /* 협력 브랜드·거래처 수(자체 브랜드 제외) — 화면의 '41곳' 표기를 한 곳에서 채운다 */
+  var partnerCount = BRANDS.filter(function (b) { return !b.self; }).length;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-brand-dir]'), function (el) {
+    if (el.getAttribute('data-brand-dir') === 'partner') el.textContent = String(partnerCount);
+    if (el.getAttribute('data-brand-dir') === 'all') el.textContent = String(BRANDS.length);
+  });
   Array.prototype.forEach.call(document.querySelectorAll('.brand-filter .chip'), function (chip) {
     var key = chip.getAttribute('data-filter');
     var num = key === 'all' ? BRANDS.length : (brandCatCount[key] || 0);
@@ -536,6 +542,22 @@
       detail.appendChild(h);
       detail.appendChild(en);
       detail.appendChild(desc);
+
+      /* 품목 수는 카탈로그 마스터에서 센 값(assets/brand-counts.js) — 화면마다 숫자가 어긋나지 않게 */
+      var bc = window.GC_BRAND_COUNTS;
+      var bcnt = bc && bc.counts ? bc.counts[b.name] : 0;
+      if (bcnt) {
+        var cntWrap = document.createElement('p');
+        cntWrap.className = 'bd-count';
+        var cntStrong = document.createElement('strong');
+        cntStrong.textContent = '취급 품목 ' + String(bcnt).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '개';
+        var cntLink = document.createElement('a');
+        cntLink.href = 'products.html?brand=' + encodeURIComponent(b.name);
+        cntLink.textContent = '취급상품에서 보기 →';
+        cntWrap.appendChild(cntStrong);
+        cntWrap.appendChild(cntLink);
+        detail.appendChild(cntWrap);
+      }
       detail.appendChild(sub);
       detail.appendChild(ul);
 
@@ -860,7 +882,8 @@
       required.forEach(function (el) {
         var field = el.closest('.field');
         var val = String(el.value).trim();
-        var ok = el.type === 'checkbox' ? el.checked : val.length > 1;
+        /* 필수 항목은 '비어 있지 않은가'만 본다 — 담당자 이름이 한 글자('김')여도 통과해야 한다 */
+        var ok = el.type === 'checkbox' ? el.checked : val.length >= 1;
         if (el.name === 'phone') {
           ok = val.replace(/[^0-9]/g, '').length >= 9;
         }
@@ -874,13 +897,25 @@
         if (!ok && !firstBad) firstBad = el;
       });
 
+      /* 선택 입력인 이메일도 값이 있으면 형식을 본다 — 'abc' 같은 값이 그대로 접수되지 않게 */
+      var emailEl = form.querySelector('input[type="email"]');
+      if (emailEl) {
+        var ev = String(emailEl.value).trim();
+        var eok = !ev || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ev);
+        var ef = emailEl.closest('.field');
+        if (ef) ef.classList.toggle('invalid', !eok);
+        if (!eok && !firstBad) firstBad = emailEl;
+      }
+
       if (firstBad) {
         hidePanels();
         say(firstBad.name === 'message'
           ? '문의 내용을 10자 이상 적어 주세요.'
           : firstBad.name === 'phone'
             ? '연락처를 정확히 적어 주세요. (숫자 9자리 이상)'
-            : '필수 항목을 확인해 주세요.', true);
+            : firstBad.type === 'email'
+              ? '이메일 주소 형식을 확인해 주세요. (예: name@company.com)'
+              : '필수 항목을 확인해 주세요.', true);
         firstBad.focus();
         return;
       }

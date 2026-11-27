@@ -36,9 +36,14 @@
 <link rel="apple-touch-icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 웹폰트는 렌더를 막지 않도록 비차단으로 받는다 -->
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;500&display=swap">
+<noscript>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261127a">
+</noscript>
+<link rel="stylesheet" href="styles.css?v=20261127b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -298,7 +303,7 @@
             </div>
             <p>
               냄비·프라이팬·주전자부터 식기·조리도구·밀폐용기까지
-              자체 브랜드 2종(그랑쉐프·그랜드쿡)과 협력 브랜드·거래처 41곳의 제품을 도소매로 공급합니다.
+              자체 브랜드 2종(그랑쉐프·그랜드쿡)과 협력 브랜드·거래처 <span data-brand-dir="partner">41</span>곳의 제품을 도소매로 공급합니다.
               업소·급식용 대용량 기물도 함께 취급합니다.
             </p>
           </div>
@@ -525,7 +530,7 @@
           <details class="faq">
             <summary>목록에 없는 브랜드나 품목도 구할 수 있나요?</summary>
             <div class="faq-a">
-              <p>기재한 41개 협력 브랜드·거래처와 자체 브랜드 2종 외에도 수십여 개 제조·유통사와 거래하고 있습니다.
+              <p>기재한 <span data-brand-dir="partner">41</span>개 협력 브랜드·거래처와 자체 브랜드 2종 외에도 수십여 개 제조·유통사와 거래하고 있습니다.
                 찾으시는 브랜드·규격·모델명을 알려주시면 취급 가능 여부와 납기를 확인해 안내드립니다.</p>
             </div>
           </details>
@@ -688,9 +693,9 @@
     <div class="wrap">
       <div class="sec-head reveal">
         <p class="kicker"><b>06</b>취급 브랜드</p>
-        <h2 class="section-title">자체 브랜드 2종, 협력 브랜드·거래처 41곳</h2>
+        <h2 class="section-title">자체 브랜드 2종, 협력 브랜드·거래처 <span data-brand-dir="partner">41</span>곳</h2>
         <p class="sec-lead">
-          그랑쉐프(GRANDCHEF)·그랜드쿡(GRANDCOOK) 두 자체 브랜드와 협력 브랜드·거래처 41곳의 제품을 취급합니다.
+          그랑쉐프(GRANDCHEF)·그랜드쿡(GRANDCOOK) 두 자체 브랜드와 협력 브랜드·거래처 <span data-brand-dir="partner">41</span>곳의 제품을 취급합니다.
           브랜드를 선택하시면 브랜드 안내와 대표 취급 제품, 공식 홈페이지 링크를 보실 수 있습니다.
         </p>
       </div>
@@ -714,7 +719,7 @@
             <p class="bd-idle-lead">분류를 고르거나 브랜드를 선택하시면 브랜드 안내, 대표 취급 제품, 공식 홈페이지 링크가 표시됩니다.</p>
             <ul class="bd-idle-list">
               <li><strong>자체 브랜드</strong><span>2곳</span></li>
-              <li><strong>냄비·팬</strong><span>18곳</span></li>
+              <li><strong>냄비·팬</strong><span>17곳</span></li>
               <li><strong>주방가전</strong><span>2곳</span></li>
               <li><strong>조리도구·수저</strong><span>7곳</span></li>
               <li><strong>식기·생활</strong><span>8곳</span></li>
@@ -727,7 +732,7 @@
 
       <p class="brand-more reveal">
         <span class="brand-more-chip">+ 외 수십여 개 협력 브랜드</span>
-        기재한 41개 협력 브랜드·거래처 외에도 수십여 개 국내·외 제조사·협력사 제품을 공급합니다.
+        기재한 <span data-brand-dir="partner">41</span>개 협력 브랜드·거래처 외에도 수십여 개 국내·외 제조사·협력사 제품을 공급합니다.
         자체 브랜드 그랑쉐프·그랜드쿡 제품은 위 목록의 '자체 브랜드'에서 확인하실 수 있습니다.
         목록에 없는 품목도 문의로 확인해 드립니다.
       </p>
@@ -1054,6 +1059,7 @@
   <a class="fb-quote" href="#contact">납품·견적 문의</a>
 </div>
 
-<script src="script.js?v=20261127a" defer></script>
+<script src="assets/brand-counts.js?v=20261127b" defer></script>
+<script src="script.js?v=20261127b" defer></script>
 </body>
 </html>

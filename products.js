@@ -49,28 +49,109 @@
     return 'assets/products/' + (CAT_IMG[p.c] || 'cat-01-pot') + '.jpg';
   }
   /* 사진 파일은 경로를 그대로 두고 내용만 교체하므로, 브라우저 캐시를 비키도록 판올림 값을 붙인다 */
-  var IMG_V = '?v=20261127a';
+  var IMG_V = '?v=20261127b';
+  /* 카드·갤러리에는 미리 만들어 둔 400px·320px WebP(tools/optimize_images.py)를 먼저 쓰고,
+     원본 800px JPEG는 상세 모달·대체본으로 남긴다. WebP를 못 읽으면 JPEG로, JPEG도 깨지면 예시 이미지로. */
+  var SIZES_ATTR = { 400: '(max-width: 560px) 45vw, 240px', 320: '(max-width: 560px) 45vw, 170px' };
+  function webpFor(jpg, width) {
+    return /\.jpe?g$/i.test(jpg) ? jpg.replace(/\.jpe?g$/i, '-' + width + '.webp') : '';
+  }
   function imageFor(p) { return p.img ? p.img + IMG_V : exampleImage(p); }
-  /* 사진이 깨졌을 때 예시 이미지로 한 번만 대체 */
-  function bindImageFallback(imgEl, p) {
-    var swapped = false;
+  function setPhoto(imgEl, p, width) {
+    var jpg = imageFor(p);
+    var webp = p.img ? webpFor(p.img, width) : '';
+    var stage = 0;
     imgEl.addEventListener('error', function () {
-      if (swapped) return;
-      swapped = true;
-      imgEl.src = exampleImage(p);
+      if (stage === 0 && webp) { stage = 1; imgEl.removeAttribute('srcset'); imgEl.src = jpg; return; }
+      if (stage < 2) { stage = 2; imgEl.removeAttribute('srcset'); imgEl.src = exampleImage(p); }
     });
+    if (webp) {
+      imgEl.setAttribute('srcset', webp + IMG_V + ' ' + width + 'w, ' + jpg + ' 800w');
+      imgEl.setAttribute('sizes', SIZES_ATTR[width] || SIZES_ATTR[400]);
+      imgEl.src = webp + IMG_V;
+    } else {
+      imgEl.removeAttribute('srcset');
+      imgEl.removeAttribute('sizes');
+      imgEl.src = jpg;
+    }
   }
 
-  /* ── 규격 표기 ───────────────────────────────────────────────── */
+  /* ── 규격 표기 ─────────────────────────────────────────────────
+     카탈로그 s 배열이 비어 있는 품목(2026-11-27 기준 1,394행)은 품명에서 규격을 읽어 낸다.
+       '경질 라면냄비-14양수' → 14cm · '경질북경팬33cm' → 33cm · '국내 다리 도마 - 1호' → 1호
+       '밧드카바 2인치 1/2 (270×330)' → 2인치 + 270×330 · '양수(18)' → 18cm */
+  var NAME_UNIT = /(\d+(?:\.\d+)?)\s*(cm|CM|mm|MM|mL|ML|ml|L|리터|kg|KG|g|G|P|p|호|인치|개입|매)/g;
+  var NAME_FORM = /(\d+(?:\.\d+)?)\s*(곰솥|곰국|냄비|편수|양수|양손|전골|들통|프라이팬|후라이팬|궁중팬|웍|팬|솥|주전자|뚝배기|국자|바구니|채반|볼|접시|공기|머그|컵|통)(?![가-힣])/g;
+  var NAME_FORM_AFTER = /(곰솥|곰국|냄비|편수|양수|양손|전골|들통|프라이팬|후라이팬|궁중팬|웍|솥|주전자|뚝배기|국자|바구니|채반)[\s\-–]*(\d{1,2}(?:\.\d+)?)(?![0-9가-힣])/g;
+  var NAME_DIM = /(\d+(?:\.\d+)?)\s*[*xX×]\s*(\d+(?:\.\d+)?)(?:\s*[*xX×]\s*(\d+(?:\.\d+)?))?/g;
+  var NAME_PAREN_NUM = /\(\s*(\d+(?:\.\d+)?)\s*(cm|mm)?\s*\)/g;
+
+  function normUnit(u) {
+    var x = String(u);
+    if (x === 'cm' || x === 'CM') return 'cm';
+    if (x === 'mm' || x === 'MM') return 'mm';
+    if (/^(ml|mL|ML)$/.test(x)) return 'mL';
+    if (x === 'kg' || x === 'KG') return 'kg';
+    if (x === 'g' || x === 'G') return 'g';
+    if (x === 'p') return 'P';
+    return x;
+  }
+  function unitText(s) {
+    if (s.t) return s.t;
+    return s.v + String(s.u).replace('리터', 'L');
+  }
+  var DERIVED = {};
+  function parseSpecs(name) {
+    var s = String(name), out = [], seen = {}, m;
+    function push(v, u, text) {
+      var key = String(text);
+      if (!isFinite(v) || seen[key]) return;
+      seen[key] = 1;
+      out.push({ v: v, u: u, t: text });
+    }
+    NAME_DIM.lastIndex = 0;
+    while ((m = NAME_DIM.exec(s))) {
+      var dims = m[0].replace(/\s*[*xX×]\s*/g, '×').replace(/\s+/g, '');
+      var big = Math.max(parseFloat(m[1]), parseFloat(m[2]), m[3] ? parseFloat(m[3]) : 0) > 100;
+      push(parseFloat(m[1]), big ? 'mm' : 'cm', dims + (/cm|mm/i.test(m[0]) ? '' : (big ? '' : 'cm')));
+    }
+    NAME_UNIT.lastIndex = 0;
+    while ((m = NAME_UNIT.exec(s))) push(parseFloat(m[1]), normUnit(m[2]), m[1] + String(normUnit(m[2])).replace('리터', 'L'));
+    NAME_FORM.lastIndex = 0;
+    while ((m = NAME_FORM.exec(s))) push(parseFloat(m[1]), 'cm', m[1] + 'cm');
+    NAME_FORM_AFTER.lastIndex = 0;
+    while ((m = NAME_FORM_AFTER.exec(s))) {
+      var v2 = parseFloat(m[2]);
+      /* 형태어 뒤에 붙은 숫자(곰솥-28·전골 24)는 조리기물 크기 범위일 때만 규격으로 본다(모델번호 오인 방지) */
+      if (v2 >= 6 && v2 <= 80) push(v2, 'cm', m[2] + 'cm');
+    }
+    NAME_PAREN_NUM.lastIndex = 0;
+    while ((m = NAME_PAREN_NUM.exec(s))) {
+      var u = m[2] ? normUnit(m[2]) : 'cm';
+      push(parseFloat(m[1]), u, m[1] + u);
+    }
+    return out;
+  }
+  function specsOf(p) {
+    if (p.s && p.s.length) return p.s;
+    if (!(p.n in DERIVED)) {
+      /* 규격 칩 표기(vl)가 있으면 그것을 먼저 읽고(6.3L·2-1 · 270×330), 없으면 품명에서 읽는다 */
+      var parsed = p.vl ? parseSpecs(p.vl) : [];
+      DERIVED[p.n] = parsed.length ? parsed : parseSpecs(p.n);
+    }
+    return DERIVED[p.n];
+  }
   function specText(p) {
-    if (!p.s || !p.s.length) return '';
-    return p.s.map(function (s) { return s.v + String(s.u).replace('리터', 'L'); }).join(' · ');
+    var s = specsOf(p);
+    if (!s.length) return '';
+    return s.map(unitText).join(' · ');
   }
 
   function sizeGroups(p) {
     var g = {};
-    if (!p.s || !p.s.length) { g.none = true; return g; }
-    p.s.forEach(function (s) {
+    var spec = specsOf(p);
+    if (!spec.length) { g.none = true; return g; }
+    spec.forEach(function (s) {
       if (s.u === 'cm') {
         if (s.v <= 20) g.s1 = true;
         else if (s.v <= 24) g.s2 = true;
@@ -125,7 +206,7 @@
   }
 
   function unitGroup(p) {
-    var s = p.s && p.s[0];
+    var s = specsOf(p)[0];
     if (!s) return 'none';
     if (s.u === 'cm' || s.u === 'mm') return 'len';
     if (s.u === 'L' || s.u === 'ml' || s.u === '리터') return 'vol';
@@ -192,10 +273,28 @@
     return lab || '규격 미표기';
   }
 
+  /* 이름에는 있는데 규격 표기에 빠진 수량·분수 — PC밧드 '2인치-1/3'의 1/3, 젓가락 '50P'의 50P.
+     이걸 빼면 같은 라벨로 보여 한 카드에 한 규격만 남는 일이 생긴다(예전에 1/3·1/4·1/6·1/9가 사라졌다). */
+  function nameExtras(p, sp) {
+    var n = String(p.n), out = [], m;
+    var frac = /[-–(\s](\d+)\s*\/\s*(\d+)(?=$|[\s)])/g;
+    while ((m = frac.exec(n))) {
+      var f = m[1] + '/' + m[2];
+      if (sp.indexOf(f) < 0 && out.indexOf(f) < 0) out.push(f);
+    }
+    var cnt = /(\d+(?:\.\d+)?)\s*(P|p|개입|매)(?![가-힣A-Za-z])/g;
+    while ((m = cnt.exec(n))) {
+      var c = m[1] + 'P';
+      if (sp.indexOf(m[1] + 'P') < 0 && sp.indexOf(m[1] + m[2]) < 0 && out.indexOf(c) < 0) out.push(c);
+    }
+    return out;
+  }
+
   function variantLabel(p) {
     var m = metaOf(p);
     var sp = specText(p);
-    m.core = sp || (m.tags || []).map(cleanTag).filter(Boolean).join(' ');
+    var extra = nameExtras(p, sp).join(' ');
+    m.core = [sp, extra].filter(Boolean).join(' ') || (m.tags || []).map(cleanTag).filter(Boolean).join(' ');
     return labelWith(p);
   }
 
@@ -238,6 +337,14 @@
       g.labels[lab] = 1;
       m.vlabel = lab;
       g.variants.push(p);
+    });
+    /* 규격을 못 읽은 규격이 여러 규격 카드에 섞여 있으면 '규격 미표기' 대신 '규격 상담'으로 —
+       '규격 2종 · 5P · 규격 미표기'처럼 읽히지 않게 한다 */
+    GROUPS.forEach(function (g) {
+      if (g.variants.length < 2) return;
+      g.variants.forEach(function (p) {
+        if (META[p.id].vlabel === '규격 미표기') META[p.id].vlabel = '규격 상담';
+      });
     });
     GROUPS.forEach(function (g) {
       if (g.variants.length < 2) return;
@@ -306,11 +413,27 @@
   })();
 
   function sizeValue(p) {
-    var s = p.s && p.s[0];
+    var s = specsOf(p)[0];
     if (!s) return null;
     var v = parseFloat(s.v);
     if (isNaN(v)) return null;
     return s.u === 'mm' ? v / 10 : v;
+  }
+
+  /* ── 검색어 정규화 — B2B 현장에서 같이 쓰는 말을 하나로 모은다 ──────
+     바트↔밧드 · 중화팬·중국팬→웍 · 곰국→곰솥 · 후라이팬→프라이팬 · 스텐→스테인리스
+     검색어와 카드 색인 양쪽에 같은 규칙을 적용해야 어느 쪽으로 처도 같은 결과가 나온다 */
+  var SYN_PAIRS = [
+    [/후라이팬/g, '프라이팬'],
+    [/중화팬|중국팬/g, '웍'],
+    [/바트/g, '밧드'],
+    [/곰국/g, '곰솥'],
+    [/스텐(?!인리스)/g, '스테인리스']
+  ];
+  function normalizeQuery(t) {
+    var s = String(t).toLowerCase();
+    SYN_PAIRS.forEach(function (pair) { s = s.replace(pair[0], pair[1]); });
+    return s.replace(/\s+/g, ' ').trim();
   }
 
   function groupText(g) {
@@ -320,7 +443,7 @@
         parts.push(p.n, p.code || '', specText(p), metaOf(p).vlabel);
       });
       if (g.extra) parts.push(g.extra.join(' '));
-      g.gk = parts.join(' ').toLowerCase();
+      g.gk = normalizeQuery(parts.join(' '));
     }
     return g.gk;
   }
@@ -351,7 +474,7 @@
   PRODUCTS.forEach(function (p) { if (p.img) SHOT_IMG[p.img] = 1; });
   var SHOT_COUNT = Object.keys(SHOT_IMG).length;
 
-  var state = { q: '', cat: 'all', brand: '', size: '', sort: 'photo' }; /* 기본: 실사진 우선 */
+  var state = { q: '', qraw: '', cat: 'all', brand: '', size: '', sort: 'photo' }; /* 기본: 실사진 우선 */
 
   /* 한 번에 그리는 카드 수 — 1,434개를 한꺼번에 만들지 않고 60개씩 붙인다 */
   var PAGE_SIZE = 60;
@@ -451,7 +574,8 @@
   var q = $('q'), qClear = $('qClear');
   if (q) {
     q.addEventListener('input', function () {
-      state.q = q.value.trim().toLowerCase();
+      state.q = normalizeQuery(q.value);
+      state.qraw = q.value.trim();
       if (qClear) qClear.hidden = !q.value;
       /* 검색은 전체 분류에서 찾는다 — 분류 칩이 눌려 있으면 함께 풀어 준다 */
       if (state.q && state.cat !== 'all') { setCat('all'); return; }
@@ -460,7 +584,7 @@
   }
   if (qClear) {
     qClear.addEventListener('click', function () {
-      q.value = ''; state.q = ''; qClear.hidden = true; q.focus(); render();
+      q.value = ''; state.q = ''; state.qraw = ''; qClear.hidden = true; q.focus(); render();
     });
   }
 
@@ -480,7 +604,11 @@
       if (state.brand && g.b !== state.brand) return;
       if (state.q && groupText(g).indexOf(state.q) < 0) return;
       var vs = g.variants;
-      if (state.size) {
+      if (state.size === 'none') {
+        /* '규격 미표기' 는 규격을 하나도 못 읽은 카드만 — 일부만 비어 있는 카드가
+           '5종 규격' 카드로 섞이지 않게 한다 */
+        if (!vs.every(function (p) { return p.g.none; })) return;
+      } else if (state.size) {
         vs = vs.filter(function (p) { return p.g[state.size]; });
         if (!vs.length) return;
       }
@@ -643,9 +771,10 @@
     pdName.textContent = multi ? current.base : p.n;
     pdBrand.textContent = p.b;
     pdCat.textContent = CAT_LABEL[p.c] || '';
-    /* 모달 상단 '규격' — 선택한 규격이 그대로 보이도록 한다(치수·용량이 없으면 이름에서 뗀 크기·형태 표기를 쓴다) */
+    /* 모달 상단 '규격' — 선택한 규격이 그대로 보이도록 한다. 규격 칩 표기(vl)가 있으면 그것을,
+       없으면 치수·용량, 둘 다 없으면 상담 확인 */
     var vlab = metaOf(p).vlabel;
-    pdSpec.textContent = specText(p) || ((vlab && vlab !== '규격 미표기') ? vlab : '규격 미표기 — 상담 확인');
+    pdSpec.textContent = (vlab && vlab !== '규격 미표기') ? vlab : (specText(p) || '규격 미표기 — 상담 확인');
     if (pdVariant) {
       pdVariant.hidden = !multi;
       pdVariant.textContent = multi ? p.n : '';
@@ -726,49 +855,103 @@
     }]);
   });
 
-  /* ── 실제 제품 사진 모아보기 (955컷) ─────────────────────────── */
+  /* ── 실제 제품 사진 모아보기 ───────────────────────────────
+     사진 955컷을 한 번에 DOM으로 만들면 클릭 직후 화면이 멈춘다(품목 2,342건을 사진마다
+     filter로 훑어 222만 번 비교하는 구조였다). 사진 → 품목 역인덱스를 한 번만 만들어 두고
+     60컷씩 나눠 그린다. 대화상자를 열면 즉시 첫 60컷이 보이고, 끝까지 스크롤하면 이어서 채운다. */
   var shotDlg = $('shotGallery'), shotGrid = $('shotGrid');
-  var shotBuilt = false;
+  var shotMoreWrap = $('shotMore'), shotMoreBtn = $('shotMoreBtn');
+  var SHOTS = null, shotShown = 0;
+  var SHOT_PAGE = 60;
+  var shotObserver = null;
+
+  function shotList() {
+    if (SHOTS) return SHOTS;
+    var byImg = new Map(), order = [];
+    PRODUCTS.forEach(function (p) {
+      if (!p.img) return;
+      var arr = byImg.get(p.img);
+      if (!arr) { arr = []; byImg.set(p.img, arr); order.push(p.img); }
+      arr.push(p);
+    });
+    SHOTS = order.map(function (img) {
+      var same = byImg.get(img);
+      var sorted = same.slice().sort(function (a, b) {
+        var x = sizeValue(a), y = sizeValue(b);
+        if (x !== null && y !== null && x !== y) return x - y;
+        return 0;
+      });
+      var p = same[0];
+      return { p: p, name: same.length > 1 ? metaOf(p).base : p.n, same: sorted };
+    });
+    return SHOTS;
+  }
+
+  function shotTile(item) {
+    var p = item.p;
+    var fig = document.createElement('button');
+    fig.type = 'button';
+    fig.className = 'shot';
+    var im = document.createElement('img');
+    setPhoto(im, p, 320);
+    im.alt = item.name + ' — ' + (CAT_LABEL[p.c] || '') + ' 실제 제품 사진';
+    im.width = 320; im.height = 320;
+    im.loading = 'lazy';
+    im.decoding = 'async';
+    var cap = document.createElement('span');
+    cap.className = 'shot-cap';
+    var strong = document.createElement('strong');
+    strong.textContent = item.name;
+    var em = document.createElement('em');
+    em.textContent = p.b + ' · ' + (CAT_LABEL[p.c] || '') + (item.same.length > 1 ? ' · ' + sizeSummary(item.same) : '');
+    cap.appendChild(strong);
+    cap.appendChild(em);
+    fig.appendChild(im);
+    fig.appendChild(cap);
+    fig.addEventListener('click', function () { openFromProduct(p); });
+    return fig;
+  }
+
+  function paintShots(to) {
+    if (!shotGrid) return;
+    var list = shotList();
+    var end = Math.min(to, list.length);
+    if (end <= shotShown) return;
+    var frag = document.createDocumentFragment();
+    for (var i = shotShown; i < end; i += 1) frag.appendChild(shotTile(list[i]));
+    shotGrid.appendChild(frag);
+    /* 감시용 끝 표시는 항상 마지막 항목으로 — 그래야 이어 그리기가 순서대로 붙는다 */
+    if (shotSentinel) shotGrid.appendChild(shotSentinel);
+    shotShown = end;
+    var rest = list.length - shotShown;
+    if (shotMoreWrap) shotMoreWrap.hidden = rest <= 0;
+    if (shotMoreBtn) {
+      shotMoreBtn.hidden = rest <= 0;
+      shotMoreBtn.textContent = '사진 더 보기 (남은 ' + num(rest) + '컷)';
+    }
+    /* 끝이 화면에 들어와 있으면 이어서 더 그린다 */
+    if (shotObserver && shotSentinel && rest > 0) { shotObserver.disconnect(); shotObserver.observe(shotSentinel); }
+  }
+
+  var shotSentinel = null;
+  if (shotGrid) {
+    shotSentinel = document.createElement('div');
+    shotSentinel.className = 'shot-sentinel';
+    shotSentinel.setAttribute('aria-hidden', 'true');
+    shotGrid.appendChild(shotSentinel);
+  }
+  if (shotSentinel && window.IntersectionObserver && shotGrid) {
+    shotObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) paintShots(shotShown + SHOT_PAGE); });
+    }, { root: shotGrid, rootMargin: '400px' });
+  }
+  if (shotMoreBtn) shotMoreBtn.addEventListener('click', function () { paintShots(shotShown + SHOT_PAGE); });
+
   function openGallery() {
     if (!shotDlg || !shotDlg.showModal) return;
-    if (!shotBuilt && shotGrid) {
-      var frag = document.createDocumentFragment();
-      var seenImg = {};
-      PRODUCTS.forEach(function (p) {
-        if (!p.img || seenImg[p.img]) return; /* 한 규격 그룹이 함께 쓰는 사진은 한 번만 */
-        seenImg[p.img] = 1;
-        var same = PRODUCTS.filter(function (x) { return x.img === p.img; }).sort(function (a, b) {
-          var x = sizeValue(a), y = sizeValue(b);
-          if (x !== null && y !== null && x !== y) return x - y;
-          return 0;
-        });
-        var shotName = same.length > 1 ? metaOf(p).base : p.n;
-        var fig = document.createElement('button');
-        fig.type = 'button';
-        fig.className = 'shot';
-        var im = document.createElement('img');
-        im.src = p.img + IMG_V;
-        im.alt = shotName + ' — ' + (CAT_LABEL[p.c] || '') + ' 실제 제품 사진';
-        im.width = 1100; im.height = 1100;
-        im.loading = 'lazy';
-        im.decoding = 'async';
-        var cap = document.createElement('span');
-        cap.className = 'shot-cap';
-        var strong = document.createElement('strong');
-        strong.textContent = shotName;
-        var em = document.createElement('em');
-        em.textContent = p.b + ' · ' + (CAT_LABEL[p.c] || '') + (same.length > 1 ? ' · ' + sizeSummary(same) : '');
-        cap.appendChild(strong);
-        cap.appendChild(em);
-        fig.appendChild(im);
-        fig.appendChild(cap);
-        fig.addEventListener('click', function () { openFromProduct(p); });
-        frag.appendChild(fig);
-      });
-      shotGrid.appendChild(frag);
-      shotBuilt = true;
-    }
     shotDlg.showModal();
+    if (shotGrid) shotGrid.scrollTop = 0;
+    paintShots(shotShown ? shotShown : SHOT_PAGE);
   }
   function openFromProduct(p) {
     var view = null;
@@ -811,6 +994,7 @@
     if (emptyEl) emptyEl.hidden = total > 0;
     appendCards(list, 0, shown);
     paintMore(total);
+    syncUrl();
   }
 
   function paintMore(total) {
@@ -842,7 +1026,7 @@
   function sizeSummary(vs) {
     var nums = [], unit = null, ok = true;
     vs.forEach(function (p) {
-      var s = p.s && p.s[0];
+      var s = specsOf(p)[0];
       if (!s || typeof s.v !== 'number' || (s.u !== 'cm' && s.u !== 'mm' && s.u !== 'L' && s.u !== 'ml')) ok = false;
       else {
         if (unit && unit !== s.u) ok = false;
@@ -872,10 +1056,9 @@
     media.className = 'pcard-media';
     media.setAttribute('aria-label', title + ' 상세 보기');
     var img = document.createElement('img');
-    img.src = imageFor(photo);
-    bindImageFallback(img, photo);
+    setPhoto(img, photo, 400);
     img.alt = photo.n + ' — ' + (CAT_LABEL[view.c] || '') + (photo.img ? ' 실제 제품 사진' : ' 품목 예시 이미지');
-    img.width = 1100; img.height = 1100;
+    img.width = 800; img.height = 800;
     img.loading = 'lazy';
     img.decoding = 'async';
     media.appendChild(img);
@@ -959,25 +1142,101 @@
     return card;
   }
 
+  /* ── 수치 표기(SSOT) ────────────────────────────────────
+     화면의 품목·카드·사진·브랜드 수는 모두 카탈로그에서 센 값으로 채운다.
+     HTML에 적힌 숫자는 JS 없이 볼 때만 쓰는 기본값이다. */
+  var SSOT = { items: PRODUCTS.length, cards: GROUPS.length, photos: SHOT_COUNT, brands: 0 };
+  var BRAND_COUNT = {};
+  (function () {
+    PRODUCTS.forEach(function (p) { BRAND_COUNT[p.b] = (BRAND_COUNT[p.b] || 0) + 1; });
+    SSOT.brands = Object.keys(BRAND_COUNT).length;
+  })();
+  var TOP_BRANDS = document.querySelectorAll('#brands .bsum').length;
+
+  function fillSsot() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ssot]'), function (el) {
+      var k = el.getAttribute('data-ssot');
+      var v = SSOT[k];
+      if (k === 'brandsTop') v = TOP_BRANDS;
+      if (k === 'brandsRest') v = Math.max(SSOT.brands - TOP_BRANDS, 0);
+      if (v === undefined) return;
+      el.textContent = num(v);
+    });
+    /* 버튼처럼 flex 안에 글자를 넣으면 span이 flex 항목이 되어 띄어쓰기가 끼므로 통째로 바꾼다 */
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ssot-label]'), function (el) {
+      var k = el.getAttribute('data-ssot-label');
+      var v = SSOT[k];
+      if (v === undefined) return;
+      el.textContent = (k === 'photos' ? '실제 제품 사진 ' + num(v) + '컷 보기' : num(v));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-bcount]'), function (el) {
+      var c = BRAND_COUNT[el.getAttribute('data-bcount')];
+      el.textContent = c ? num(c) + '품목' : '상담 확인';
+    });
+  }
+
+  /* ── 주소(URL) 동기화 ────────────────────────────────────
+     products.html?cat=pot&brand=TOSCO&size=s3&sort=name&q=밧드
+     검색어·분류·브랜드·규격·정렬을 바꾸면 주소도 따라 바뀌고, 그 주소로 열면 같은 화면이 된다. */
+  var INIT_SEARCH = (function () {
+    try { return new URLSearchParams(window.location.search).toString(); } catch (e) { return ''; }
+  })();
+  var urlReady = false;
+
+  function syncUrl() {
+    if (!urlReady) return;
+    var sp = new URLSearchParams();
+    if (state.cat && state.cat !== 'all') sp.set('cat', state.cat);
+    if (state.brand) sp.set('brand', state.brand);
+    if (state.size) sp.set('size', state.size);
+    if (state.sort && state.sort !== 'photo') sp.set('sort', state.sort);
+    if (state.qraw) sp.set('q', state.qraw);
+    var qs = sp.toString();
+    var url = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
+    try { window.history.replaceState({ gc: 1 }, '', url); } catch (e) {}
+  }
+
+  function applyUrl(search) {
+    var sp;
+    try { sp = new URLSearchParams(search === undefined ? window.location.search : search); } catch (e) { return; }
+    if (!sp.toString()) return;
+    var cat = sp.get('cat'), brand = sp.get('brand'), size = sp.get('size'),
+        sort = sp.get('sort'), kw = sp.get('q');
+    if (cat && CAT_LABEL[cat] && chipWrap) {
+      state.cat = cat;
+      Array.prototype.forEach.call(chipWrap.children, function (c) {
+        var on = c.getAttribute('data-cat') === cat;
+        c.classList.toggle('is-on', on);
+        c.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      paintCatHead();
+    }
+    if (brand && brandSel) {
+      var has = false;
+      Array.prototype.forEach.call(brandSel.options, function (o) { if (o.value === brand) has = true; });
+      if (has) { brandSel.value = brand; state.brand = brand; }
+    }
+    if (size && sizeSel) {
+      var okSize = false;
+      Array.prototype.forEach.call(sizeSel.options, function (o) { if (o.value === size) okSize = true; });
+      if (okSize) { sizeSel.value = size; state.size = size; }
+    }
+    if (sort && sortSel) { sortSel.value = sort; state.sort = sort; }
+    if (kw && q) {
+      q.value = kw;
+      state.qraw = kw.trim();
+      state.q = normalizeQuery(kw);
+      if (qClear) qClear.hidden = !kw;
+    }
+    render();
+  }
+
+  fillSsot();
   paintBasket();
   paintCatHead();
+  /* 첫 render는 주소를 건드리지 않고, 주소에 실린 조건을 먼저 읽어 적용한다 */
+  applyUrl(INIT_SEARCH);
+  urlReady = true;
   render();
-
-  /* deep link: products.html?cat=pot · ?q=프라이팬 · ?brand=TOSCO */
-  try {
-    var sp = new URLSearchParams(window.location.search);
-    var cat = sp.get('cat');
-    if (cat && CAT_LABEL[cat] && chipWrap) {
-      var btn = chipWrap.querySelector('button[data-cat="' + cat + '"]');
-      if (btn) btn.click();
-    }
-    var brand = sp.get('brand');
-    if (brand && brandSel) {
-      Array.prototype.forEach.call(brandSel.options, function (o) {
-        if (o.value === brand) { brandSel.value = brand; state.brand = brand; render(); }
-      });
-    }
-    var kw = sp.get('q');
-    if (kw && q) { q.value = kw; q.dispatchEvent(new Event('input')); }
-  } catch (e) {}
+  window.addEventListener('popstate', function () { applyUrl(); });
 })();

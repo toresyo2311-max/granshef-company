@@ -1964,3 +1964,63 @@ body.basket-lock{overflow:hidden}
   .shot-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   #catHead .cat-block-media{flex:0 0 56px;width:56px;height:56px}
 }
+
+/* =========================================================
+   2026-11-27 · 취급상품 진입 동선(모바일) · 브랜드 접이식 · 사진 더 보기
+   ========================================================= */
+/* 브랜드 요약 — 상품 그리드 아래 접이식(기본 접힘). 펼치면 기존 카드가 그대로 나온다 */
+.brand-acc{border-top:1px solid var(--line)}
+.brand-acc-sum{display:flex;align-items:center;gap:12px;padding:20px 40px 20px 0;position:relative;
+  cursor:pointer;list-style:none;transition:color .3s}
+.brand-acc-sum::-webkit-details-marker{display:none}
+.brand-acc-sum:hover{color:var(--bronze-dp)}
+.brand-acc-sum:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+.brand-acc-k{flex:0 0 auto;display:inline-flex;align-items:baseline;gap:6px;
+  font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--bronze-dp)}
+.brand-acc-k b{font-size:11px;font-weight:700;letter-spacing:.04em}
+.brand-acc-t{min-width:0;font-family:var(--kr-serif);font-size:clamp(15px,1.8vw,18px);font-weight:600;
+  line-height:1.4;word-break:keep-all}
+.brand-acc-t strong{font-weight:600}
+.brand-acc-t em{display:block;margin-top:2px;font-family:var(--sans);font-style:normal;
+  font-size:11.5px;font-weight:400;color:var(--ink-mute);letter-spacing:0}
+.brand-acc-x{position:absolute;right:10px;top:50%;width:9px;height:9px;
+  border-right:1.6px solid var(--bronze);border-bottom:1.6px solid var(--bronze);
+  transform:translateY(-65%) rotate(45deg);transition:transform .3s var(--ease)}
+.brand-acc[open] .brand-acc-x{transform:translateY(-40%) rotate(-135deg)}
+.brand-acc-body{padding-top:10px}
+.brand-acc-bridge{margin-top:10px}
+
+/* 사진 모아보기 — 60컷씩 이어서 그리기 */
+.shot-more{display:flex;justify-content:center;padding:14px 0 2px}
+
+@media (max-width:700px){
+  /* 인트로를 줄여 검색·분류·상품이 첫 화면에 들어오게 한다 */
+  .cat-hero{padding-top:80px;padding-bottom:12px}
+  .cat-hero .cat-lead{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+    overflow:hidden;margin-bottom:0}
+  .cat-hero .sum-stats,.cat-hero .cat-scope{display:none}
+  #items .sum-head{margin-bottom:14px}
+  #items .sum-head h2{font-size:clamp(19px,5.2vw,22px)}
+  #items .sum-head .sec-lead{display:none}
+  /* 분류 칩은 한 줄 가로 스크롤 — 11개를 여러 줄로 쌓지 않는다 */
+  .cat-chips{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;margin:14px 0 8px;padding-bottom:6px;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .cat-chips::-webkit-scrollbar{display:none}
+  .cat-chips .chip{flex:0 0 auto}
+  .cat-bar{flex-wrap:nowrap;gap:8px;margin:6px 0 12px}
+  .cat-count{font-size:12px;line-height:1.45;min-width:0}
+  .cat-count strong{font-size:15px}
+  .cat-count-all{display:none}
+  .cat-shot-btn{width:auto;flex:0 0 auto;justify-content:center;font-size:11.5px;padding:8px 11px}
+  .brand-acc-sum{padding:16px 34px 16px 0;align-items:flex-start;gap:8px;flex-wrap:wrap}
+  .brand-acc-k{font-size:10.5px}
+  .brand-acc-t{flex:1 1 100%;font-size:15px}
+  .brand-acc-t em{font-size:11px}
+}
+
+/* 브랜드 상세 — 카탈로그에서 센 품목 수(한 곳에서 집계) */
+.bd-count{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;font-size:12.5px}
+.bd-count strong{font-weight:700;color:var(--bronze-dp);font-variant-numeric:tabular-nums}
+.bd-count a{color:var(--ink-soft);text-decoration:underline;text-underline-offset:2px}
+.bd-count a:hover{color:var(--bronze-dp)}
+.shot-sentinel{grid-column:1/-1;width:100%;height:1px}
