@@ -49,7 +49,7 @@
     return 'assets/products/' + (CAT_IMG[p.c] || 'cat-01-pot') + '.jpg';
   }
   /* 사진 파일은 경로를 그대로 두고 내용만 교체하므로, 브라우저 캐시를 비키도록 판올림 값을 붙인다 */
-  var IMG_V = '?v=20261127b';
+  var IMG_V = '?v=20261128a';
   /* 카드·갤러리에는 미리 만들어 둔 400px·320px WebP(tools/optimize_images.py)를 먼저 쓰고,
      원본 800px JPEG는 상세 모달·대체본으로 남긴다. WebP를 못 읽으면 JPEG로, JPEG도 깨지면 예시 이미지로. */
   var SIZES_ATTR = { 400: '(max-width: 560px) 45vw, 240px', 320: '(max-width: 560px) 45vw, 170px' };
